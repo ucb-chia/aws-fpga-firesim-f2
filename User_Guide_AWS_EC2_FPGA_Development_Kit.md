@@ -26,7 +26,7 @@ This documentation is relevant to F2 only. Therefore, it applies to all branches
 
 ### Instance Types
 
-![f2_instances](./shared/assets/instance_sizes.png)
+![f2_instances](./shared/assets/instance_sizes_20250110.png)
 
 ### 2nd Generation On-Cloud FPGA Accelerator Card
 
@@ -34,7 +34,7 @@ This documentation is relevant to F2 only. Therefore, it applies to all branches
 
 ### Comparison to F1
 
-![f2_f1_comp](./shared/assets/f2_f1_comp.png)
+![f2_f1_comp](./shared/assets/f2_f1_comp_20250110.png)
 
 ## AWS EC2 F2 FPGA Development Kit
 

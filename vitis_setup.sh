@@ -357,7 +357,8 @@ function xrt_install_check {
         info_msg "#        Otherwise, please source your XRT setup script, 'setup.sh'           #"
         info_msg "#                     To reinstall, run 'install_xrt -f'!                     #"
         info_msg "###############################################################################"
-        return 2
+        source $xrt_path/setup.sh
+        return 0
     fi
     info_msg "###########################################################################"
     info_msg "#                       No XRT install detected!                          #"
@@ -384,8 +385,7 @@ function install_xrt {
         cd $AWS_FPGA_REPO_DIR && return 1
     fi
 
-    xrt_install_check
-    if [[ $? -eq 0 || $1 == "-f" || $1 == "--force" ]]; then
+    if [[ -z $(lsmod | grep "xocl") || $1 == "-f" || $1 == "--force" ]]; then
         if [[ -n $(echo $PATH | grep "cmake-3.3.2") ]]; then
             export PATH="/usr/bin:$PATH"
         fi
