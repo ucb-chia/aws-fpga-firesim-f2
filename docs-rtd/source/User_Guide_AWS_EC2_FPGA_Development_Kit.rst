@@ -328,6 +328,6 @@ FPGA Development Kit:
 - Connect to a custom CL design in FPGA through `Virtual
   JTAG <./hdk/docs/Virtual_JTAG_XVC.html>`__ to run hardware debug.
 
-.. |f2_instances| image:: ./_static/instance_sizes.png
+.. |f2_instances| image:: ./_static/instance_sizes_20250110.png
 .. |image1| image:: ./_static/accel_card_specs_20250110.png
-.. |f2_f1_comp| image:: ./_static/f2_f1_comp.png
+.. |f2_f1_comp| image:: ./_static/f2_f1_comp_20250110.png
