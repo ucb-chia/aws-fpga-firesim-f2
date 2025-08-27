@@ -46,6 +46,7 @@ struct sde_mgmt {
 
     size_t md_read_index;
     volatile struct c2h_wb_metadata* metadata;
+    bool initialized;
 };
 
 #define SDE_SLOT_MAX 8
@@ -96,6 +97,7 @@ int sde_mgmt_init(int slot_id, enum SDE_EXAMPLE_DIR direction, size_t packet_siz
 
   sde_mgmt->data_pattern = START_DOUBLE_WORD;
 
+  sde_mgmt->initialized = true;
 err:
   return ret;
 }
@@ -120,6 +122,7 @@ int sde_mgmt_close(int slot_id) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
 
@@ -138,6 +141,7 @@ int sde_mgmt_reset(int slot_id) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
 
@@ -165,6 +169,7 @@ int sde_mgmt_check_status(int slot_id, enum SDE_SUBSYSTEM subsystem) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
 
@@ -191,6 +196,7 @@ int sde_mgmt_set_dma_buffers(int slot_id, enum SDE_SUBSYSTEM subsystem, struct s
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(num_buffers > SDE_NUM_DESC, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "num_buffers %ld is out of range", num_buffers);
   fail_on_with_code(num_buffers == 0, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "num_buffers is 0");
   fail_on_with_code(sde_buffers == NULL, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_buffers is NULL");
@@ -287,6 +293,7 @@ int sde_mgmt_cfg(int slot_id) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
 
@@ -310,6 +317,7 @@ int sde_mgmt_wait_desc_credit(int slot_id, enum SDE_SUBSYSTEM subsystem, size_t 
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(num_desc > SDE_NUM_DESC, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "num_desc %ld is out of range", num_desc);
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
@@ -342,6 +350,7 @@ int sde_mgmt_post_desc(int slot_id, enum SDE_SUBSYSTEM subsystem, size_t* num_de
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(num_desc == NULL, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "num_desc is NULL");
   fail_on_with_code(*num_desc > SDE_NUM_DESC, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "num_desc %ld is out of range", *num_desc);
 
@@ -361,6 +370,7 @@ int sde_mgmt_start_read(int slot_id, size_t size) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
 
@@ -381,6 +391,7 @@ err:
 int sde_mgmt_read_md(int slot_id, struct sde_md* md) {
   int ret = 0;
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(md == NULL, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "md is NULL");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];
@@ -416,6 +427,7 @@ int sde_mgmt_read_data(int slot_id, void *data, size_t size) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(data == NULL, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "data is NULL");
   fail_on_with_code(size == 0, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "size is 0");
 
@@ -447,6 +459,7 @@ int sde_mgmt_prepare_write(int slot_id, void *data, size_t size) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(data == NULL, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "data is NULL");
   fail_on_with_code(size == 0, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "size is 0");
 
@@ -473,6 +486,7 @@ int sde_mgmt_write(int slot_id, size_t size) {
   int ret = 0;
 
   fail_on_with_code(slot_id >= SDE_SLOT_MAX, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "slot_id %d is out of range", slot_id);
+  fail_on_with_code(!priv_sde_mgmt[slot_id].initialized, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "sde_mgmt not initialized");
   fail_on_with_code(size == 0, err, ret, FPGA_ERR_SOFTWARE_PROBLEM, "size is 0");
 
   struct sde_mgmt *sde_mgmt = &priv_sde_mgmt[slot_id];

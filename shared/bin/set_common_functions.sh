@@ -18,7 +18,7 @@ function info_msg {
 }
 
 function debug_msg {
-    if [[ $debug == 0 ]]; then
+    if [[ ${debug:-0} == 0 ]]; then
         return
     fi
     echo -e "DEBUG: $1"
@@ -185,108 +185,58 @@ function patch_AR70350 {
 
 }
 
-function check_vivado_version () {
-   local act_version=$1;      shift
-   local exp_version_file=$1; shift
-   local compare=$1;          shift
+function check_vivado_version() {
+    local act_version="$1" exp_version_file="$2" compare="$3"
 
-   #echo "check_vivado_version $act_version $exp_version_file"
-   extract_vivado_version "$act_version"
-   local act_basever="$EXTRACTED_VIVADO_BASEVER"
-   local act_patches="$EXTRACTED_VIVADO_PATCHES"
-   local act_osbits="$EXTRACTED_VIVADO_OSBITS"
-   local act_patches_num="$EXTRACTED_VIVADO_PATCHES_NUM"
-   local ver_matches=0
-   
-   while read line; do
-      extract_vivado_version "$line"
-      local exp_basever="$EXTRACTED_VIVADO_BASEVER"
-      local exp_patches="$EXTRACTED_VIVADO_PATCHES"
-      local exp_osbits="$EXTRACTED_VIVADO_OSBITS"
-      local exp_patches_num="$EXTRACTED_VIVADO_PATCHES_NUM"
+    extract_vivado_version "$act_version" || { VIVADO_VERSION_CHECK=0; return 1; }
+    local act_base="$EXTRACTED_VIVADO_BASEVER" act_patches="$EXTRACTED_VIVADO_PATCHES"
+    local act_bits="$EXTRACTED_VIVADO_OSBITS" act_patch_num="$EXTRACTED_VIVADO_PATCHES_NUM"
 
-      local basever_matches=0
-      local osbits_matches=0
-      local patches_matches=0
-      local patches_match=0
+    [[ -f "$exp_version_file" ]] || { VIVADO_VERSION_CHECK=0; return 1; }
 
-      if [ "$exp_basever" == "$act_basever" ]; then
-         basever_match=1
-      fi
+    while IFS= read -r line; do
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
 
-      if [ "$exp_osbits" == "$act_osbits" ]; then
-         osbits_matches=1
-      fi
+        extract_vivado_version "$line" || continue
 
-      for act_patch in $act_patches; do
-         for exp_patch in $exp_patches; do
-            if [ "$exp_patch" == "$act_patch" ]; then
-               ((patches_match=patches_match+1))
-            fi
-         done
-      done
+        [[ "$EXTRACTED_VIVADO_BASEVER" == "$act_base" && "$EXTRACTED_VIVADO_OSBITS" == "$act_bits" ]] || continue
 
-      if [ $compare -eq 0 ]; then
-         patches_num=$exp_patches_num
-      else
-         patches_num=$act_patches_num
-      fi
+        local patch_num=$([[ $compare -eq 0 ]] && echo "$EXTRACTED_VIVADO_PATCHES_NUM" || echo "$act_patch_num")
+        if [[ $patch_num -eq 0 ]]; then
+            VIVADO_VERSION_CHECK=1
+            return 0
+        fi
 
-      if [[ $basever_match -eq 1 && $osbits_matches -eq 1 ]]; then
-         if [ $patches_num -gt 0 ]; then
-            if [ $patches_match -eq $patches_num ]; then
-               ver_matches=1
-            fi
-         else
-            ver_matches=1
-         fi
-      fi
-      #echo "basever_match   = $basever_match"
-      #echo "ver_matches     = $ver_matches"
-      #echo "patches_match   = $patches_match"
-      #echo "act_patches_num = $act_patches_num"
-      #echo "exp_patches_num = $exp_patches_num"
+        local matches=0 act_array=($act_patches) exp_array=($EXTRACTED_VIVADO_PATCHES)
+        for ap in "${act_array[@]}"; do
+            for ep in "${exp_array[@]}"; do
+                [[ "$ap" == "$ep" ]] && ((matches++))
+            done
+        done
 
-      if [ $ver_matches -eq 1 ]; then
-         break
-      fi
-   done < $exp_version_file
+        [[ $matches -eq $patch_num ]] && { VIVADO_VERSION_CHECK=1; return 0; }
 
-   VIVADO_VERSION_CHECK=$ver_matches
+    done < "$exp_version_file"
 
-} # check_vivado_version
+    VIVADO_VERSION_CHECK=0
+}
 
-function extract_vivado_version () {
-   local version=$1; shift
+function extract_vivado_version() {
+    local version="$1"
+    [[ -z "$version" ]] && return 1
 
-   #echo "----------------------------------------------------------------"
-   #echo "extract_vivado_version -> $version"
+    local parts=($version)
+    [[ ${#parts[@]} -lt 3 ]] && return 1
 
-   local tmp_var=()
-   for i in `echo $version`; do
-      tmp_var+=($i)
-   done
+    local version_parts=(${parts[1]//_/ })
 
-   local vivado_version_arr=();
-   for i in `echo ${tmp_var[1]} | tr "_" " "`; do
-      vivado_version_arr+=($i)
-   done
+    EXTRACTED_VIVADO_BASEVER="${version_parts[0]}"
+    EXTRACTED_VIVADO_PATCHES="${version_parts[*]:1}"
+    EXTRACTED_VIVADO_PATCHES_NUM=$((${#version_parts[@]} - 1))
+    EXTRACTED_VIVADO_OSBITS="${parts[-1]//[()]/}"
 
-   EXTRACTED_VIVADO_BASEVER=${vivado_version_arr[0]}
-   EXTRACTED_VIVADO_PATCHES=${vivado_version_arr[@]:1}
-   EXTRACTED_VIVADO_PATCHES_NUM=1
-   if [ -z $EXTRACTED_VIVADO_PATCHES ]; then
-      EXTRACTED_VIVADO_PATCHES_NUM=0
-   else
-      EXTRACTED_VIVADO_PATCHES_NUM=${#vivado_version_arr[@]:1}
-      ((EXTRACTED_VIVADO_PATCHES_NUM-=1))
-   fi
-   EXTRACTED_VIVADO_OSBITS=${tmp_var[3]}
-
-   #echo EXTRACTED_VIVADO_BASEVER=$EXTRACTED_VIVADO_BASEVER
-   #echo EXTRACTED_VIVADO_PATCHES=$EXTRACTED_VIVADO_PATCHES
-
-} # extract_vivado_version
+    return 0
+}
 
 function allow_non_root {
        [ ! -z ${AWS_FPGA_ALLOW_NON_ROOT} ]

@@ -1,5 +1,12 @@
 # F2 Developer Kit Release Notes
 
+## v2.2.0
+
+* Release of Vivado/Vitis 2025.1 Tools on [FPGA Developer AMI 1.18.0 (Ubuntu)](http://aws.amazon.com/marketplace/pp/prodview-yqgciytgjosfw)
+* Introduced [MSI-X PCIe Interrupts Guided Example](./sdk/apps/msix-interrupts/README.md)
+* Added [Loopback performance test for CL_SDE](./hdk/cl/examples/cl_sde/software/src/README.md)
+* [ReadTheDocs navigation improvements](https://awsdocs-fpga-f2.readthedocs-hosted.com/latest/)
+
 ## v2.1.2
 
 * Introduced Python Bindings to the SDK

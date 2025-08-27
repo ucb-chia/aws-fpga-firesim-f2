@@ -23,6 +23,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#define SDE_PUBLIC __attribute__((visibility("default")))
+
 //============================================================================================================
 //
 // sde_fill_pkt_data() : Fill a buffer of uint8_t with patterned data for the entire size of the buffer.
@@ -33,7 +35,7 @@
 // uint32_t start_dw           : The start of the pattern ot write to the buffer.
 //
 //=============================================================================================================
-int sde_fill_pkt_data (uint8_t* data_ptr, size_t size, uint32_t start_dw);
+SDE_PUBLIC int sde_fill_pkt_data (uint8_t* data_ptr, size_t size, uint32_t start_dw);
 
 //============================================================================================================
 //
@@ -44,7 +46,7 @@ int sde_fill_pkt_data (uint8_t* data_ptr, size_t size, uint32_t start_dw);
 // size_t bit_alignment        : The bit alignment of the buffer.
 //
 //=============================================================================================================
-size_t sde_aligned_size(size_t size, size_t bit_alignment);
+SDE_PUBLIC size_t sde_aligned_size(size_t size, size_t bit_alignment);
 
 //============================================================================================================
 //
@@ -54,7 +56,7 @@ size_t sde_aligned_size(size_t size, size_t bit_alignment);
 // int err                     : Error returned from an sde function.
 //
 //=============================================================================================================
-const char *sde_mgmt_strerror(int err);
+SDE_PUBLIC const char *sde_mgmt_strerror(int err);
 
 //============================================================================================================
 //
@@ -64,7 +66,7 @@ const char *sde_mgmt_strerror(int err);
 // int err                     : Error returned from an sde function.
 //
 //=============================================================================================================
-const char *sde_mgmt_strerror_long(int err);
+SDE_PUBLIC const char *sde_mgmt_strerror_long(int err);
 
 //============================================================================================================
 //
@@ -75,9 +77,9 @@ const char *sde_mgmt_strerror_long(int err);
 // int pkt_size                : The number of bytes from the buffer that will be printed.
 //
 //=============================================================================================================
-void sde_print_payload(uint8_t* payload, int pkt_size);
+SDE_PUBLIC void sde_print_payload(uint8_t* payload, int pkt_size);
 
-void sde_print_help(const char* example_name);
+SDE_PUBLIC void sde_print_help(const char* example_name);
 
 struct sde_parameters {
   size_t pkt_cnt;
@@ -99,14 +101,14 @@ struct sde_parameters {
 // const char* example         : The name of the exmaple.
 //
 //=============================================================================================================
-int sde_parse_args(int argc, char **argv, struct sde_parameters* params, const char* example);
+SDE_PUBLIC int sde_parse_args(int argc, char **argv, struct sde_parameters* params, const char* example);
 
 //============================================================================================================
 //
 // sde_get_curr_time() : Returns time of day in seconds.
 //
 //=============================================================================================================
-double sde_get_curr_time(void);
+SDE_PUBLIC double sde_get_curr_time(void);
 
 //============================================================================================================
 //
@@ -118,4 +120,4 @@ double sde_get_curr_time(void);
 // enum SDE_EXAMPLE_DIR direction : The direction of the example (c2h, h2c, loopback).
 //
 //=============================================================================================================
-void print_timing(double start_time, double end_time, int pkt_size, size_t num_packets, enum SDE_EXAMPLE_DIR direction);
+SDE_PUBLIC void print_timing(double start_time, double end_time, int pkt_size, size_t num_packets, enum SDE_EXAMPLE_DIR direction);

@@ -68,6 +68,11 @@ HDK
 8. HBM simulation using XSIM requires a fix described in this
    `AMD Answer Record <https://adaptivesupport.amd.com/s/article/000035639?language=en_US>`__.
 
+9. Vivado 2025.1 introduces a ``set_property DONT_TOUCH`` to the HBM model that makes meeting
+   timing difficult in the implementation stage. AMD has responded to this issue on their AR, stating that it will be fixed in a future version of Vivado.
+   `See here for more details <https://adaptivesupport.amd.com/s/article/000038502?language=en_US&t=1754923887312>`__.
+   All HDK CL examples have been updated to address this issue. Customers should follow this AR when creating their own designs.
+
 SDK
 ---
 

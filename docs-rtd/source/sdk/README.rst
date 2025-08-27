@@ -72,6 +72,8 @@ Additional SDK Documentation
    apps/virtual-ethernet/doc/SDE-HW-Guide
    apps/virtual-ethernet/doc/Virtual-Ethernet-Application-Guide
 
+   apps/msix-interrupts/README
+
    userspace/fpga_mgmt_examples/README
 
    userspace/cython-bindings/README

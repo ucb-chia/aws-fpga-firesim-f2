@@ -17,6 +17,8 @@
 # When being sourced $0 will be the interactive shell and $BASH_SOURCE_ will contain the script being sourced
 # When being run $0 and $_ will be the same.
 
+set -x
+
 script=${BASH_SOURCE[0]}
 if [ $script == $0 ]; then
   echo "ERROR: You must source this script"
@@ -71,11 +73,10 @@ function check_git_lfs {
     if ! command -v git-lfs &> /dev/null; then
         echo "ERROR: git-lfs is not installed" >&2
         echo "Please install git-lfs:" >&2
-        echo "  For RHEL/CentOS/Rocky: sudo yum install git-lfs" >&2
         echo "  For Ubuntu/Debian: sudo apt-get install git-lfs" >&2
         return 1
     fi
-    
+
     return 0
 }
 
@@ -211,8 +212,10 @@ if [ $skip_downloads -eq 0 ]; then
     if [ $? -ne 0 ]; then
       return 1
     fi
+    git submodule sync --recursive
     git submodule update --init $cl_ip_path
     git -C $cl_ip_path checkout $cl_ip_branch
+    git -C $cl_ip_path pull origin $cl_ip_branch
 else
     info_msg "Skipping shell downloads and submodule setup (--skip_downloads specified)"
 fi
@@ -240,11 +243,11 @@ export HDK_BD_GEN_DIR=$(realpath -s $HDK_COMMON_DIR/ip/cl_ip/cl_ip.gen/sources_1
 
 info_msg "HDK shell is up-to-date"
 
-if [[ ":$CL_DIR" == ':' ]]; then
+if [[ -z "${CL_DIR:-}" ]]; then
   warn_msg "Don't forget to set the CL_DIR variable for the directory of your Custom Logic."
 else
   info_msg "CL_DIR is $CL_DIR"
-  if [ ! -d $CL_DIR ]; then
+  if [ ! -d "${CL_DIR}" ]; then
     err_msg "CL_DIR doesn't exist. Set CL_DIR to a valid directory."
     unset CL_DIR
   fi
@@ -253,3 +256,4 @@ fi
 cd $current_dir
 
 info_msg "AWS HDK setup PASSED."
+set +x

@@ -132,9 +132,7 @@ For optimal performance on an `F2.48xlarge` instance, follow the [F2 software pe
 
 ## Examples
 
-Build the sde_examples from the $(HDK)/cl/examples/cl_sde/software/runtime directory.
-
-`make sde_examples`
+Build the sde_examples by navigating to the ${HDK_DIR}/cl/examples/cl_sde/software/runtime directory and running `make sde_examples`. Prior to building the examples, this target will compile and install the libsde.so shared object. These targets also serve as an example for building against the libsde.so shared object.
 
 ### 1. Card-to-Host (C2H) Simple Transfer
 - File: `sde_c2h_simple`
@@ -197,6 +195,16 @@ Build the sde_examples from the $(HDK)/cl/examples/cl_sde/software/runtime direc
 
 - `sudo ./sde_c2h_user_buffers <num_packets> <packet_size> <slot_id>`
 - `sudo ./sde_c2h_user_buffers 1 4096 0`
+
+### 7. Loopback Performance Test
+- File: `sde_loopback_perf_test`
+- Tests bidirectional high-throughput data transfer
+- Choose large packet sizes for better performance
+
+#### Usage
+
+- `sudo ./sde_loopback_perf_test <num_millions_packets> <packet_size> <slot_id>`
+- `sudo ./sde_loopback_perf_test 1 131072 0`
 
 ## Performance Metrics
 

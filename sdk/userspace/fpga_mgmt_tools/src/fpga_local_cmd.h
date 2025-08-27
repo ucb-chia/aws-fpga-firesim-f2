@@ -70,7 +70,7 @@ enum {
  * Request timeout: timeout * delay_msec
  */
 #define CLI_REQUEST_TIMEOUT_DFLT   	500
-#define CLI_REQUEST_DELAY_MSEC_DFLT	40
+#define CLI_REQUEST_DELAY_MSEC_DFLT	60
 
 /**
  * ec2_fpga_cmd:

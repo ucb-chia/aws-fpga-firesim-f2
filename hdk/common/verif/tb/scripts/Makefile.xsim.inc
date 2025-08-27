@@ -54,10 +54,10 @@ compile: copy_xsim_ini $(COMPILE_CL_IP_DIR) generate_sim_file_list
 run:
 ifeq ($(TEST),test_null)
    ifneq ($(C_TEST),test_null)
-	cd $(SIM_DIR) && xsim -log $(C_TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb
+	cd $(SIM_DIR) && xsim -log $(C_TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb | $(FILTER_OUT_HBM_META_INJECTIONS)
    else
-	cd $(SIM_DIR) && xsim -log $(TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb
+	cd $(SIM_DIR) && xsim -log $(TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb | $(FILTER_OUT_HBM_META_INJECTIONS)
    endif
 else
-	cd $(SIM_DIR) && xsim -log $(TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb
+	cd $(SIM_DIR) && xsim -log $(TEST).log -tclbatch $(SCRIPTS_DIR)/waves.tcl tb | $(FILTER_OUT_HBM_META_INJECTIONS)
 endif

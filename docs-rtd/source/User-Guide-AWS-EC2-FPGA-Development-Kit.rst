@@ -295,6 +295,9 @@ The HDK currently supports the following tool versions:
   * - AMD Vivado Design Suite
     - Synopsys VCS (Bring your own license)
     - Siemens Questa (Bring your own license)
+  * - 2025.1
+    - W-2024.09-SP1
+    - 2024.3_3
   * - 2024.2
     - V-2023.12-SP1
     - 2024.1_2
@@ -354,9 +357,9 @@ currently released to customers:
     - FPGA Developer AMI ID
     - Vivado/Vitis Version Supported
     - Operating System Version
-  * - 1.17.0
-    - `ami-01198b89d80ebfdd2 <https://aws.amazon.com/marketplace/pp/prodview-tcl7sjgreh6bq>`__
-    - 2024.2
+  * - 1.18.0
+    - `ami-098b2ed4c92602975 <http://aws.amazon.com/marketplace/pp/prodview-tcl7sjgreh6bq>`__
+    - 2025.1
     - Ubuntu 24.04 (kernel 6.8.0-1021-aws)
   * - 1.16.1
     - `ami-092fc5deb8f3c0f7d <https://aws.amazon.com/marketplace/pp/prodview-f5kjsenkfkz5u>`__

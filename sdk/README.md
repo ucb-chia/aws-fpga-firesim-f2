@@ -41,6 +41,8 @@ Please reach out to the AWS FPGA team with any instability issues so we can help
 
 * [Virtual Ethernet Application Guide](./apps/virtual-ethernet/doc/Virtual_Ethernet_Application_Guide.md)
 
+* [MSI-X Interrupts Implementation Guide](./apps/msix-interrupts/README.md)
+
 * [FPGA Management Examples](./userspace/fpga_mgmt_examples/README.md)
 
 * [Python Bindings](./userspace/cython_bindings/README.md)
@@ -50,4 +52,3 @@ Please reach out to the AWS FPGA team with any instability issues so we can help
 * [F2 Software Performance Optimization Guide](./docs/F2_Software_Performance_Optimization_Guide.md)
 
 * [Load-Times](./docs/Load_Times.md)
-

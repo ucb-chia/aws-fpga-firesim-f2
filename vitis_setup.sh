@@ -16,6 +16,9 @@
 # Script must be sourced from a bash shell or it will not work
 # When being sourced $0 will be the interactive shell and $BASH_SOURCE_ will contain the script being sourced
 # When being run $0 and $_ will be the same.
+
+set -x
+
 script=${BASH_SOURCE[0]}
 if [ $script == $0 ]; then
     echo "ERROR: You must source this script"
@@ -26,7 +29,7 @@ full_script=$(readlink -f $script)
 script_name=$(basename $full_script)
 script_dir=$(dirname $full_script)
 distro=$(sed -n 's/^NAME="\([^"]*\)"/\1/p' /etc/os-release)
-
+distro=${distro// /}
 
 function vitis_usage {
     echo -e "USAGE: source [\$AWS_FPGA_REPO_DIR]/$script_name [-h|-help]"
@@ -58,6 +61,7 @@ function check_xilinx_vitis {
         info_msg "    https://repost.aws/questions?view=all\&sort=recent\&tagIds=TAc7ofO5tbQRO57aX1lBYbjA"
         return 1
     fi
+    # Extracts the tool version from its output
     export VITIS_TOOL_VER=$(vivado -version | grep -o "v[0-9]\+\.[0-9]" | sed 's/v//')
     info_msg "VITIS_TOOL_VER = ${VITIS_TOOL_VER}"
     return 0
@@ -67,6 +71,7 @@ function check_xilinx_vitis {
 declare -A valid_tool_versions
 valid_tool_versions["2024.1"]="true"
 valid_tool_versions["2024.2"]="true"
+valid_tool_versions["2025.1"]="true"
 
 declare -A valid_os
 valid_os["Ubuntu"]="true"
@@ -74,14 +79,16 @@ valid_os["Ubuntu"]="true"
 function check_os_and_tool_ver {
     if [[ "${valid_tool_versions[${VITIS_TOOL_VER}]}" != "true" ]]; then
         err_msg "Unsupported Vivado tool version detected: ${VITIS_TOOL_VER}!!!"
-        info_msg "Supported versions are: 2024.1 and 2024.2"
+        info_msg "Supported versions are:"
+        cat $AWS_FPGA_REPO_DIR/vitis/supported_versions.txt
         return 1
     fi
 
     echo "Distro: ${distro}"
     if [[ "${valid_os[${distro}]}" != "true" ]]; then
         err_msg "Unsupported OS detected!!!"
-        info_msg "Supported OS are: Ubuntu 24.04 and Ubuntu 20.04"
+        info_msg "Supported OS are:"
+        cat $AWS_FPGA_REPO_DIR/vitis/supported_oses.txt
         return 1
     fi
     return 0
@@ -244,19 +251,15 @@ function create_xsa_dirs {
 declare -A xsa_dir_map
 xsa_dir_map["2024.1"]="2024_1_2"
 xsa_dir_map["2024.2"]="2024_2"
+xsa_dir_map["2025.1"]="2024_2"
 
 declare -A xsa_map
 xsa_map["2024.1"]="202410_1_2"
 xsa_map["2024.2"]="202420_1"
+xsa_map["2025.1"]="202420_2"
 
 
 function setup_xsa {
-
-    info_msg "Installing supporting libraries"
-    if [[ -z $(lsmod | grep xocl) ]]; then
-        sudo $XILINX_VITIS/scripts/installLibs.sh >>/dev/null
-        rm installLibs.sh_*
-    fi
 
     # Get XSA for right tool version
     xsa_for_tool_ver="${xsa_map[${VITIS_TOOL_VER}]}"
@@ -273,7 +276,7 @@ function setup_xsa {
     vitis_xpfm="${XSA}.xpfm"
     PLATFORM_ENV_VAR_NAME="AWS_PLATFORM_${xsa_for_tool_ver}"
     export "${PLATFORM_ENV_VAR_NAME}"="${vitis_xpfm_dir}/${vitis_xpfm}"
-    export PLATFORM_REPO_PATHS="${XILINX_VITIS}/platforms/${vitis_xpfm}"
+    export PLATFORM_REPO_PATHS="${XILINX_VITIS}/platforms"
 
     # Grab all XSAs, check their SHAs, and move to necessary Vitis dir
     xsas=(
@@ -326,7 +329,7 @@ xrt_install_map["Ubuntu_xrt_pkg_prefix"]="amd64-xrt"
 xrt_install_map["Ubuntu_aws_pkg_prefix"]="amd64-aws"
 
 function build_and_install_xrt {
-    if ! sudo -E ./$xrt_deps_script_path; then
+    if ! sudo -E "./${xrt_deps_script_path}"; then
         err_msg "Couldn't install XRT dependencies!"
         cd $AWS_FPGA_REPO_DIR && return 1
     fi
@@ -394,6 +397,7 @@ function set_up_xrt_repo {
 declare -A commit_hash_map
 commit_hash_map["2024.1"]="a0729c69dba1ec05856d3008fbf9994a665f276c"
 commit_hash_map["2024.2"]="d8cf77af92e92324b038d787773b78fb7a44f812"
+commit_hash_map["2025.1"]="fe6f99daac071f3973b20ce6d0d5457df76ada34"
 
 
 function set_up_xrt_vars {
@@ -511,17 +515,19 @@ function pre_flight_checks {
         return 1
     fi
 
+    # Store the current state, and disable error & unbound variable checking
+    old_opts=$(set +o)
+    set +e
+    set +u
+
     if ! source $XILINX_VITIS/settings64.sh; then
         err_msg "Setup of Xilinx 64-bit settings FAILED"
         return 1
     fi
 
-    if ! source $VITIS_DIR/runtime/xrt_common_functions.sh; then
-        err_msg "XRT Common Functions initialization FAILED"
-        return 1
-    fi
+    # Restore the previous shell options
+    eval "$old_opts"
 
-    # Source sdk_setup.sh
     info_msg "Sourcing sdk_setup.sh"
     if ! source $AWS_FPGA_REPO_DIR/sdk_setup.sh; then
         return 1
@@ -575,3 +581,4 @@ function main {
 }
 
 main
+set +x

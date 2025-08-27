@@ -61,11 +61,17 @@ source ${HDK_SHELL_DIR}/build/scripts/ddr_io_train.tcl
 # # MMCM cascade placement constraint
 # read_xdc ${HDK_SHELL_DESIGN_DIR}/../build/constraints/mmcm_cascade.xdc
 
-
 ###############################################################################
 print "Start optimizing customer design ${CL}"
 ###############################################################################
 opt_design
+
+# Work Around 2025.1 HBM DONT TOUCH issue
+# https://adaptivesupport.amd.com/s/article/000038502?language=en_US&t=1754923887312
+if {[llength [get_cells -quiet WRAPPER/CL/CL_HBM/HBM_PRESENT_EQ_1.HBM_WRAPPER_I/HBM_CORE_I/inst]] > 0} {
+    puts "INFO: HBM found, setting DONT_TOUCH to 0"
+    set_property DONT_TOUCH 0 [get_cells WRAPPER/CL/CL_HBM/HBM_PRESENT_EQ_1.HBM_WRAPPER_I/HBM_CORE_I/inst]
+}
 
 print "Writing post-opt design checkpoint and report"
 write_checkpoint -force ${checkpoints_dir}/${CL}.${TAG}.post_opt.dcp

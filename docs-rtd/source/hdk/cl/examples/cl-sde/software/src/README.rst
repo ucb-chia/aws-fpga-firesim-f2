@@ -147,10 +147,10 @@ Example Usage
 Examples
 --------
 
-Build the sde_examples from the
-$(HDK)/cl/examples/cl_sde/software/runtime directory.
-
-``make sde_examples``
+Build the sde_examples by navigating to the ${HDK_DIR}/cl/examples/cl_sde/software/runtime
+directory and running ``make sde_examples``. Prior to building the examples, this target
+will build and install the libsde.so shared object. These targets also serve as an example
+for building against the libsde.so shared object.
 
 .. _1-card-to-host-c2h-simple-transfer:
 
@@ -160,6 +160,8 @@ $(HDK)/cl/examples/cl_sde/software/runtime directory.
 - File: ``sde_c2h_simple``
 - Demonstrates basic card-to-host data transfer
 - Configures SDE for reading data into a user-allocated buffer
+
+.. _usage-1:
 
 Usage
 ^^^^^
@@ -176,7 +178,7 @@ Usage
 - Demonstrates basic host-to-card data transfer
 - Writes data from a user-allocated buffer to the SDE
 
-.. _usage-1:
+.. _usage-2:
 
 Usage
 ^^^^^
@@ -193,7 +195,7 @@ Usage
 - Demonstrates bidirectional data transfer
 - Writes data to SDE and reads it back
 
-.. _usage-2:
+.. _usage-3:
 
 Usage
 ^^^^^
@@ -211,7 +213,7 @@ Usage
 - Tests high-throughput data transfer
 - Choose large packet sizes for better performance
 
-.. _usage-3:
+.. _usage-4:
 
 Usage
 ^^^^^
@@ -228,13 +230,45 @@ Usage
 - Measures maximum performance for host-to-card transfers
 - Tests high-throughput data transfer
 
-.. _usage-4:
+.. _usage-5:
 
 Usage
 ^^^^^
 
 ``sudo ./sde_h2c_perf_test <num_millions_packets> <packet_size> <slot_id>``
 ``sudo ./sde_h2c_perf_test 1 131072 0``
+
+.. _6-card-to-host-transfer-with-user-managed-buffers:
+
+6. Card-to-Host Transfer with User Managed Buffers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- File: ``sde_c2h_user_buffers``
+- Demonstrates basic card-to-host data transfer with user managed buffers
+- Configures SDE for reading data into a user-managed DMA buffer
+
+.. _usage-6:
+
+Usage
+
+``sudo ./sde_c2h_user_buffers <num_packets> <packet_size> <slot_id>``
+``sudo ./sde_c2h_user_buffers 1 4096 0``
+
+.. _7-loopback-performance-test:
+
+7. Loopback Performance Test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- File: ``sde_loopback_perf_test``
+- Tests bidirectional high-throughput data transfer
+- Choose large packet sizes for better performance
+
+.. _usage-7:
+
+Usage
+
+``sudo ./sde_loopback_perf_test <num_millions_packets> <packet_size> <slot_id>``
+``sudo ./sde_loopback_perf_test 1 131072 0``
 
 Performance Metrics
 -------------------

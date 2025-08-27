@@ -22,14 +22,9 @@ The following examples are not currently supported by AMD:
 
 The following examples are currently under development by AMD:
 
-* hello_world
-  * Warnings emitted at beginning of Hardware Emulation can be safely ignored
-
 * `rtl_kernels/rtl_streaming_free_running_k2k`
 * `rtl_kernels/rtl_streaming_k2k_mm`
 * `rtl_kernels/rtl_vadd_hw_debug`
-
-* `sys_opt/kernel_swap`
 
 ## Hardware Emulation
 
@@ -39,11 +34,9 @@ The following examples do not support Hardware Emulation.
 * `host_xrt/kernel_chain`
 * `sys_opt/multiple_processes`
 
-## Vitis 2024.2
+## Vitis 2025.1 and 2024.2
 
-Only Hardware Emulation is available for Vitis 2024.2. Hardware builds and AFI creation are not supported at this time.
-
-`performance/axi_burst_performance` does not support Hardware Emulation on Vitis 2024.2 at this time.
+Vitis currently only supports Hardware Emulation. Hardware builds and AFI creation are not supported at this time.
 
 ## Vitis 2024.1
 

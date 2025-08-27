@@ -110,7 +110,7 @@ class Compiler:
         line_insertion_map: Dict[str, Dict[str, Union[Callable, List[str]]]] = {
             XSIM:   {'func': self.append_line_to_file, 'args': [self.sim_initfile, new_line, self.default_xilinx_library_name]},
             VCS:    {'func': self.append_line_to_file, 'args': [self.sim_initfile, new_line, self.default_xilinx_library_name]},
-            QUESTA: {'func': self.insert_line_above_target, 'args': [self.sim_initfile, '[DefineOptionset]', new_line]}}
+            QUESTA: {'func': self.insert_line_above_target, 'args': [self.sim_initfile, '[BC_COMPAT]', new_line]}}
         insertion_func: Callable = line_insertion_map[self.simulator]['func']
         insertion_args: List[str] = line_insertion_map[self.simulator]['args']
         insertion_func(*insertion_args)
@@ -149,13 +149,15 @@ class Compiler:
         # check for abnormalities
         print(f"Compiling this cl_ip {xilinx_ip_script_path}")
         assert os.path.exists(self.sim_initfile), f"FATAL missing init file {self.sim_initfile}"
-        if self.simulator == QUESTA and not os.path.exists(f"{self.compile_cl_ip_dir}/_vmake") :
+        artifacts_dirs_exist = os.path.exists(f"{self.compile_cl_ip_dir}/_info") or os.path.exists(f"{self.compile_cl_ip_dir}/_vmake")
+        if self.simulator == QUESTA and not artifacts_dirs_exist:
             print(f"WARNING no lib, running vlib {self.compile_cl_ip_dir}")
             subprocess.check_call(['vlib' ,  self.compile_cl_ip_dir], cwd=ip_script_dir, stdout=compile_log)
 
         if not os.path.exists(symlink_dst):
             os.symlink(self.sim_initfile, symlink_dst)
         self.prepare_ip_script_for_compilation(ip_script_dir, xilinx_ip_script_path)
+        print(f"Doing {xilinx_ip_script_path} -lib_map_path {self.complib_dir}")
         subprocess.check_call([xilinx_ip_script_path, '-lib_map_path', self.complib_dir], cwd=ip_script_dir, stdout=compile_log)
         self.cleanup_compilation_dir(ip_script_dir, symlink_dst)
 

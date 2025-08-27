@@ -155,6 +155,7 @@ The HDK currently supports the following tool versions:
 
 | AMD Vivado Design Suite | Synopsys VCS  (Bring your own license) | Siemens Questa (Bring your own license) |
 |:------------------------|:---------------------------------------|:----------------------------------------|
+| 2025.1                  | W-2024.09-SP1                          | 2024.3_3                                |
 | 2024.2                  | V-2023.12-SP1                          | 2024.1_2                                |
 | 2024.1                  | U-2023.03-SP2                          | 2023.3                                  |
 
@@ -179,7 +180,7 @@ A free-to-use FPGA developer AMI is available for on-cloud F2 development with A
 
 | FPGA Developer AMI Version | FPGA Developer AMI ID | Vivado/Vitis Version Supported | Operating System Version    |
 |----------------------------|-----------------------|--------------------------------|-----------------------------|
-| 1.17.0                     | [ami-01198b89d80ebfdd2](https://aws.amazon.com/marketplace/pp/prodview-tcl7sjgreh6bq) | 2024.2 | Ubuntu 24.04 (kernel 6.8.0-1021-aws)|
+| 1.18.0                     | [ami-098b2ed4c92602975](http://aws.amazon.com/marketplace/pp/prodview-tcl7sjgreh6bq) | 2025.1 | Ubuntu 24.04 (kernel 6.8.0-1021-aws)|
 | 1.16.1                     | [ami-092fc5deb8f3c0f7d](https://aws.amazon.com/marketplace/pp/prodview-f5kjsenkfkz5u) | 2024.1 | Ubuntu 20.04.6 (kernel 5.15)|
 
 Given the large size of the FPGA used for F2, AMD tools work best with at least 4 vCPU’s and 32GiB Memory. We recommend [Compute Optimized and Memory Optimized instance types](https://aws.amazon.com/ec2/instance-types/) to successfully run the synthesis of acceleration code. Developers may start coding and run simulations on low-cost `General Purpose` [instances types](https://aws.amazon.com/ec2/instance-types/).

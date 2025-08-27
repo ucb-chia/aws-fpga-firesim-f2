@@ -7,7 +7,6 @@ Shell errata is [documented here](./hdk/docs/AWS_Shell_ERRATA.md)
 
 ## HDK
 
-
 1. Address Aliasing Bug in AMD HBM IP with Customer Address Mapping
 
    * An address aliasing bug has been identified in AMD HBM IP when the IP's "Customer Address Map" option is enabled for a 16GB HBM implementation. The bug allows a single memory entry to be accessed via two different addresses, which might lead to data corruption. More information about this bug will be published by AMD in the Ultrascale+ product errata.
@@ -39,6 +38,8 @@ Shell errata is [documented here](./hdk/docs/AWS_Shell_ERRATA.md)
 
 8. HBM simulation using XSIM requires a fix described in this [AMD Answer Record](https://adaptivesupport.amd.com/s/article/000035639?language=en_US).
 
+9. Vivado 2025.1 introduces a `set_property DONT_TOUCH` to the HBM model that makes meeting
+timing difficult in the implementation stage. AMD has responded to this issue on their AR, stating that it will be fixed in a future version of Vivado. [See here for more details](https://adaptivesupport.amd.com/s/article/000038502?language=en_US&t=1754923887312). All HDK CL examples have been updated to address this issue. Customers should follow this AR when creating their own designs.
 
 ## SDK
 

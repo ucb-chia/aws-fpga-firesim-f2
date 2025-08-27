@@ -276,3 +276,4 @@ github
 Startup
 popups
 morgnza
+libsde

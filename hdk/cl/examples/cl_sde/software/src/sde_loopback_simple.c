@@ -14,7 +14,7 @@
  */
 
 /*
- * This example demonstrates how an application can configure the SDE for both host to card DMA and card to Host DMA.asm
+ * This example demonstrates how an application can configure the SDE for both host to card DMA and card to Host DMA.
  * User buffers are created for the user data to be DMA-ed to the SDE and DMA-ed back from the SDE.
  * 0. Prerequisites: This example must be run on an F2 instance with an FPGA at the FPGA image slot matching the command-
  *    line option. Source the sdk by navigating to the root of this repo and running `source ./sdk_setup.sh`. The CL_SDE
@@ -30,7 +30,7 @@
  * 2. Run the example:
  *    `sudo ./sde_loopback_simple <num_packets> <packet_size> <slot_id>`
  * 3. Example output:
- *    `sudo ./sde_loopback_simple 1024 0`
+ *    `sudo ./sde_loopback_simple 128 1024 0`
  *    Start Time = 0, Current Time = 0
  *    Total Run time: 0 secs
  *    Total Number of Packets: 1

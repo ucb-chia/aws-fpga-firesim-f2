@@ -3,19 +3,15 @@
 
 # AWS F2
 
+## F2 FPGA Developer Kit Documentation on ReadTheDocs
+
+The documentation for the F2 FPGA Developer Kit including our User Guide, tutorials, code snippets, and more can now be found on [our ReadTheDocs webstie](https://awsdocs-fpga-f2.readthedocs-hosted.com).
+
+**Please note that the documentation and assets provided on this branch and others prefixed with `f2` are relevant to F2 instances only!**
+
 ## F2 FPGA Development Kit Overview
 
-The documentation and assets provided on this branch (and other branches prefixed with `f2`) are relevant to F2 instances only.
-
 The F2 FPGA Development Kit is a hardware-software development kit that enables developers to create accelerators for the high-performance accelerator cards on EC2 F2 instances. Using the development kit, you can architect, simulate, optimize, and test your designs.
-
-## F2 FPGA Development Kit Documentation
-
-For full documentation, including a user guide, code snippets, and tutorials, see the [AWS EC2 FPGA Development Kit User Guide](./User_Guide_AWS_EC2_FPGA_Development_Kit.md)
-
-## F2 FPGA ReadTheDocs (Beta)
-
-We are currently migrating our F2 documentation to comply with the ReadTheDocs standard. To familiarize yourself with the new layout, please [click here](https://awsdocs-fpga-f2.readthedocs-hosted.com).
 
 # ❗Amazon EC2 F1 End of Life Notice❗
 
