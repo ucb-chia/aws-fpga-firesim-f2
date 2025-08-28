@@ -48,11 +48,6 @@ Table of Contents
 
   RELEASE-NOTES
 
-.. toctree::
-  :hidden:
-
-  all-links
-
 This development kit includes example programs and RTL that are easy to build and demonstrate the platform's capabilities. Several examples are listed below.
 
 Example Applications

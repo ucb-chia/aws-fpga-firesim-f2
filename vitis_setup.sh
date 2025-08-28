@@ -17,8 +17,6 @@
 # When being sourced $0 will be the interactive shell and $BASH_SOURCE_ will contain the script being sourced
 # When being run $0 and $_ will be the same.
 
-set -x
-
 script=${BASH_SOURCE[0]}
 if [ $script == $0 ]; then
     echo "ERROR: You must source this script"
@@ -581,4 +579,3 @@ function main {
 }
 
 main
-set +x
