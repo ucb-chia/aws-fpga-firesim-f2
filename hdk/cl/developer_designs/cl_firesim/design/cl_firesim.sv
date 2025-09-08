@@ -15,6 +15,12 @@
 
 module cl_firesim 
 
+// add new enables from CL_TEMPLATE in f2
+#(
+   parameter EN_DDR = 0,
+   parameter EN_HBM = 0
+)
+
 (
    `include "cl_ports.vh" // Fixed port definition
 
@@ -42,7 +48,7 @@ logic rst_extra1_n_sync;
 //`include "unused_ddr_a_b_d_template.inc"
 //`include "unused_pcim_template.inc"
 `include "unused_cl_sda_template.inc"
-`include "unused_sh_bar1_template.inc"
+// `include "unused_sh_bar1_template.inc" // does not exist in F2
 `include "unused_apppf_irq_template.inc"
 
 //-------------------------------------------------
@@ -813,10 +819,12 @@ assign cl_sh_ddr_rready_2d = {mc_ddr_s_3_axi_rready, mc_ddr_s_2_axi_rready, mc_d
 (* dont_touch = "true" *) logic sh_ddr_sync_rst_n;
 lib_pipe #(.WIDTH(1), .STAGES(4)) SH_DDR_SLC_RST_N (.clk(clk_main_a0), .rst_n(1'b1), .in_bus(rst_main_n_sync), .out_bus(sh_ddr_sync_rst_n));
 sh_ddr #(
-         .DDR_A_PRESENT(DDR_A_PRESENT),
-         .DDR_A_IO(DDR_A_PRESENT),
-         .DDR_B_PRESENT(DDR_B_PRESENT),
-         .DDR_D_PRESENT(DDR_D_PRESENT)
+         .DDR_PRESENT (EN_DDR)
+         // .DDR_A_PRESENT(DDR_A_PRESENT),
+         // .DDR_A_IO(DDR_A_PRESENT),
+         // .DDR_B_PRESENT(DDR_B_PRESENT),
+         // .DDR_D_PRESENT(DDR_D_PRESENT)
+
    ) SH_DDR
    (
    .clk(clk_main_a0),
@@ -2599,8 +2607,11 @@ endgenerate
 // Tie-Off Unused Global Signals
 //-------------------------------------------
 // The functionality for these signals is TBD so they can can be tied-off.
+  assign clk_hbm_ref = 1'b0;
   assign cl_sh_status0[31:0] = 32'h0;
   assign cl_sh_status1[31:0] = 32'h0;
+  assign cl_sh_status2[31:0] = 32'h0; // new in f2
+  assign cl_sh_status_vled[15:0] = 16'h0; // virtual leds
 
 
 //-----------------------------------------------
