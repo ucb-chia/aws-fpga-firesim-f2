@@ -33,7 +33,7 @@ module cl_firesim
 
 logic rst_main_n_sync;
 logic rst_firesim_n_sync;
-logic rst_extra1_n_sync;
+// logic rst_extra1_n_sync; // F2: no extra clocks
 
 //--------------------------------------------0
 // Start with Tie-Off of Unused Interfaces
@@ -45,11 +45,13 @@ logic rst_extra1_n_sync;
 // remove it from the end of the file
 
 `include "unused_flr_template.inc"
-//`include "unused_ddr_a_b_d_template.inc"
+//`include "unused_ddr_template.inc"
 //`include "unused_pcim_template.inc"
 `include "unused_cl_sda_template.inc"
 // `include "unused_sh_bar1_template.inc" // does not exist in F2
 `include "unused_apppf_irq_template.inc"
+`include "unused_sh_ocl_template.inc" // F2: tie off cl_ocl_* signals
+// `include "unused_dma_pcis_template.inc" // F2: comment for now since signals rely on this
 
 //-------------------------------------------------
 // Wires
@@ -66,41 +68,42 @@ logic rst_extra1_n_sync;
 // on them
 // See: https://forums.aws.amazon.com/thread.jspa?messageID=939230&#939230
 //-------------------------------------------------
-(* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
+// ============= F2: extra clock signals removed ==================
+// (* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
 
-always_ff @(posedge clk_extra_a1) begin
-    clk_extra_a1_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_a1) begin
+//     clk_extra_a1_reg <= 1'b1;
+// end
 
-always_ff @(posedge clk_extra_a2) begin
-    clk_extra_a2_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_a2) begin
+//     clk_extra_a2_reg <= 1'b1;
+// end
 
-always_ff @(posedge clk_extra_a3) begin
-    clk_extra_a3_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_a3) begin
+//     clk_extra_a3_reg <= 1'b1;
+// end
 
-always_ff @(posedge clk_extra_b0) begin
-    clk_extra_b0_reg <=  1'b1;
-end
+// always_ff @(posedge clk_extra_b0) begin
+//     clk_extra_b0_reg <=  1'b1;
+// end
 
-always_ff @(posedge clk_extra_b1) begin
-    clk_extra_b1_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_b1) begin
+//     clk_extra_b1_reg <= 1'b1;
+// end
 
-always_ff @(posedge clk_extra_c0) begin
-    clk_extra_c0_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_c0) begin
+//     clk_extra_c0_reg <= 1'b1;
+// end
 
-always_ff @(posedge clk_extra_c1) begin
-    clk_extra_c1_reg <= 1'b1;
-end
+// always_ff @(posedge clk_extra_c1) begin
+//     clk_extra_c1_reg <= 1'b1;
+// end
 
 //-------------------------------------------------
 // Reset Synchronization Outer
@@ -119,18 +122,19 @@ always_ff @(negedge rst_main_n or posedge clk_main_a0)
       rst_main_n_sync <= pre_sync_rst_n;
    end
 
-logic pre_sync_rst_n_extra1;
-always_ff @(negedge rst_main_n or posedge clk_extra_a1)
-   if (!rst_main_n)
-   begin
-      pre_sync_rst_n_extra1  <= 0;
-      rst_extra1_n_sync <= 0;
-   end
-   else
-   begin
-      pre_sync_rst_n_extra1  <= 1;
-      rst_extra1_n_sync <= pre_sync_rst_n_extra1;
-   end
+// ====== F2: no extra clocks ======
+// logic pre_sync_rst_n_extra1;
+// always_ff @(negedge rst_main_n or posedge clk_extra_a1)
+//    if (!rst_main_n)
+//    begin
+//       pre_sync_rst_n_extra1  <= 0;
+//       rst_extra1_n_sync <= 0;
+//    end
+//    else
+//    begin
+//       pre_sync_rst_n_extra1  <= 1;
+//       rst_extra1_n_sync <= pre_sync_rst_n_extra1;
+//    end
 
 //---------------------------
 
@@ -141,10 +145,12 @@ clk_wiz_0_firesim firesim_clocking
     // Clock out ports
     .clk_out1(firesim_internal_clock),
     // Status and control signals
-    .reset(!rst_extra1_n_sync), // input reset
+   //  .reset(!rst_extra1_n_sync), // input reset
+   .reset(rst_main_n_sync), // F2: no extra rst signal
     .locked(),       // output locked
    // Clock in ports
-    .clk_in1(clk_extra_a1)      // input clk_in1, expects 125 mhz
+   //  .clk_in1(clk_extra_a1)      // input clk_in1, expects 125 mhz
+   .clk_in1(clk_main_a0) // F2: no extra clock signal
 );
 
 //-------------------------------------------------
@@ -246,7 +252,8 @@ axi_clock_converter_oclnew ocl_clock_convert (
 // PCIe DMA_PCIS to FireSim Master
 //-------------------------------------------------
 
-   logic [5:0] sh_cl_dma_pcis_awid_FIRESIM;
+   // logic [5:0] sh_cl_dma_pcis_awid_FIRESIM;
+   logic [15:0] sh_cl_dma_pcis_awid_FIRESIM; // F2: changed width
    logic [63:0] sh_cl_dma_pcis_awaddr_FIRESIM;
    logic [7:0] sh_cl_dma_pcis_awlen_FIRESIM;
    logic [2:0] sh_cl_dma_pcis_awsize_FIRESIM;
@@ -259,19 +266,22 @@ axi_clock_converter_oclnew ocl_clock_convert (
    logic sh_cl_dma_pcis_wvalid_FIRESIM;
    logic cl_sh_dma_pcis_wready_FIRESIM;
 
-   logic [5:0] cl_sh_dma_pcis_bid_FIRESIM;
+   // logic [5:0] cl_sh_dma_pcis_bid_FIRESIM;
+   logic [15:0] cl_sh_dma_pcis_bid_FIRESIM; // F2
    logic [1:0] cl_sh_dma_pcis_bresp_FIRESIM;
    logic cl_sh_dma_pcis_bvalid_FIRESIM;
    logic sh_cl_dma_pcis_bready_FIRESIM;
 
-   logic [5:0] sh_cl_dma_pcis_arid_FIRESIM;
+   // logic [5:0] sh_cl_dma_pcis_arid_FIRESIM;
+   logic [15:0] sh_cl_dma_pcis_arid_FIRESIM; // F2
    logic [63:0] sh_cl_dma_pcis_araddr_FIRESIM;
    logic [7:0] sh_cl_dma_pcis_arlen_FIRESIM;
    logic [2:0] sh_cl_dma_pcis_arsize_FIRESIM;
    logic sh_cl_dma_pcis_arvalid_FIRESIM;
    logic cl_sh_dma_pcis_arready_FIRESIM;
 
-   logic [5:0] cl_sh_dma_pcis_rid_FIRESIM;
+   // logic [5:0] cl_sh_dma_pcis_rid_FIRESIM;
+   logic [15:0] cl_sh_dma_pcis_rid_FIRESIM; // F2
    logic [511:0] cl_sh_dma_pcis_rdata_FIRESIM;
    logic [1:0] cl_sh_dma_pcis_rresp_FIRESIM;
    logic cl_sh_dma_pcis_rlast_FIRESIM;
@@ -522,8 +532,8 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
             .m_axi_rready(cl_sh_pcim_rready)      // output wire m_axi_rready
          );
 
-assign cl_sh_pcim_awuser = 18'h0;
-assign cl_sh_pcim_aruser = 18'h0;
+assign cl_sh_pcim_awuser = 55'h0; // widths changed in f2
+assign cl_sh_pcim_aruser = 55'h0;
 
 //----------------------------------------- 
 // DDR controller instantiation   
@@ -833,61 +843,24 @@ sh_ddr #(
    .stat_clk(clk_main_a0),
    .stat_rst_n(sh_ddr_sync_rst_n),
 
-
-   .CLK_300M_DIMM0_DP(CLK_300M_DIMM0_DP),
-   .CLK_300M_DIMM0_DN(CLK_300M_DIMM0_DN),
-   .M_A_ACT_N(M_A_ACT_N),
-   .M_A_MA(M_A_MA),
-   .M_A_BA(M_A_BA),
-   .M_A_BG(M_A_BG),
-   .M_A_CKE(M_A_CKE),
-   .M_A_ODT(M_A_ODT),
-   .M_A_CS_N(M_A_CS_N),
-   .M_A_CLK_DN(M_A_CLK_DN),
-   .M_A_CLK_DP(M_A_CLK_DP),
-   .M_A_PAR(M_A_PAR),
-   .M_A_DQ(M_A_DQ),
-   .M_A_ECC(M_A_ECC),
-   .M_A_DQS_DP(M_A_DQS_DP),
-   .M_A_DQS_DN(M_A_DQS_DN),
-   .cl_RST_DIMM_A_N(cl_RST_DIMM_A_N),
-   
-   
-   .CLK_300M_DIMM1_DP(CLK_300M_DIMM1_DP),
-   .CLK_300M_DIMM1_DN(CLK_300M_DIMM1_DN),
-   .M_B_ACT_N(M_B_ACT_N),
-   .M_B_MA(M_B_MA),
-   .M_B_BA(M_B_BA),
-   .M_B_BG(M_B_BG),
-   .M_B_CKE(M_B_CKE),
-   .M_B_ODT(M_B_ODT),
-   .M_B_CS_N(M_B_CS_N),
-   .M_B_CLK_DN(M_B_CLK_DN),
-   .M_B_CLK_DP(M_B_CLK_DP),
-   .M_B_PAR(M_B_PAR),
-   .M_B_DQ(M_B_DQ),
-   .M_B_ECC(M_B_ECC),
-   .M_B_DQS_DP(M_B_DQS_DP),
-   .M_B_DQS_DN(M_B_DQS_DN),
-   .cl_RST_DIMM_B_N(cl_RST_DIMM_B_N),
-
-   .CLK_300M_DIMM3_DP(CLK_300M_DIMM3_DP),
-   .CLK_300M_DIMM3_DN(CLK_300M_DIMM3_DN),
-   .M_D_ACT_N(M_D_ACT_N),
-   .M_D_MA(M_D_MA),
-   .M_D_BA(M_D_BA),
-   .M_D_BG(M_D_BG),
-   .M_D_CKE(M_D_CKE),
-   .M_D_ODT(M_D_ODT),
-   .M_D_CS_N(M_D_CS_N),
-   .M_D_CLK_DN(M_D_CLK_DN),
-   .M_D_CLK_DP(M_D_CLK_DP),
-   .M_D_PAR(M_D_PAR),
-   .M_D_DQ(M_D_DQ),
-   .M_D_ECC(M_D_ECC),
-   .M_D_DQS_DP(M_D_DQS_DP),
-   .M_D_DQS_DN(M_D_DQS_DN),
-   .cl_RST_DIMM_D_N(cl_RST_DIMM_D_N),
+   // F2 SH_DDR does not distinguish A/B/D interfaces
+   .CLK_DIMM_DP(CLK_DIMM_DP),
+   .CLK_DIMM_DN(CLK_DIMM_DN),
+   .M_ACT_N(M_ACT_N),
+   .M_MA(M_MA),
+   .M_BA(M_BA),
+   .M_BG(M_BG),
+   .M_CKE(M_CKE),
+   .M_ODT(M_ODT),
+   .M_CS_N(M_CS_N),
+   .M_CLK_DN(M_CLK_DN),
+   .M_CLK_DP(M_CLK_DP),
+   .M_PAR(M_PAR),
+   .M_DQ(M_DQ),
+   .M_ECC(M_ECC),
+   .M_DQS_DP(M_DQS_DP),
+   .M_DQS_DN(M_DQS_DN),
+   .cl_RST_DIMM_N(RST_DIMM_N),
 
    //------------------------------------------------------
    // DDR-4 Interface from CL (AXI-4)
@@ -1484,7 +1457,8 @@ wire fsimtop_s_3_axi_rready;
   //assert ((cl_sh_ddr_arsize == 3'b110) | (!cl_sh_ddr_arvalid)) else $error("INVALID ARSIZE on DRAM IF");
 
   // this is fine.
-  assign cl_sh_ddr_wid = 16'b0; // OK. not sure why this signal is exposed
+//   assign cl_sh_ddr_wid = 16'b0; // OK. not sure why this signal is exposed
+// F2: cl_sh_ddr_wid deleted
 
 
 
@@ -1640,8 +1614,9 @@ axi_clock_converter_dramslim clock_convert_dramslim_0 (
  * 3) add asserts on arsize and awsize to confirm that they're always b110
 */
 
-assign cl_sh_ddr_awid = 16'b0; // dwidth convert has no awid for some reason...
-assign cl_sh_ddr_arid = 16'b0; // dwidth convert has no arid for some reason...
+// assign cl_sh_ddr_awid = 16'b0; // dwidth convert has no awid for some reason...
+// assign cl_sh_ddr_arid = 16'b0; // dwidth convert has no arid for some reason...
+// F2: cl_sh_ddr_awid & arid deleted
 // unused: sh_cl_ddr_bid
 // unused: sh_cl_ddr_rid
 
