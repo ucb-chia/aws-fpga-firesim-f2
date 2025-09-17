@@ -487,41 +487,41 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
             .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
             .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
 
-            .m_axi_awid(cl_sh_pcim_awid),          // output wire [5 : 0] m_axi_awid
-            .m_axi_awaddr(cl_sh_pcim_awaddr),      // output wire [63 : 0] m_axi_awaddr
-            .m_axi_awlen(cl_sh_pcim_awlen),        // output wire [7 : 0] m_axi_awlen
-            .m_axi_awsize(cl_sh_pcim_awsize),      // output wire [2 : 0] m_axi_awsize
+            .m_axi_awid(),          // output wire [5 : 0] m_axi_awid
+            .m_axi_awaddr(),      // output wire [63 : 0] m_axi_awaddr
+            .m_axi_awlen(),        // output wire [7 : 0] m_axi_awlen
+            .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize
             .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
             .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
             .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
             .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
             .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
             .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-            .m_axi_awvalid(cl_sh_pcim_awvalid),    // output wire m_axi_awvalid
+            .m_axi_awvalid(),    // output wire m_axi_awvalid
             .m_axi_awready(sh_cl_pcim_awready),    // input wire m_axi_awready
 
-            .m_axi_wdata(cl_sh_pcim_wdata),        // output wire [511 : 0] m_axi_wdata
-            .m_axi_wstrb(cl_sh_pcim_wstrb),        // output wire [63 : 0] m_axi_wstrb
-            .m_axi_wlast(cl_sh_pcim_wlast),        // output wire m_axi_wlast
-            .m_axi_wvalid(cl_sh_pcim_wvalid),      // output wire m_axi_wvalid
+            .m_axi_wdata(),        // output wire [511 : 0] m_axi_wdata
+            .m_axi_wstrb(),        // output wire [63 : 0] m_axi_wstrb
+            .m_axi_wlast(),        // output wire m_axi_wlast
+            .m_axi_wvalid(),      // output wire m_axi_wvalid
             .m_axi_wready(sh_cl_pcim_wready),      // input wire m_axi_wready
 
             .m_axi_bid(sh_cl_pcim_bid),            // input wire [5 : 0] m_axi_bid
             .m_axi_bresp(sh_cl_pcim_bresp),        // input wire [1 : 0] m_axi_bresp
             .m_axi_bvalid(sh_cl_pcim_bvalid),      // input wire m_axi_bvalid
-            .m_axi_bready(cl_sh_pcim_bready),      // output wire m_axi_bready
+            .m_axi_bready(),      // output wire m_axi_bready
 
-            .m_axi_arid(cl_sh_pcim_arid),          // output wire [5 : 0] m_axi_arid
-            .m_axi_araddr(cl_sh_pcim_araddr),      // output wire [63 : 0] m_axi_araddr
-            .m_axi_arlen(cl_sh_pcim_arlen),        // output wire [7 : 0] m_axi_arlen
-            .m_axi_arsize(cl_sh_pcim_arsize),      // output wire [2 : 0] m_axi_arsize
+            .m_axi_arid(),          // output wire [5 : 0] m_axi_arid
+            .m_axi_araddr(),      // output wire [63 : 0] m_axi_araddr
+            .m_axi_arlen(),        // output wire [7 : 0] m_axi_arlen
+            .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize
             .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
             .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
             .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
             .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
             .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
             .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-            .m_axi_arvalid(cl_sh_pcim_arvalid),    // output wire m_axi_arvalid
+            .m_axi_arvalid(),    // output wire m_axi_arvalid
             .m_axi_arready(sh_cl_pcim_arready),    // input wire m_axi_arready
 
             .m_axi_rid(sh_cl_pcim_rid),            // input wire [5 : 0] m_axi_rid
@@ -529,11 +529,27 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
             .m_axi_rresp(sh_cl_pcim_rresp),        // input wire [1 : 0] m_axi_rresp
             .m_axi_rlast(sh_cl_pcim_rlast),        // input wire m_axi_rlast
             .m_axi_rvalid(sh_cl_pcim_rvalid),      // input wire m_axi_rvalid
-            .m_axi_rready(cl_sh_pcim_rready)      // output wire m_axi_rready
+            .m_axi_rready()      // output wire m_axi_rready
          );
 
 assign cl_sh_pcim_awuser = 55'h0; // widths changed in f2
 assign cl_sh_pcim_aruser = 55'h0;
+assign cl_sh_pcim_awid = 0; // F2: tie off PCIM
+assign cl_sh_pcim_awaddr = 0;
+assign cl_sh_pcim_awlen = 0;
+assign cl_sh_pcim_awsize = 0;
+assign cl_sh_pcim_awvalid = 0;
+assign cl_sh_pcim_wdata = 0;
+assign cl_sh_pcim_wstrb = 0;
+assign cl_sh_pcim_wlast = 0;
+assign cl_sh_pcim_wvalid = 0;
+assign cl_sh_pcim_bready = 0;
+assign cl_sh_pcim_arid = 0;
+assign cl_sh_pcim_araddr = 0;
+assign cl_sh_pcim_arlen = 0; 
+assign cl_sh_pcim_arsize = 0;
+assign cl_sh_pcim_arvalid = 0;
+assign cl_sh_pcim_rready = 0;
 
 //----------------------------------------- 
 // DDR controller instantiation   
@@ -1236,51 +1252,51 @@ wire fsimtop_s_3_axi_rready;
    .io_pcis_r_bits_id(cl_sh_dma_pcis_rid_FIRESIM),
    .io_pcis_r_bits_user(),    // UNUSED at top level
 
-   .io_pcim_aw_ready(sh_cl_pcim_awready_FIRESIM),
-   .io_pcim_aw_valid(cl_sh_pcim_awvalid_FIRESIM),
-   .io_pcim_aw_bits_addr(cl_sh_pcim_awaddr_FIRESIM),
-   .io_pcim_aw_bits_len(cl_sh_pcim_awlen_FIRESIM),
-   .io_pcim_aw_bits_size(cl_sh_pcim_awsize_FIRESIM),
-   .io_pcim_aw_bits_burst(),
-   .io_pcim_aw_bits_lock(),
-   .io_pcim_aw_bits_cache(),
-   .io_pcim_aw_bits_prot(),
-   .io_pcim_aw_bits_qos(),
-   .io_pcim_aw_bits_region(),
-   .io_pcim_aw_bits_id(cl_sh_pcim_awid_FIRESIM),
-   .io_pcim_aw_bits_user(),
-   .io_pcim_w_ready(sh_cl_pcim_wready_FIRESIM),
-   .io_pcim_w_valid(cl_sh_pcim_wvalid_FIRESIM),
-   .io_pcim_w_bits_data(cl_sh_pcim_wdata_FIRESIM),
-   .io_pcim_w_bits_last(cl_sh_pcim_wlast_FIRESIM),
-   .io_pcim_w_bits_id(),
-   .io_pcim_w_bits_strb(cl_sh_pcim_wstrb_FIRESIM),
-   .io_pcim_w_bits_user(),
-   .io_pcim_b_ready(cl_sh_pcim_bready_FIRESIM),
-   .io_pcim_b_valid(sh_cl_pcim_bvalid_FIRESIM),
-   .io_pcim_b_bits_resp(sh_cl_pcim_bresp_FIRESIM),
-   .io_pcim_b_bits_id(sh_cl_pcim_bid_FIRESIM),
-   .io_pcim_b_bits_user(1'h0),
-   .io_pcim_ar_ready(sh_cl_pcim_arready_FIRESIM),
-   .io_pcim_ar_valid(cl_sh_pcim_arvalid_FIRESIM),
-   .io_pcim_ar_bits_addr(cl_sh_pcim_araddr_FIRESIM),
-   .io_pcim_ar_bits_len(cl_sh_pcim_arlen_FIRESIM),
-   .io_pcim_ar_bits_size(cl_sh_pcim_arsize_FIRESIM),
-   .io_pcim_ar_bits_burst(),
-   .io_pcim_ar_bits_lock(),
-   .io_pcim_ar_bits_cache(),
-   .io_pcim_ar_bits_prot(),
-   .io_pcim_ar_bits_qos(),
-   .io_pcim_ar_bits_region(),
-   .io_pcim_ar_bits_id(cl_sh_pcim_arid_FIRESIM),
-   .io_pcim_ar_bits_user(),
-   .io_pcim_r_ready(cl_sh_pcim_rready_FIRESIM),
-   .io_pcim_r_valid(sh_cl_pcim_rvalid_FIRESIM),
-   .io_pcim_r_bits_resp(sh_cl_pcim_rresp_FIRESIM),
-   .io_pcim_r_bits_data(sh_cl_pcim_rdata_FIRESIM),
-   .io_pcim_r_bits_last(sh_cl_pcim_rlast_FIRESIM),
-   .io_pcim_r_bits_id(sh_cl_pcim_rid_FIRESIM),
-   .io_pcim_r_bits_user(1'h0),
+   // .io_pcim_aw_ready(sh_cl_pcim_awready_FIRESIM),
+   // .io_pcim_aw_valid(cl_sh_pcim_awvalid_FIRESIM),
+   // .io_pcim_aw_bits_addr(cl_sh_pcim_awaddr_FIRESIM),
+   // .io_pcim_aw_bits_len(cl_sh_pcim_awlen_FIRESIM),
+   // .io_pcim_aw_bits_size(cl_sh_pcim_awsize_FIRESIM),
+   // .io_pcim_aw_bits_burst(),
+   // .io_pcim_aw_bits_lock(),
+   // .io_pcim_aw_bits_cache(),
+   // .io_pcim_aw_bits_prot(),
+   // .io_pcim_aw_bits_qos(),
+   // .io_pcim_aw_bits_region(),
+   // .io_pcim_aw_bits_id(cl_sh_pcim_awid_FIRESIM),
+   // .io_pcim_aw_bits_user(),
+   // .io_pcim_w_ready(sh_cl_pcim_wready_FIRESIM),
+   // .io_pcim_w_valid(cl_sh_pcim_wvalid_FIRESIM),
+   // .io_pcim_w_bits_data(cl_sh_pcim_wdata_FIRESIM),
+   // .io_pcim_w_bits_last(cl_sh_pcim_wlast_FIRESIM),
+   // .io_pcim_w_bits_id(),
+   // .io_pcim_w_bits_strb(cl_sh_pcim_wstrb_FIRESIM),
+   // .io_pcim_w_bits_user(),
+   // .io_pcim_b_ready(cl_sh_pcim_bready_FIRESIM),
+   // .io_pcim_b_valid(sh_cl_pcim_bvalid_FIRESIM),
+   // .io_pcim_b_bits_resp(sh_cl_pcim_bresp_FIRESIM),
+   // .io_pcim_b_bits_id(sh_cl_pcim_bid_FIRESIM),
+   // .io_pcim_b_bits_user(1'h0),
+   // .io_pcim_ar_ready(sh_cl_pcim_arready_FIRESIM),
+   // .io_pcim_ar_valid(cl_sh_pcim_arvalid_FIRESIM),
+   // .io_pcim_ar_bits_addr(cl_sh_pcim_araddr_FIRESIM),
+   // .io_pcim_ar_bits_len(cl_sh_pcim_arlen_FIRESIM),
+   // .io_pcim_ar_bits_size(cl_sh_pcim_arsize_FIRESIM),
+   // .io_pcim_ar_bits_burst(),
+   // .io_pcim_ar_bits_lock(),
+   // .io_pcim_ar_bits_cache(),
+   // .io_pcim_ar_bits_prot(),
+   // .io_pcim_ar_bits_qos(),
+   // .io_pcim_ar_bits_region(),
+   // .io_pcim_ar_bits_id(cl_sh_pcim_arid_FIRESIM),
+   // .io_pcim_ar_bits_user(),
+   // .io_pcim_r_ready(cl_sh_pcim_rready_FIRESIM),
+   // .io_pcim_r_valid(sh_cl_pcim_rvalid_FIRESIM),
+   // .io_pcim_r_bits_resp(sh_cl_pcim_rresp_FIRESIM),
+   // .io_pcim_r_bits_data(sh_cl_pcim_rdata_FIRESIM),
+   // .io_pcim_r_bits_last(sh_cl_pcim_rlast_FIRESIM),
+   // .io_pcim_r_bits_id(sh_cl_pcim_rid_FIRESIM),
+   // .io_pcim_r_bits_user(1'h0),
 
    .io_slave_0_aw_ready(fsimtop_s_0_axi_awready),
    .io_slave_0_aw_valid(fsimtop_s_0_axi_awvalid),
