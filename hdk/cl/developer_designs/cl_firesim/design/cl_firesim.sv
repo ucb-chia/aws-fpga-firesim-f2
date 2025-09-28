@@ -308,17 +308,17 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
   .s_axi_awregion(4'b0),  // input wire [3 : 0] s_axi_awregion
   .s_axi_awqos(4'b0),        // input wire [3 : 0] s_axi_awqos
   .s_axi_awvalid(sh_cl_dma_pcis_awvalid),    // input wire s_axi_awvalid
-  .s_axi_awready(cl_sh_dma_pcis_awready),    // output wire s_axi_awready
+  .s_axi_awready(),    // output wire s_axi_awready
 
   .s_axi_wdata(sh_cl_dma_pcis_wdata),        // input wire [511 : 0] s_axi_wdata
   .s_axi_wstrb(sh_cl_dma_pcis_wstrb),        // input wire [63 : 0] s_axi_wstrb
   .s_axi_wlast(sh_cl_dma_pcis_wlast),        // input wire s_axi_wlast
   .s_axi_wvalid(sh_cl_dma_pcis_wvalid),      // input wire s_axi_wvalid
-  .s_axi_wready(cl_sh_dma_pcis_wready),      // output wire s_axi_wready
+  .s_axi_wready(),      // output wire s_axi_wready
 
-  .s_axi_bid(cl_sh_dma_pcis_bid),            // output wire [5 : 0] s_axi_bid
-  .s_axi_bresp(cl_sh_dma_pcis_bresp),        // output wire [1 : 0] s_axi_bresp
-  .s_axi_bvalid(cl_sh_dma_pcis_bvalid),      // output wire s_axi_bvalid
+  .s_axi_bid(),            // output wire [5 : 0] s_axi_bid
+  .s_axi_bresp(),        // output wire [1 : 0] s_axi_bresp
+  .s_axi_bvalid(),      // output wire s_axi_bvalid
   .s_axi_bready(sh_cl_dma_pcis_bready),      // input wire s_axi_bready
 
   .s_axi_arid(sh_cl_dma_pcis_arid),          // input wire [5 : 0] s_axi_arid
@@ -334,13 +334,13 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
   .s_axi_arregion(4'b0),  // input wire [3 : 0] s_axi_arregion
   .s_axi_arqos(4'b0),        // input wire [3 : 0] s_axi_arqos
   .s_axi_arvalid(sh_cl_dma_pcis_arvalid),    // input wire s_axi_arvalid
-  .s_axi_arready(cl_sh_dma_pcis_arready),    // output wire s_axi_arready
+  .s_axi_arready(),    // output wire s_axi_arready
 
-  .s_axi_rid(cl_sh_dma_pcis_rid),            // output wire [5 : 0] s_axi_rid
-  .s_axi_rdata(cl_sh_dma_pcis_rdata),        // output wire [511 : 0] s_axi_rdata
-  .s_axi_rresp(cl_sh_dma_pcis_rresp),        // output wire [1 : 0] s_axi_rresp
-  .s_axi_rlast(cl_sh_dma_pcis_rlast),        // output wire s_axi_rlast
-  .s_axi_rvalid(cl_sh_dma_pcis_rvalid),      // output wire s_axi_rvalid
+  .s_axi_rid(),            // output wire [5 : 0] s_axi_rid
+  .s_axi_rdata(),        // output wire [511 : 0] s_axi_rdata
+  .s_axi_rresp(),        // output wire [1 : 0] s_axi_rresp
+  .s_axi_rlast(),        // output wire s_axi_rlast
+  .s_axi_rvalid(),      // output wire s_axi_rvalid
   .s_axi_rready(sh_cl_dma_pcis_rready),      // input wire s_axi_rready
 
 
@@ -391,6 +391,19 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
   .m_axi_rvalid(cl_sh_dma_pcis_rvalid_FIRESIM),      // input wire m_axi_rvalid
   .m_axi_rready(sh_cl_dma_pcis_rready_FIRESIM)      // output wire m_axi_rready
 );
+
+// F2: tie off outputs from cl_firesim
+assign cl_sh_dma_pcis_awready = 1'b0;
+assign cl_sh_dma_pcis_wready = 1'b0;
+assign cl_sh_dma_pcis_bid = 0;
+assign cl_sh_dma_pcis_bresp = 0;
+assign cl_sh_dma_pcis_bvalid = 0;
+assign cl_sh_dma_pcis_arready = 1'b0;
+assign cl_sh_dma_pcis_rid = 0;
+assign cl_sh_dma_pcis_rdata = 0; 
+assign cl_sh_dma_pcis_rresp = 0;
+assign cl_sh_dma_pcis_rlast = 0;
+assign cl_sh_dma_pcis_rvalid = 0;
 
 
 //-------------------------------------------------
@@ -487,41 +500,41 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
             .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
             .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
 
-            .m_axi_awid(cl_sh_pcim_awid),          // output wire [5 : 0] m_axi_awid
-            .m_axi_awaddr(cl_sh_pcim_awaddr),      // output wire [63 : 0] m_axi_awaddr
-            .m_axi_awlen(cl_sh_pcim_awlen),        // output wire [7 : 0] m_axi_awlen
-            .m_axi_awsize(cl_sh_pcim_awsize),      // output wire [2 : 0] m_axi_awsize
+            .m_axi_awid(),          // output wire [5 : 0] m_axi_awid
+            .m_axi_awaddr(),      // output wire [63 : 0] m_axi_awaddr
+            .m_axi_awlen(),        // output wire [7 : 0] m_axi_awlen
+            .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize
             .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
             .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
             .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
             .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
             .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
             .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-            .m_axi_awvalid(cl_sh_pcim_awvalid),    // output wire m_axi_awvalid
+            .m_axi_awvalid(),    // output wire m_axi_awvalid
             .m_axi_awready(sh_cl_pcim_awready),    // input wire m_axi_awready
 
-            .m_axi_wdata(cl_sh_pcim_wdata),        // output wire [511 : 0] m_axi_wdata
-            .m_axi_wstrb(cl_sh_pcim_wstrb),        // output wire [63 : 0] m_axi_wstrb
-            .m_axi_wlast(cl_sh_pcim_wlast),        // output wire m_axi_wlast
-            .m_axi_wvalid(cl_sh_pcim_wvalid),      // output wire m_axi_wvalid
+            .m_axi_wdata(),        // output wire [511 : 0] m_axi_wdata
+            .m_axi_wstrb(),        // output wire [63 : 0] m_axi_wstrb
+            .m_axi_wlast(),        // output wire m_axi_wlast
+            .m_axi_wvalid(),      // output wire m_axi_wvalid
             .m_axi_wready(sh_cl_pcim_wready),      // input wire m_axi_wready
 
             .m_axi_bid(sh_cl_pcim_bid),            // input wire [5 : 0] m_axi_bid
             .m_axi_bresp(sh_cl_pcim_bresp),        // input wire [1 : 0] m_axi_bresp
             .m_axi_bvalid(sh_cl_pcim_bvalid),      // input wire m_axi_bvalid
-            .m_axi_bready(cl_sh_pcim_bready),      // output wire m_axi_bready
+            .m_axi_bready(),      // output wire m_axi_bready
 
-            .m_axi_arid(cl_sh_pcim_arid),          // output wire [5 : 0] m_axi_arid
-            .m_axi_araddr(cl_sh_pcim_araddr),      // output wire [63 : 0] m_axi_araddr
-            .m_axi_arlen(cl_sh_pcim_arlen),        // output wire [7 : 0] m_axi_arlen
-            .m_axi_arsize(cl_sh_pcim_arsize),      // output wire [2 : 0] m_axi_arsize
+            .m_axi_arid(),          // output wire [5 : 0] m_axi_arid
+            .m_axi_araddr(),      // output wire [63 : 0] m_axi_araddr
+            .m_axi_arlen(),        // output wire [7 : 0] m_axi_arlen
+            .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize
             .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
             .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
             .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
             .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
             .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
             .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-            .m_axi_arvalid(cl_sh_pcim_arvalid),    // output wire m_axi_arvalid
+            .m_axi_arvalid(),    // output wire m_axi_arvalid
             .m_axi_arready(sh_cl_pcim_arready),    // input wire m_axi_arready
 
             .m_axi_rid(sh_cl_pcim_rid),            // input wire [5 : 0] m_axi_rid
@@ -529,11 +542,27 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
             .m_axi_rresp(sh_cl_pcim_rresp),        // input wire [1 : 0] m_axi_rresp
             .m_axi_rlast(sh_cl_pcim_rlast),        // input wire m_axi_rlast
             .m_axi_rvalid(sh_cl_pcim_rvalid),      // input wire m_axi_rvalid
-            .m_axi_rready(cl_sh_pcim_rready)      // output wire m_axi_rready
+            .m_axi_rready()      // output wire m_axi_rready
          );
 
 assign cl_sh_pcim_awuser = 55'h0; // widths changed in f2
 assign cl_sh_pcim_aruser = 55'h0;
+assign cl_sh_pcim_awid = 0; // F2: tie off PCIM
+assign cl_sh_pcim_awaddr = 0;
+assign cl_sh_pcim_awlen = 0;
+assign cl_sh_pcim_awsize = 0;
+assign cl_sh_pcim_awvalid = 0;
+assign cl_sh_pcim_wdata = 0;
+assign cl_sh_pcim_wstrb = 0;
+assign cl_sh_pcim_wlast = 0;
+assign cl_sh_pcim_wvalid = 0;
+assign cl_sh_pcim_bready = 0;
+assign cl_sh_pcim_arid = 0;
+assign cl_sh_pcim_araddr = 0;
+assign cl_sh_pcim_arlen = 0; 
+assign cl_sh_pcim_arsize = 0;
+assign cl_sh_pcim_arvalid = 0;
+assign cl_sh_pcim_rready = 0;
 
 //----------------------------------------- 
 // DDR controller instantiation   
