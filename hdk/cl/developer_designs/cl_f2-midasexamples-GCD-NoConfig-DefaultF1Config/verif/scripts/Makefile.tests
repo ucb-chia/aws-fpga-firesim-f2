@@ -1,0 +1,5 @@
+test_firesim: TEST=test_firesim
+test_firesim: all
+
+test_null: TEST=test_null
+test_null: all
