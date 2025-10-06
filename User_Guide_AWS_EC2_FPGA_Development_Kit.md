@@ -117,7 +117,7 @@ On-premise environment: Customers can set up a [on-premise development (with lic
     <td style="text-align: center"><a href="https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/vadd.cpp">Design Source</a></td>
   </tr>
   <tr>
-    <td style="text-align: center"><a href="https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/host.cpp#L92">Testbench</a></td>
+    <td style="text-align: center"><a href="https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/host.cpp">Testbench</a></td>
   </tr>
   <tr>
     <td style="text-align: center"><a href="https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/host.cpp">Runtime Software</a></td>

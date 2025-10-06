@@ -35,6 +35,7 @@ from urllib.parse import unquote, urljoin
 
 import requests
 import urllib3
+import urllib3.util
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -334,7 +335,7 @@ class LinkChecker:
         _, fragment = url.split("#", 1)
         fragment = unquote(fragment)
 
-        if "github.com" in url:
+        if urllib3.util.parse_url(url) == "github.com":
             return self._check_github_line_numbers(fragment, response)
 
         # Check for HTML anchors/sections

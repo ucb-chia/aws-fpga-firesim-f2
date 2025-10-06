@@ -226,7 +226,7 @@ Quick Start Links
      -
      -
      -
-     - `Testbench <https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/host.cpp#L92>`__
+     - `Testbench <https://github.com/Xilinx/Vitis_Accel_Examples/blob/main/hello_world/src/host.cpp>`__
    * -
      -
      -
