@@ -19,6 +19,8 @@ else
 $(info VIVADO_TOOL_VERSION = $(VIVADO_TOOL_VERSION))
 endif
 
+include $(HDK_COMMON_DIR)/verif/tb/scripts/Makefile.header.inc
+
 export TEST ?= test_null
 export C_TEST ?= test_null
 
@@ -30,6 +32,10 @@ export C_SDK_USR_INC_DIR   = $(SDK_DIR)/userspace/include
 export C_SDK_USR_UTILS_DIR = $(SDK_DIR)/userspace/utils
 export C_INC_DIR  = $(CL_ROOT)/software/runtime
 export C_SRC_DIR  = $(CL_ROOT)/software/runtime
+
+C_FILES = $(C_TEST_NAME) $(C_SDK_USR_UTILS_DIR)/sh_dpi_tasks.c $(C_COMMON_DIR)/src/fpga_pci_sv.c
+C_INCLUDE_DIRS = $(C_SDK_USR_INC_DIR) $(C_SDK_USR_UTILS_DIR) $(C_COMMON_DIR)/include $(C_COMMON_DIR)/src $(C_INC_DIR) $(C_HEADER_INCLUDE_DIR)
+
 
 export TEST_NAME =  $(CL_ROOT)/verif/tests/$(TEST).sv
 
