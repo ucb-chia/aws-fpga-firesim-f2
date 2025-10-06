@@ -16,13 +16,16 @@
 # =============================================================================
 
 
--define CL_NAME=cl_f2-midasexamples-GCD-NoConfig-DefaultF1Config
+-define CL_NAME=cl_firesim
 // -define NO_SDE_DEBUG_ILA
 -define DISABLE_VJTAG_DEBUG
 
 -include $CL_DIR/verif/tests
 -f $HDK_COMMON_DIR/verif/tb/filelists/tb.${SIMULATOR}.f
 ${TEST_NAME}
+
+// -include $CL_DIR/../common/design
+// -include $CL_DIR/../common/design/cl_common_defines.vh
 
 -include $CL_DIR/design
 ${CL_DIR}/design/cl_firesim_defines.vh
@@ -32,3 +35,11 @@ ${CL_DIR}/design/FireSim-generated.defines.vh
 ${CL_DIR}/design/FireSim-generated.sv
 // ${CL_DIR}/design/FireSim-generated.implementation.xdc
 // ${CL_DIR}/design/FireSim-generated.synthesis.xdc
+
+-include $CL_DIR/ip
+${CL_DIR}/ip/axi_clock_converter_512_pcim/axi_clock_converter_512_pcim_sim_netlist.v
+${CL_DIR}/ip/axi_clock_converter_512_wide/axi_clock_converter_512_wide_sim_netlist.v
+${CL_DIR}/ip/axi_clock_converter_dramslim/axi_clock_converter_dramslim_sim_netlist.v
+${CL_DIR}/ip/axi_clock_converter_oclnew/axi_clock_converter_oclnew_sim_netlist.v
+${CL_DIR}/ip/axi_dwidth_converter_0/axi_dwidth_converter_0_sim_netlist.v
+${CL_DIR}/ip/clk_wiz_0_firesim
