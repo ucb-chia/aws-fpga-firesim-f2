@@ -335,7 +335,7 @@ class LinkChecker:
         _, fragment = url.split("#", 1)
         fragment = unquote(fragment)
 
-        if urllib3.util.parse_url(url) == "github.com":
+        if urllib3.util.parse_url(url).host == "github.com":
             return self._check_github_line_numbers(fragment, response)
 
         # Check for HTML anchors/sections
