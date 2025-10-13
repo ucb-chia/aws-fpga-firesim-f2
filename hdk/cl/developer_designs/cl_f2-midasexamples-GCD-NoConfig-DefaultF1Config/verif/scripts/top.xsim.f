@@ -42,4 +42,4 @@ ${CL_DIR}/ip/axi_clock_converter_512_wide/axi_clock_converter_512_wide_sim_netli
 ${CL_DIR}/ip/axi_clock_converter_dramslim/axi_clock_converter_dramslim_sim_netlist.v
 ${CL_DIR}/ip/axi_clock_converter_oclnew/axi_clock_converter_oclnew_sim_netlist.v
 ${CL_DIR}/ip/axi_dwidth_converter_0/axi_dwidth_converter_0_sim_netlist.v
-${CL_DIR}/ip/clk_wiz_0_firesim
+${CL_DIR}/ip/clk_wiz_0_firesim/clk_wiz_0_firesim_sim_netlist.v

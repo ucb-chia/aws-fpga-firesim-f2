@@ -739,15 +739,24 @@ wire mc_ddr_s_3_axi_rready;
 `endif   
 
 
-logic [2:0] lcl_sh_cl_ddr_is_ready;
+// logic [2:0] lcl_sh_cl_ddr_is_ready;
+logic lcl_sh_cl_ddr_is_ready;
 
-logic [7:0] sh_ddr_stat_addr_q[2:0];
-logic[2:0] sh_ddr_stat_wr_q;
-logic[2:0] sh_ddr_stat_rd_q; 
-logic[31:0] sh_ddr_stat_wdata_q[2:0];
-logic[2:0] ddr_sh_stat_ack_q;
-logic[31:0] ddr_sh_stat_rdata_q[2:0];
-logic[7:0] ddr_sh_stat_int_q[2:0];
+
+// logic [7:0] sh_ddr_stat_addr_q[2:0];
+// logic[2:0] sh_ddr_stat_wr_q;
+// logic[2:0] sh_ddr_stat_rd_q; 
+// logic[31:0] sh_ddr_stat_wdata_q[2:0];
+// logic[2:0] ddr_sh_stat_ack_q;
+// logic[31:0] ddr_sh_stat_rdata_q[2:0];
+// logic[7:0] ddr_sh_stat_int_q[2:0];
+logic [7:0] sh_ddr_stat_addr_q;
+logic sh_ddr_stat_wr_q;
+logic sh_ddr_stat_rd_q; 
+logic[31:0] sh_ddr_stat_wdata_q;
+logic ddr_sh_stat_ack_q;
+logic[31:0] ddr_sh_stat_rdata_q;
+logic[7:0] ddr_sh_stat_int_q;
 
 
 lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
@@ -785,75 +794,128 @@ lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK2 
                                                ); 
 
 //convert to 2D 
-logic[15:0] cl_sh_ddr_awid_2d[2:0];
-logic[63:0] cl_sh_ddr_awaddr_2d[2:0];
-logic[7:0] cl_sh_ddr_awlen_2d[2:0];
-logic[2:0] cl_sh_ddr_awsize_2d[2:0];
-logic[1:0] cl_sh_ddr_awburst_2d[2:0];
-logic cl_sh_ddr_awvalid_2d [2:0];
-logic[2:0] sh_cl_ddr_awready_2d;
+// logic[15:0] cl_sh_ddr_awid_2d[2:0];
+logic[15:0] cl_sh_ddr_awid;
+// logic[63:0] cl_sh_ddr_awaddr_2d[2:0];
+logic[63:0] cl_sh_ddr_awaddr;
+// logic[7:0] cl_sh_ddr_awlen_2d[2:0];
+logic[7:0] cl_sh_ddr_awlen;
+// logic[2:0] cl_sh_ddr_awsize_2d[2:0];
+// logic[1:0] cl_sh_ddr_awburst_2d[2:0];
+// logic cl_sh_ddr_awvalid_2d [2:0];
+// logic[2:0] sh_cl_ddr_awready_2d;
+logic[2:0] cl_sh_ddr_awsize;
+logic[1:0] cl_sh_ddr_awburst;
+logic cl_sh_ddr_awvalid;
+logic sh_cl_ddr_awready;
 
-logic[15:0] cl_sh_ddr_wid_2d[2:0];
-logic[511:0] cl_sh_ddr_wdata_2d[2:0];
-logic[63:0] cl_sh_ddr_wstrb_2d[2:0];
-logic[2:0] cl_sh_ddr_wlast_2d;
-logic[2:0] cl_sh_ddr_wvalid_2d;
-logic[2:0] sh_cl_ddr_wready_2d;
+// logic[15:0] cl_sh_ddr_wid_2d[2:0];
+// logic[511:0] cl_sh_ddr_wdata_2d[2:0];
+// logic[63:0] cl_sh_ddr_wstrb_2d[2:0];
+// logic[2:0] cl_sh_ddr_wlast_2d;
+// logic[2:0] cl_sh_ddr_wvalid_2d;
+// logic[2:0] sh_cl_ddr_wready_2d;
+// logic[15:0] cl_sh_ddr_wid;
+logic[511:0] cl_sh_ddr_wdata;
+logic[63:0] cl_sh_ddr_wstrb;
+logic cl_sh_ddr_wlast;
+logic cl_sh_ddr_wvalid;
+logic sh_cl_ddr_wready;
 
-logic[15:0] sh_cl_ddr_bid_2d[2:0];
-logic[1:0] sh_cl_ddr_bresp_2d[2:0];
-logic[2:0] sh_cl_ddr_bvalid_2d;
-logic[2:0] cl_sh_ddr_bready_2d;
+// logic[15:0] sh_cl_ddr_bid_2d[2:0];
+// logic[1:0] sh_cl_ddr_bresp_2d[2:0];
+// logic[2:0] sh_cl_ddr_bvalid_2d;
+// logic[2:0] cl_sh_ddr_bready_2d;
+logic[15:0] sh_cl_ddr_bid;
+logic[1:0] sh_cl_ddr_bresp;
+logic sh_cl_ddr_bvalid;
+logic cl_sh_ddr_bready;
 
-logic[15:0] cl_sh_ddr_arid_2d[2:0];
-logic[63:0] cl_sh_ddr_araddr_2d[2:0];
-logic[7:0] cl_sh_ddr_arlen_2d[2:0];
-logic[2:0] cl_sh_ddr_arsize_2d[2:0];
-logic[1:0] cl_sh_ddr_arburst_2d[2:0];
-logic[2:0] cl_sh_ddr_arvalid_2d;
-logic[2:0] sh_cl_ddr_arready_2d;
+// logic[15:0] cl_sh_ddr_arid_2d[2:0];
+// logic[63:0] cl_sh_ddr_araddr_2d[2:0];
+// logic[7:0] cl_sh_ddr_arlen_2d[2:0];
+// logic[2:0] cl_sh_ddr_arsize_2d[2:0];
+// logic[1:0] cl_sh_ddr_arburst_2d[2:0];
+// logic[2:0] cl_sh_ddr_arvalid_2d;
+// logic[2:0] sh_cl_ddr_arready_2d;
+logic[15:0] cl_sh_ddr_arid;
+logic[63:0] cl_sh_ddr_araddr;
+logic[7:0] cl_sh_ddr_arlen;
+logic[2:0] cl_sh_ddr_arsize;
+logic[1:0] cl_sh_ddr_arburst;
+logic cl_sh_ddr_arvalid;
+logic sh_cl_ddr_arready;
 
-logic[15:0] sh_cl_ddr_rid_2d[2:0];
-logic[511:0] sh_cl_ddr_rdata_2d[2:0];
-logic[1:0] sh_cl_ddr_rresp_2d[2:0];
-logic[2:0] sh_cl_ddr_rlast_2d;
-logic[2:0] sh_cl_ddr_rvalid_2d;
-logic[2:0] cl_sh_ddr_rready_2d;
+logic[15:0] sh_cl_ddr_rid;
+logic[511:0] sh_cl_ddr_rdata;
+logic[1:0] sh_cl_ddr_rresp;
+logic sh_cl_ddr_rlast;
+logic sh_cl_ddr_rvalid;
+logic cl_sh_ddr_rready;
 
-assign cl_sh_ddr_awid_2d = '{mc_ddr_s_3_axi_awid, mc_ddr_s_2_axi_awid, mc_ddr_s_1_axi_awid};
-assign cl_sh_ddr_awaddr_2d = '{mc_ddr_s_3_axi_awaddr, mc_ddr_s_2_axi_awaddr, mc_ddr_s_1_axi_awaddr};
-assign cl_sh_ddr_awlen_2d = '{mc_ddr_s_3_axi_awlen, mc_ddr_s_2_axi_awlen, mc_ddr_s_1_axi_awlen};
-assign cl_sh_ddr_awsize_2d = '{3'b110, 3'b110, 3'b110};
-assign cl_sh_ddr_awvalid_2d = '{mc_ddr_s_3_axi_awvalid, mc_ddr_s_2_axi_awvalid, mc_ddr_s_1_axi_awvalid};
-assign cl_sh_ddr_awburst_2d = {2'b01, 2'b01, 2'b01};
-assign {mc_ddr_s_3_axi_awready, mc_ddr_s_2_axi_awready, mc_ddr_s_1_axi_awready} = sh_cl_ddr_awready_2d;
+// assign cl_sh_ddr_awid_2d = '{mc_ddr_s_3_axi_awid, mc_ddr_s_2_axi_awid, mc_ddr_s_1_axi_awid};
+assign cl_sh_ddr_awid = mc_ddr_s_1_axi_awid;
+// assign cl_sh_ddr_awaddr_2d = '{mc_ddr_s_3_axi_awaddr, mc_ddr_s_2_axi_awaddr, mc_ddr_s_1_axi_awaddr};
+assign cl_sh_ddr_awaddr = mc_ddr_s_1_axi_awaddr;
+assign cl_sh_ddr_awlen = mc_ddr_s_1_axi_awlen;
+// assign cl_sh_ddr_awsize_2d = '{3'b110, 3'b110, 3'b110};
+// assign cl_sh_ddr_awvalid_2d = '{mc_ddr_s_3_axi_awvalid, mc_ddr_s_2_axi_awvalid, mc_ddr_s_1_axi_awvalid};
+// assign cl_sh_ddr_awburst_2d = {2'b01, 2'b01, 2'b01};
+// assign {mc_ddr_s_3_axi_awready, mc_ddr_s_2_axi_awready, mc_ddr_s_1_axi_awready} = sh_cl_ddr_awready_2d;
+assign cl_sh_ddr_awsize = 3'b110;
+assign cl_sh_ddr_awvalid =  mc_ddr_s_1_axi_awvalid;
+assign cl_sh_ddr_awburst = 2'b01;
+assign mc_ddr_s_1_axi_awready = sh_cl_ddr_awready;
 
-assign cl_sh_ddr_wid_2d = '{16'b0, 16'b0, 16'b0};
-assign cl_sh_ddr_wdata_2d = '{mc_ddr_s_3_axi_wdata, mc_ddr_s_2_axi_wdata, mc_ddr_s_1_axi_wdata};
-assign cl_sh_ddr_wstrb_2d = '{mc_ddr_s_3_axi_wstrb, mc_ddr_s_2_axi_wstrb, mc_ddr_s_1_axi_wstrb};
-assign cl_sh_ddr_wlast_2d = {mc_ddr_s_3_axi_wlast, mc_ddr_s_2_axi_wlast, mc_ddr_s_1_axi_wlast};
-assign cl_sh_ddr_wvalid_2d = {mc_ddr_s_3_axi_wvalid, mc_ddr_s_2_axi_wvalid, mc_ddr_s_1_axi_wvalid};
-assign {mc_ddr_s_3_axi_wready, mc_ddr_s_2_axi_wready, mc_ddr_s_1_axi_wready} = sh_cl_ddr_wready_2d;
+// assign cl_sh_ddr_wid_2d = '{16'b0, 16'b0, 16'b0};
+// assign cl_sh_ddr_wdata_2d = '{mc_ddr_s_3_axi_wdata, mc_ddr_s_2_axi_wdata, mc_ddr_s_1_axi_wdata};
+// assign cl_sh_ddr_wstrb_2d = '{mc_ddr_s_3_axi_wstrb, mc_ddr_s_2_axi_wstrb, mc_ddr_s_1_axi_wstrb};
+// assign cl_sh_ddr_wlast_2d = {mc_ddr_s_3_axi_wlast, mc_ddr_s_2_axi_wlast, mc_ddr_s_1_axi_wlast};
+// assign cl_sh_ddr_wvalid_2d = {mc_ddr_s_3_axi_wvalid, mc_ddr_s_2_axi_wvalid, mc_ddr_s_1_axi_wvalid};
+// assign {mc_ddr_s_3_axi_wready, mc_ddr_s_2_axi_wready, mc_ddr_s_1_axi_wready} = sh_cl_ddr_wready_2d;
+assign cl_sh_ddr_wid = 16'b0;
+assign cl_sh_ddr_wdata = mc_ddr_s_1_axi_wdata;
+assign cl_sh_ddr_wstrb = mc_ddr_s_1_axi_wstrb;
+assign cl_sh_ddr_wlast = mc_ddr_s_1_axi_wlast;
+assign cl_sh_ddr_wvalid =  mc_ddr_s_1_axi_wvalid;
+assign mc_ddr_s_1_axi_wready = sh_cl_ddr_wready;
 
-assign {mc_ddr_s_3_axi_bid, mc_ddr_s_2_axi_bid, mc_ddr_s_1_axi_bid} = {sh_cl_ddr_bid_2d[2], sh_cl_ddr_bid_2d[1], sh_cl_ddr_bid_2d[0]};
-assign {mc_ddr_s_3_axi_bresp, mc_ddr_s_2_axi_bresp, mc_ddr_s_1_axi_bresp} = {sh_cl_ddr_bresp_2d[2], sh_cl_ddr_bresp_2d[1], sh_cl_ddr_bresp_2d[0]};
-assign {mc_ddr_s_3_axi_bvalid, mc_ddr_s_2_axi_bvalid, mc_ddr_s_1_axi_bvalid} = sh_cl_ddr_bvalid_2d;
-assign cl_sh_ddr_bready_2d = {mc_ddr_s_3_axi_bready, mc_ddr_s_2_axi_bready, mc_ddr_s_1_axi_bready};
+// assign {mc_ddr_s_3_axi_bid, mc_ddr_s_2_axi_bid, mc_ddr_s_1_axi_bid} = {sh_cl_ddr_bid_2d[2], sh_cl_ddr_bid_2d[1], sh_cl_ddr_bid_2d[0]};
+// assign {mc_ddr_s_3_axi_bresp, mc_ddr_s_2_axi_bresp, mc_ddr_s_1_axi_bresp} = {sh_cl_ddr_bresp_2d[2], sh_cl_ddr_bresp_2d[1], sh_cl_ddr_bresp_2d[0]};
+// assign {mc_ddr_s_3_axi_bvalid, mc_ddr_s_2_axi_bvalid, mc_ddr_s_1_axi_bvalid} = sh_cl_ddr_bvalid_2d;
+// assign cl_sh_ddr_bready_2d = {mc_ddr_s_3_axi_bready, mc_ddr_s_2_axi_bready, mc_ddr_s_1_axi_bready};
+assign mc_ddr_s_1_axi_bid = sh_cl_ddr_bid;
+assign mc_ddr_s_1_axi_bresp = sh_cl_ddr_bresp;
+assign mc_ddr_s_1_axi_bvalid = sh_cl_ddr_bvalid;
+assign cl_sh_ddr_bready =  mc_ddr_s_1_axi_bready;
 
-assign cl_sh_ddr_arid_2d = '{mc_ddr_s_3_axi_arid, mc_ddr_s_2_axi_arid, mc_ddr_s_1_axi_arid};
-assign cl_sh_ddr_araddr_2d = '{mc_ddr_s_3_axi_araddr, mc_ddr_s_2_axi_araddr, mc_ddr_s_1_axi_araddr};
-assign cl_sh_ddr_arlen_2d = '{mc_ddr_s_3_axi_arlen, mc_ddr_s_2_axi_arlen, mc_ddr_s_1_axi_arlen};
-assign cl_sh_ddr_arsize_2d = '{3'b110, 3'b110, 3'b110};
-assign cl_sh_ddr_arvalid_2d = {mc_ddr_s_3_axi_arvalid, mc_ddr_s_2_axi_arvalid, mc_ddr_s_1_axi_arvalid};
-assign cl_sh_ddr_arburst_2d = {2'b01, 2'b01, 2'b01};
-assign {mc_ddr_s_3_axi_arready, mc_ddr_s_2_axi_arready, mc_ddr_s_1_axi_arready} = sh_cl_ddr_arready_2d;
+// assign cl_sh_ddr_arid_2d = '{mc_ddr_s_3_axi_arid, mc_ddr_s_2_axi_arid, mc_ddr_s_1_axi_arid};
+// assign cl_sh_ddr_araddr_2d = '{mc_ddr_s_3_axi_araddr, mc_ddr_s_2_axi_araddr, mc_ddr_s_1_axi_araddr};
+// assign cl_sh_ddr_arlen_2d = '{mc_ddr_s_3_axi_arlen, mc_ddr_s_2_axi_arlen, mc_ddr_s_1_axi_arlen};
+// assign cl_sh_ddr_arsize_2d = '{3'b110, 3'b110, 3'b110};
+// assign cl_sh_ddr_arvalid_2d = {mc_ddr_s_3_axi_arvalid, mc_ddr_s_2_axi_arvalid, mc_ddr_s_1_axi_arvalid};
+// assign cl_sh_ddr_arburst_2d = {2'b01, 2'b01, 2'b01};
+// assign {mc_ddr_s_3_axi_arready, mc_ddr_s_2_axi_arready, mc_ddr_s_1_axi_arready} = sh_cl_ddr_arready_2d;
+assign cl_sh_ddr_arid = mc_ddr_s_1_axi_arid;
+assign cl_sh_ddr_araddr = mc_ddr_s_1_axi_araddr;
+assign cl_sh_ddr_arlen = mc_ddr_s_1_axi_arlen;
+assign cl_sh_ddr_arsize = 3'b110;
+assign cl_sh_ddr_arvalid = mc_ddr_s_1_axi_arvalid;
+assign cl_sh_ddr_arburst = 2'b01;
+assign mc_ddr_s_1_axi_arready = sh_cl_ddr_arready;
 
-assign {mc_ddr_s_3_axi_rid, mc_ddr_s_2_axi_rid, mc_ddr_s_1_axi_rid} = {sh_cl_ddr_rid_2d[2], sh_cl_ddr_rid_2d[1], sh_cl_ddr_rid_2d[0]};
-assign {mc_ddr_s_3_axi_rresp, mc_ddr_s_2_axi_rresp, mc_ddr_s_1_axi_rresp} = {sh_cl_ddr_rresp_2d[2], sh_cl_ddr_rresp_2d[1], sh_cl_ddr_rresp_2d[0]};
-assign {mc_ddr_s_3_axi_rdata, mc_ddr_s_2_axi_rdata, mc_ddr_s_1_axi_rdata} = {sh_cl_ddr_rdata_2d[2], sh_cl_ddr_rdata_2d[1], sh_cl_ddr_rdata_2d[0]};
-assign {mc_ddr_s_3_axi_rlast, mc_ddr_s_2_axi_rlast, mc_ddr_s_1_axi_rlast} = sh_cl_ddr_rlast_2d;
-assign {mc_ddr_s_3_axi_rvalid, mc_ddr_s_2_axi_rvalid, mc_ddr_s_1_axi_rvalid} = sh_cl_ddr_rvalid_2d;
-assign cl_sh_ddr_rready_2d = {mc_ddr_s_3_axi_rready, mc_ddr_s_2_axi_rready, mc_ddr_s_1_axi_rready};
+// assign {mc_ddr_s_3_axi_rid, mc_ddr_s_2_axi_rid, mc_ddr_s_1_axi_rid} = {sh_cl_ddr_rid_2d[2], sh_cl_ddr_rid_2d[1], sh_cl_ddr_rid_2d[0]};
+// assign {mc_ddr_s_3_axi_rresp, mc_ddr_s_2_axi_rresp, mc_ddr_s_1_axi_rresp} = {sh_cl_ddr_rresp_2d[2], sh_cl_ddr_rresp_2d[1], sh_cl_ddr_rresp_2d[0]};
+// assign {mc_ddr_s_3_axi_rdata, mc_ddr_s_2_axi_rdata, mc_ddr_s_1_axi_rdata} = {sh_cl_ddr_rdata_2d[2], sh_cl_ddr_rdata_2d[1], sh_cl_ddr_rdata_2d[0]};
+// assign {mc_ddr_s_3_axi_rlast, mc_ddr_s_2_axi_rlast, mc_ddr_s_1_axi_rlast} = sh_cl_ddr_rlast_2d;
+// assign {mc_ddr_s_3_axi_rvalid, mc_ddr_s_2_axi_rvalid, mc_ddr_s_1_axi_rvalid} = sh_cl_ddr_rvalid_2d;
+// assign cl_sh_ddr_rready_2d = {mc_ddr_s_3_axi_rready, mc_ddr_s_2_axi_rready, mc_ddr_s_1_axi_rready};
+assign mc_ddr_s_1_axi_rid = sh_cl_ddr_rid;
+assign mc_ddr_s_1_axi_rresp = sh_cl_ddr_rresp;
+assign mc_ddr_s_1_axi_rdata = sh_cl_ddr_rdata;
+assign mc_ddr_s_1_axi_rlast = sh_cl_ddr_rlast;
+assign mc_ddr_s_1_axi_rvalid = sh_cl_ddr_rvalid;
+assign cl_sh_ddr_rready = mc_ddr_s_1_axi_rready;
 
 (* dont_touch = "true" *) logic sh_ddr_sync_rst_n;
 lib_pipe #(.WIDTH(1), .STAGES(4)) SH_DDR_SLC_RST_N (.clk(clk_main_a0), .rst_n(1'b1), .in_bus(rst_main_n_sync), .out_bus(sh_ddr_sync_rst_n));
@@ -894,66 +956,74 @@ sh_ddr #(
    //------------------------------------------------------
    // DDR-4 Interface from CL (AXI-4)
    //------------------------------------------------------
-   .cl_sh_ddr_awid(cl_sh_ddr_awid_2d),
-   .cl_sh_ddr_awaddr(cl_sh_ddr_awaddr_2d),
-   .cl_sh_ddr_awlen(cl_sh_ddr_awlen_2d),
-   .cl_sh_ddr_awsize(cl_sh_ddr_awsize_2d),
-   .cl_sh_ddr_awvalid(cl_sh_ddr_awvalid_2d),
-   .cl_sh_ddr_awburst(cl_sh_ddr_awburst_2d),
-   .sh_cl_ddr_awready(sh_cl_ddr_awready_2d),
+   .cl_sh_ddr_axi_awid(cl_sh_ddr_awid),
+   .cl_sh_ddr_axi_awaddr(cl_sh_ddr_awaddr),
+   .cl_sh_ddr_axi_awlen(cl_sh_ddr_awlen),
+   .cl_sh_ddr_axi_awsize(cl_sh_ddr_awsize),
+   .cl_sh_ddr_axi_awvalid(cl_sh_ddr_awvalid),
+   .cl_sh_ddr_axi_awburst(cl_sh_ddr_awburst),
+   .cl_sh_ddr_axi_awready(sh_cl_ddr_awready),
 
-   .cl_sh_ddr_wid(cl_sh_ddr_wid_2d),
-   .cl_sh_ddr_wdata(cl_sh_ddr_wdata_2d),
-   .cl_sh_ddr_wstrb(cl_sh_ddr_wstrb_2d),
-   .cl_sh_ddr_wlast(cl_sh_ddr_wlast_2d),
-   .cl_sh_ddr_wvalid(cl_sh_ddr_wvalid_2d),
-   .sh_cl_ddr_wready(sh_cl_ddr_wready_2d),
+   // .cl_sh_ddr_wid(cl_sh_ddr_wid_2d),
+   .cl_sh_ddr_axi_wdata(cl_sh_ddr_wdata),
+   .cl_sh_ddr_axi_wstrb(cl_sh_ddr_wstrb),
+   .cl_sh_ddr_axi_wlast(cl_sh_ddr_wlast),
+   .cl_sh_ddr_axi_wvalid(cl_sh_ddr_wvalid),
+   .cl_sh_ddr_axi_wready(sh_cl_ddr_wready),
 
-   .sh_cl_ddr_bid(sh_cl_ddr_bid_2d),
-   .sh_cl_ddr_bresp(sh_cl_ddr_bresp_2d),
-   .sh_cl_ddr_bvalid(sh_cl_ddr_bvalid_2d),
-   .cl_sh_ddr_bready(cl_sh_ddr_bready_2d),
+   .cl_sh_ddr_axi_bid(sh_cl_ddr_bid),
+   .cl_sh_ddr_axi_bresp(sh_cl_ddr_bresp),
+   .cl_sh_ddr_axi_bvalid(sh_cl_ddr_bvalid),
+   .cl_sh_ddr_axi_bready(cl_sh_ddr_bready),
 
-   .cl_sh_ddr_arid(cl_sh_ddr_arid_2d),
-   .cl_sh_ddr_araddr(cl_sh_ddr_araddr_2d),
-   .cl_sh_ddr_arlen(cl_sh_ddr_arlen_2d),
-   .cl_sh_ddr_arsize(cl_sh_ddr_arsize_2d),
-   .cl_sh_ddr_arvalid(cl_sh_ddr_arvalid_2d),
-   .cl_sh_ddr_arburst(cl_sh_ddr_arburst_2d),
-   .sh_cl_ddr_arready(sh_cl_ddr_arready_2d),
+   .cl_sh_ddr_axi_arid(cl_sh_ddr_arid),
+   .cl_sh_ddr_axi_araddr(cl_sh_ddr_araddr),
+   .cl_sh_ddr_axi_arlen(cl_sh_ddr_arlen),
+   .cl_sh_ddr_axi_arsize(cl_sh_ddr_arsize),
+   .cl_sh_ddr_axi_arvalid(cl_sh_ddr_arvalid),
+   .cl_sh_ddr_axi_arburst(cl_sh_ddr_arburst),
+   .cl_sh_ddr_axi_arready(sh_cl_ddr_arready),
 
-   .sh_cl_ddr_rid(sh_cl_ddr_rid_2d),
-   .sh_cl_ddr_rdata(sh_cl_ddr_rdata_2d),
-   .sh_cl_ddr_rresp(sh_cl_ddr_rresp_2d),
-   .sh_cl_ddr_rlast(sh_cl_ddr_rlast_2d),
-   .sh_cl_ddr_rvalid(sh_cl_ddr_rvalid_2d),
-   .cl_sh_ddr_rready(cl_sh_ddr_rready_2d),
+   .cl_sh_ddr_axi_rid(sh_cl_ddr_rid),
+   .cl_sh_ddr_axi_rdata(sh_cl_ddr_rdata),
+   .cl_sh_ddr_axi_rresp(sh_cl_ddr_rresp),
+   .cl_sh_ddr_axi_rlast(sh_cl_ddr_rlast),
+   .cl_sh_ddr_axi_rvalid(sh_cl_ddr_rvalid),
+   .cl_sh_ddr_axi_rready(cl_sh_ddr_rready),
 
    .sh_cl_ddr_is_ready(lcl_sh_cl_ddr_is_ready),
 
-   .sh_ddr_stat_addr0  (sh_ddr_stat_addr_q[0]) ,
-   .sh_ddr_stat_wr0    (sh_ddr_stat_wr_q[0]     ) , 
-   .sh_ddr_stat_rd0    (sh_ddr_stat_rd_q[0]     ) , 
-   .sh_ddr_stat_wdata0 (sh_ddr_stat_wdata_q[0]  ) , 
-   .ddr_sh_stat_ack0   (ddr_sh_stat_ack_q[0]    ) ,
-   .ddr_sh_stat_rdata0 (ddr_sh_stat_rdata_q[0]  ),
-   .ddr_sh_stat_int0   (ddr_sh_stat_int_q[0]    ),
+   .sh_ddr_stat_bus_addr  (sh_ddr_stat_addr_q) ,
+   .sh_ddr_stat_bus_wr    (sh_ddr_stat_wr_q     ) , 
+   .sh_ddr_stat_bus_rd    (sh_ddr_stat_rd_q     ) , 
+   .sh_ddr_stat_bus_wdata (sh_ddr_stat_wdata_q  ) , 
+   .sh_ddr_stat_bus_ack   (ddr_sh_stat_ack_q    ) ,
+   .sh_ddr_stat_bus_rdata (ddr_sh_stat_rdata_q  ),
+   .ddr_sh_stat_int   (ddr_sh_stat_int_q    )
 
-   .sh_ddr_stat_addr1  (sh_ddr_stat_addr_q[1]) ,
-   .sh_ddr_stat_wr1    (sh_ddr_stat_wr_q[1]     ) , 
-   .sh_ddr_stat_rd1    (sh_ddr_stat_rd_q[1]     ) , 
-   .sh_ddr_stat_wdata1 (sh_ddr_stat_wdata_q[1]  ) , 
-   .ddr_sh_stat_ack1   (ddr_sh_stat_ack_q[1]    ) ,
-   .ddr_sh_stat_rdata1 (ddr_sh_stat_rdata_q[1]  ),
-   .ddr_sh_stat_int1   (ddr_sh_stat_int_q[1]    ),
+   // .sh_ddr_stat_addr0  (sh_ddr_stat_addr_q[0]) ,
+   // .sh_ddr_stat_wr0    (sh_ddr_stat_wr_q[0]     ) , 
+   // .sh_ddr_stat_rd0    (sh_ddr_stat_rd_q[0]     ) , 
+   // .sh_ddr_stat_wdata0 (sh_ddr_stat_wdata_q[0]  ) , 
+   // .ddr_sh_stat_ack0   (ddr_sh_stat_ack_q[0]    ) ,
+   // .ddr_sh_stat_rdata0 (ddr_sh_stat_rdata_q[0]  ),
+   // .ddr_sh_stat_int0   (ddr_sh_stat_int_q[0]    ),
 
-   .sh_ddr_stat_addr2  (sh_ddr_stat_addr_q[2]) ,
-   .sh_ddr_stat_wr2    (sh_ddr_stat_wr_q[2]     ) , 
-   .sh_ddr_stat_rd2    (sh_ddr_stat_rd_q[2]     ) , 
-   .sh_ddr_stat_wdata2 (sh_ddr_stat_wdata_q[2]  ) , 
-   .ddr_sh_stat_ack2   (ddr_sh_stat_ack_q[2]    ) ,
-   .ddr_sh_stat_rdata2 (ddr_sh_stat_rdata_q[2]  ),
-   .ddr_sh_stat_int2   (ddr_sh_stat_int_q[2]    ) 
+   // .sh_ddr_stat_addr1  (sh_ddr_stat_addr_q[1]) ,
+   // .sh_ddr_stat_wr1    (sh_ddr_stat_wr_q[1]     ) , 
+   // .sh_ddr_stat_rd1    (sh_ddr_stat_rd_q[1]     ) , 
+   // .sh_ddr_stat_wdata1 (sh_ddr_stat_wdata_q[1]  ) , 
+   // .ddr_sh_stat_ack1   (ddr_sh_stat_ack_q[1]    ) ,
+   // .ddr_sh_stat_rdata1 (ddr_sh_stat_rdata_q[1]  ),
+   // .ddr_sh_stat_int1   (ddr_sh_stat_int_q[1]    ),
+
+   // .sh_ddr_stat_addr2  (sh_ddr_stat_addr_q[2]) ,
+   // .sh_ddr_stat_wr2    (sh_ddr_stat_wr_q[2]     ) , 
+   // .sh_ddr_stat_rd2    (sh_ddr_stat_rd_q[2]     ) , 
+   // .sh_ddr_stat_wdata2 (sh_ddr_stat_wdata_q[2]  ) , 
+   // .ddr_sh_stat_ack2   (ddr_sh_stat_ack_q[2]    ) ,
+   // .ddr_sh_stat_rdata2 (ddr_sh_stat_rdata_q[2]  ),
+   // .ddr_sh_stat_int2   (ddr_sh_stat_int_q[2]    ) 
    );
 
 

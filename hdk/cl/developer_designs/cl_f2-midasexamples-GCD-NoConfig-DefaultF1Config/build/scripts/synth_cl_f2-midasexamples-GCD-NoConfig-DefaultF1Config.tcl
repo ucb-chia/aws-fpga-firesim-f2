@@ -1,17 +1,19 @@
 #Param needed to avoid clock name collisions
-set_param sta.enableAutoGenClkNamePersistence 0
-set CL_MODULE $CL_MODULE
-set VDEFINES $VDEFINES
+# set_param sta.enableAutoGenClkNamePersistence 0
+set CL_MODULE cl_firesim
+# set VDEFINES $VDEFINES
+set VDEFINES ""
 
 # Common header
 source ${HDK_SHELL_DIR}/build/scripts/synth_cl_header.tcl
+# set DEVICE_TYPE xcvu47p-fsvh2892-2-e
 
 
 ###############################################################################
 print "Reading encrypted user source codes"
 ###############################################################################
 
-create_project -in_memory -part [DEVICE_TYPE] -force
+# create_project -in_memory -part [$DEVICE_TYPE] -force
 
 # Generate IP instantated in Golden-Gate generated RTL
 file mkdir $CL_DIR/design/ipgen
@@ -49,7 +51,8 @@ puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Reading developer's 
 # Reading the .sv and .v files, as proper designs would not require
 # reading .v, .vh, nor .inc files
 
-read_verilog -sv [glob $ENC_SRC_DIR/*.{v,sv}]
+# read_verilog -sv [glob $ENC_SRC_DIR/*.{v,sv}]
+read_verilog -sv [glob $ENC_SRC_DIR/*.{s,}v]
 
 #---- End of section replaced by User ----
 
@@ -156,28 +159,42 @@ puts "AWS FPGA: Reading AWS constraints";
 #  cl_ddr.xdc         - AWS provided DDR pin constraints.      ***DO NOT MODIFY***
 #  cl_synth_user.xdc  - Developer synthesis constraints.
 read_xdc [ list \
-   $CL_DIR/build/constraints/cl_clocks_aws.xdc \
-   $HDK_SHELL_DIR/build/constraints/cl_ddr.xdc \
-   $HDK_SHELL_DIR/build/constraints/cl_synth_aws.xdc \
+   $CL_DIR/build/constraints/generated_cl_clocks_aws.xdc \
+   $HDK_SHELL_DIR/build/constraints/cl_ddr_timing_aws.xdc \
    $CL_DIR/build/constraints/cl_synth_user.xdc \
    $CL_DIR/design/FireSim-generated.synthesis.xdc \
 ]
+#    $HDK_SHELL_DIR/build/constraints/cl_synth_aws.xdc \
 
 # FireSim custom clocking
 source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
 
 #Do not propagate local clock constraints for clocks generated in the SH
-set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files cl_clocks_aws.xdc]
-set_property PROCESSING_ORDER EARLY  [get_files cl_clocks_aws.xdc]
+set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files generated_cl_clocks_aws.xdc]
+set_property PROCESSING_ORDER EARLY  [get_files generated_cl_clocks_aws.xdc]
 
 ########################
 # CL Synthesis
 ########################
-puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Start design synthesis.";
 
+###############################################################################
+print "Starting synthesizing customer design ${CL}"
+###############################################################################
 update_compile_order -fileset sources_1
-puts "\nRunning synth_design for $CL_MODULE $CL_DIR/build/scripts \[[clock format [clock seconds] -format {%a %b %d %H:%M:%S %Y}]\]"
-eval [concat synth_design -top $CL_MODULE -verilog_define XSDB_SLV_DIS $VDEFINES -part [DEVICE_TYPE] -mode out_of_context $synth_options -directive $synth_directive]
+
+synth_design -mode out_of_context \
+             -top ${CL} \
+             -verilog_define XSDB_SLV_DIS \
+             -part ${DEVICE_TYPE} \
+             -keep_equivalent_registers
+
+
+# puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Start design synthesis.";
+
+# update_compile_order -fileset sources_1
+# puts "\nRunning synth_design for $CL_MODULE $CL_DIR/build/scripts \[[clock format [clock seconds] -format {%a %b %d %H:%M:%S %Y}]\]"
+# # eval [concat synth_design -top $CL_MODULE -verilog_define XSDB_SLV_DIS $VDEFINES -part [xcvu47p-fsvh2892-2-e] -mode out_of_context $synth_options -directive $synth_directive]
+# eval [concat synth_design -top $CL_MODULE -verilog_define XSDB_SLV_DIS $VDEFINES -mode out_of_context]
 
 set failval [catch {exec grep "FAIL" failfast.csv}]
 if { $failval==0 } {
@@ -191,6 +208,9 @@ write_checkpoint -force $CL_DIR/build/checkpoints/${timestamp}.CL.post_synth.dcp
 report_utilization -hierarchical -hierarchical_percentages -file $CL_DIR/build/reports/${timestamp}.post_synth_utilization.rpt
 report_control_sets -verbose -file $CL_DIR/build/reports/${timestamp}.post_synth_control_sets.rpt
 
-close_project
+# close_project
 #Set param back to default value
-set_param sta.enableAutoGenClkNamePersistence 1
+# set_param sta.enableAutoGenClkNamePersistence 1
+
+# Common footer
+source ${HDK_SHELL_DIR}/build/scripts/synth_cl_footer.tcl
