@@ -50,7 +50,7 @@ logic rst_firesim_n_sync;
 `include "unused_cl_sda_template.inc"
 // `include "unused_sh_bar1_template.inc" // does not exist in F2
 `include "unused_apppf_irq_template.inc"
-`include "unused_sh_ocl_template.inc" // F2: tie off cl_ocl_* signals
+// `include "unused_sh_ocl_template.inc" // F2: tie off cl_ocl_* signals
 // `include "unused_dma_pcis_template.inc" // F2: comment for now since signals rely on this
 
 //-------------------------------------------------

@@ -21,7 +21,7 @@
 -define DISABLE_VJTAG_DEBUG
 
 -include $CL_DIR/verif/tests
--f $HDK_COMMON_DIR/verif/tb/filelists/tb.${SIMULATOR}.f
+-f ${HDK_COMMON_DIR}/verif/tb/filelists/tb.${SIMULATOR}.f
 ${TEST_NAME}
 
 // -include $CL_DIR/../common/design
