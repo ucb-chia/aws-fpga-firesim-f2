@@ -33,7 +33,7 @@ module cl_firesim
 
 logic rst_main_n_sync;
 logic rst_firesim_n_sync;
-// logic rst_extra1_n_sync; // F2: no extra clocks
+logic rst_extra1_n_sync;
 
 //--------------------------------------------0
 // Start with Tie-Off of Unused Interfaces
@@ -63,113 +63,31 @@ logic rst_firesim_n_sync;
   assign cl_sh_id1[31:0] = `CL_SH_ID1;
 
 
-// Clock Region Partitioning Workaround
-// Vivado chokes on unloaded clocks in the CL pblock -- so put a dummy load
-// on them
-// See: https://forums.aws.amazon.com/thread.jspa?messageID=939230&#939230
-//-------------------------------------------------
-// ============= F2: extra clock signals removed ==================
-// (* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
-// (* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
-// (* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
-// (* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
-// (* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
-// (* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
-// (* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
+ //-----------------------------------------
+  // Clocking Block : AWS_CLK_GEN
+  //-----------------------------------------
+  logic   gen_clk_hbm_ref;
+  logic   gen_clk_main_a0;
+  logic   gen_clk_extra_a1;
+  logic   gen_clk_extra_a2;
+  logic   gen_clk_extra_a3;
+  logic   gen_clk_extra_b0;
+  logic   gen_clk_extra_b1;
+  logic   gen_clk_extra_c0;
+  logic   gen_clk_extra_c1;
+  logic   gen_clk_hbm_axi;
+  logic   gen_rst_hbm_axi_n;
+  logic   gen_rst_hbm_ref_n;
+  logic   gen_rst_c1_n;
+  logic   gen_rst_c0_n;
+  logic   gen_rst_b1_n;
+  logic   gen_rst_b0_n;
+  logic   gen_rst_a3_n;
+  logic   gen_rst_a2_n;
+  logic   gen_rst_a1_n;
+  logic   gen_rst_main_n;
 
-// always_ff @(posedge clk_extra_a1) begin
-//     clk_extra_a1_reg <= 1'b1;
-// end
-
-// always_ff @(posedge clk_extra_a2) begin
-//     clk_extra_a2_reg <= 1'b1;
-// end
-
-// always_ff @(posedge clk_extra_a3) begin
-//     clk_extra_a3_reg <= 1'b1;
-// end
-
-// always_ff @(posedge clk_extra_b0) begin
-//     clk_extra_b0_reg <=  1'b1;
-// end
-
-// always_ff @(posedge clk_extra_b1) begin
-//     clk_extra_b1_reg <= 1'b1;
-// end
-
-// always_ff @(posedge clk_extra_c0) begin
-//     clk_extra_c0_reg <= 1'b1;
-// end
-
-// always_ff @(posedge clk_extra_c1) begin
-//     clk_extra_c1_reg <= 1'b1;
-// end
-
-//-------------------------------------------------
-// Reset Synchronization Outer
-//-------------------------------------------------
-logic pre_sync_rst_n;
-
-always_ff @(negedge rst_main_n or posedge clk_main_a0)
-   if (!rst_main_n)
-   begin
-      pre_sync_rst_n  <= 0;
-      rst_main_n_sync <= 0;
-   end
-   else
-   begin
-      pre_sync_rst_n  <= 1;
-      rst_main_n_sync <= pre_sync_rst_n;
-   end
-
-// ====== F2: no extra clocks ======
-// logic pre_sync_rst_n_extra1;
-// always_ff @(negedge rst_main_n or posedge clk_extra_a1)
-//    if (!rst_main_n)
-//    begin
-//       pre_sync_rst_n_extra1  <= 0;
-//       rst_extra1_n_sync <= 0;
-//    end
-//    else
-//    begin
-//       pre_sync_rst_n_extra1  <= 1;
-//       rst_extra1_n_sync <= pre_sync_rst_n_extra1;
-//    end
-
-//---------------------------
-
-logic firesim_internal_clock;
-
-clk_wiz_0_firesim firesim_clocking
-(
-    // Clock out ports
-    .clk_out1(firesim_internal_clock),
-    // Status and control signals
-   //  .reset(!rst_extra1_n_sync), // input reset
-   .reset(rst_main_n_sync), // F2: no extra rst signal
-    .locked(),       // output locked
-   // Clock in ports
-   //  .clk_in1(clk_extra_a1)      // input clk_in1, expects 125 mhz
-   .clk_in1(clk_main_a0) // F2: no extra clock signal
-);
-
-//-------------------------------------------------
-// Reset Synchronization Inner
-//-------------------------------------------------
-logic pre_sync_rst_n_firesim;
-always_ff @(negedge rst_main_n or posedge firesim_internal_clock)
-   if (!rst_main_n)
-   begin
-      pre_sync_rst_n_firesim  <= 0;
-      rst_firesim_n_sync <= 0;
-   end
-   else
-   begin
-      pre_sync_rst_n_firesim  <= 1;
-      rst_firesim_n_sync <= pre_sync_rst_n_firesim;
-   end
-
-//-------------------------------------------------
+  //-------------------------------------------------
 // PCIe OCL AXI-L (SH to CL) Timing Flops
 //-------------------------------------------------
 
@@ -200,30 +118,221 @@ always_ff @(negedge rst_main_n or posedge firesim_internal_clock)
   logic [ 1:0] ocl_sh_rresp_q;
   logic        sh_ocl_rready_q;
 
+  aws_clk_gen
+  #(
+    .CLK_GRP_A_EN           (1                        ),
+    .CLK_GRP_B_EN           (1                        ),
+    .CLK_GRP_C_EN           (1                        ),
+    .CLK_HBM_EN             (1                        )
+  )
+  AWS_CLK_GEN
+  (
+    .i_clk_main_a0          (clk_main_a0              ),
+    .i_rst_main_n           (rst_main_n               ),
+    .i_clk_hbm_ref          (clk_hbm_ref              ),
+
+    .s_axil_ctrl_awaddr     (sh_ocl_awaddr_q   ),
+    .s_axil_ctrl_awvalid    (sh_ocl_awvalid_q  ),
+    .s_axil_ctrl_awready    (ocl_sh_awready_q  ),
+    .s_axil_ctrl_wdata      (sh_ocl_wdata_q    ),
+    .s_axil_ctrl_wstrb      (sh_ocl_wstrb_q    ),
+    .s_axil_ctrl_wvalid     (sh_ocl_wvalid_q   ),
+    .s_axil_ctrl_wready     (ocl_sh_wready_q   ),
+    .s_axil_ctrl_bresp      (ocl_sh_bresp_q    ),
+    .s_axil_ctrl_bvalid     (ocl_sh_bvalid_q   ),
+    .s_axil_ctrl_bready     (sh_ocl_bready_q   ),
+    .s_axil_ctrl_araddr     (sh_ocl_araddr_q   ),
+    .s_axil_ctrl_arvalid    (sh_ocl_arvalid_q  ),
+    .s_axil_ctrl_arready    (ocl_sh_arready_q  ),
+    .s_axil_ctrl_rdata      (ocl_sh_rdata_q    ),
+    .s_axil_ctrl_rresp      (ocl_sh_rresp_q    ),
+    .s_axil_ctrl_rvalid     (ocl_sh_rvalid_q   ),
+    .s_axil_ctrl_rready     (sh_ocl_rready_q   ),
+
+    .o_clk_hbm_ref          (gen_clk_hbm_ref          ),
+    .o_clk_main_a0          (gen_clk_main_a0          ),
+    .o_clk_extra_a1         (gen_clk_extra_a1         ),
+    .o_clk_extra_a2         (gen_clk_extra_a2         ),
+    .o_clk_extra_a3         (gen_clk_extra_a3         ),
+    .o_clk_extra_b0         (gen_clk_extra_b0         ),
+    .o_clk_extra_b1         (gen_clk_extra_b1         ),
+    .o_clk_extra_c0         (gen_clk_extra_c0         ),
+    .o_clk_extra_c1         (gen_clk_extra_c1         ),
+    .o_clk_hbm_axi          (gen_clk_hbm_axi          ),
+    .o_cl_rst_hbm_axi_n     (gen_rst_hbm_axi_n        ),
+    .o_cl_rst_hbm_ref_n     (gen_rst_hbm_ref_n        ),
+    .o_cl_rst_c1_n          (gen_rst_c1_n             ),
+    .o_cl_rst_c0_n          (gen_rst_c0_n             ),
+    .o_cl_rst_b1_n          (gen_rst_b1_n             ),
+    .o_cl_rst_b0_n          (gen_rst_b0_n             ),
+    .o_cl_rst_a3_n          (gen_rst_a3_n             ),
+    .o_cl_rst_a2_n          (gen_rst_a2_n             ),
+    .o_cl_rst_a1_n          (gen_rst_a1_n             ),
+    .o_cl_rst_main_n        (gen_rst_main_n           )
+  );
+
+
+// Clock Region Partitioning Workaround
+// Vivado chokes on unloaded clocks in the CL pblock -- so put a dummy load
+// on them
+// See: https://forums.aws.amazon.com/thread.jspa?messageID=939230&#939230
+//-------------------------------------------------
+// ============= F2: extra clock signals removed ==================
+(* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
+(* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
+(* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
+(* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
+(* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
+(* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
+(* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
+
+always_ff @(posedge gen_clk_extra_a1) begin
+    clk_extra_a1_reg <= 1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_a2) begin
+    clk_extra_a2_reg <= 1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_a3) begin
+    clk_extra_a3_reg <= 1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_b0) begin
+    clk_extra_b0_reg <=  1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_b1) begin
+    clk_extra_b1_reg <= 1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_c0) begin
+    clk_extra_c0_reg <= 1'b1;
+end
+
+always_ff @(posedge gen_clk_extra_c1) begin
+    clk_extra_c1_reg <= 1'b1;
+end
+
+//-------------------------------------------------
+// Reset Synchronization Outer
+//-------------------------------------------------
+logic pre_sync_rst_n;
+
+always_ff @(negedge gen_rst_main_n or posedge gen_clk_main_a0)
+   if (!gen_rst_main_n)
+   begin
+      pre_sync_rst_n  <= 0;
+      rst_main_n_sync <= 0;
+   end
+   else
+   begin
+      pre_sync_rst_n  <= 1;
+      rst_main_n_sync <= pre_sync_rst_n;
+   end
+
+// ====== F2: no extra clocks ======
+logic pre_sync_rst_n_extra1;
+always_ff @(negedge gen_rst_main_n or posedge gen_clk_extra_a1)
+   if (!gen_rst_main_n)
+   begin
+      pre_sync_rst_n_extra1  <= 0;
+      rst_extra1_n_sync <= 0;
+   end
+   else
+   begin
+      pre_sync_rst_n_extra1  <= 1;
+      rst_extra1_n_sync <= pre_sync_rst_n_extra1;
+   end
+
+//---------------------------
+
+logic firesim_internal_clock;
+
+clk_wiz_0_firesim firesim_clocking
+(
+    // Clock out ports
+    .clk_out1(firesim_internal_clock),
+    // Status and control signals
+    .reset(!rst_extra1_n_sync), // input reset
+   // .reset(rst_main_n_sync), // F2: no extra rst signal
+    .locked(),       // output locked
+   // Clock in ports
+    .clk_in1(gen_clk_extra_a1)      // input clk_in1, expects 125 mhz
+   // .clk_in1(clk_main_a0) // F2: no extra clock signal
+);
+
+//-------------------------------------------------
+// Reset Synchronization Inner
+//-------------------------------------------------
+logic pre_sync_rst_n_firesim;
+always_ff @(negedge gen_rst_main_n or posedge firesim_internal_clock)
+   if (!gen_rst_main_n)
+   begin
+      pre_sync_rst_n_firesim  <= 0;
+      rst_firesim_n_sync <= 0;
+   end
+   else
+   begin
+      pre_sync_rst_n_firesim  <= 1;
+      rst_firesim_n_sync <= pre_sync_rst_n_firesim;
+   end
+
+// //-------------------------------------------------
+// // PCIe OCL AXI-L (SH to CL) Timing Flops
+// //-------------------------------------------------
+
+//   // Write address                                                                                                              
+//   logic        sh_ocl_awvalid_q;
+//   logic [31:0] sh_ocl_awaddr_q;
+//   logic        ocl_sh_awready_q;
+                                                                                                                              
+//   // Write data                                                                                                                
+//   logic        sh_ocl_wvalid_q;
+//   logic [31:0] sh_ocl_wdata_q;
+//   logic [ 3:0] sh_ocl_wstrb_q;
+//   logic        ocl_sh_wready_q;
+                                                                                                                              
+//   // Write response                                                                                                            
+//   logic        ocl_sh_bvalid_q;
+//   logic [ 1:0] ocl_sh_bresp_q;
+//   logic        sh_ocl_bready_q;
+                                                                                                                              
+//   // Read address                                                                                                              
+//   logic        sh_ocl_arvalid_q;
+//   logic [31:0] sh_ocl_araddr_q;
+//   logic        ocl_sh_arready_q;
+                                                                                                                              
+//   // Read data/response                                                                                                        
+//   logic        ocl_sh_rvalid_q;
+//   logic [31:0] ocl_sh_rdata_q;
+//   logic [ 1:0] ocl_sh_rresp_q;
+//   logic        sh_ocl_rready_q;
+
 // clock converter for OCL connection
 axi_clock_converter_oclnew ocl_clock_convert (
-  .s_axi_aclk(clk_main_a0),        // input wire s_axi_aclk
+  .s_axi_aclk(gen_clk_main_a0),        // input wire s_axi_aclk
   .s_axi_aresetn(rst_main_n_sync),  // input wire s_axi_aresetn
 
-  .s_axi_awaddr(sh_ocl_awaddr),    // input wire [31 : 0] s_axi_awaddr
+  .s_axi_awaddr(ocl_cl_awaddr),    // input wire [31 : 0] s_axi_awaddr
   .s_axi_awprot(3'h0),             // input wire [2 : 0] s_axi_awprot
-  .s_axi_awvalid(sh_ocl_awvalid),  // input wire s_axi_awvalid
-  .s_axi_awready(ocl_sh_awready),  // output wire s_axi_awready
-  .s_axi_wdata(sh_ocl_wdata),      // input wire [31 : 0] s_axi_wdata
-  .s_axi_wstrb(sh_ocl_wstrb),      // input wire [3 : 0] s_axi_wstrb
-  .s_axi_wvalid(sh_ocl_wvalid),    // input wire s_axi_wvalid
-  .s_axi_wready(ocl_sh_wready),    // output wire s_axi_wready
-  .s_axi_bresp(ocl_sh_bresp),      // output wire [1 : 0] s_axi_bresp
-  .s_axi_bvalid(ocl_sh_bvalid),    // output wire s_axi_bvalid
-  .s_axi_bready(sh_ocl_bready),    // input wire s_axi_bready
-  .s_axi_araddr(sh_ocl_araddr),    // input wire [31 : 0] s_axi_araddr
-  .s_axi_arprot(3'h0),             // input wire [2 : 0] s_axi_arprot
-  .s_axi_arvalid(sh_ocl_arvalid),  // input wire s_axi_arvalid
-  .s_axi_arready(ocl_sh_arready),  // output wire s_axi_arready
-  .s_axi_rdata(ocl_sh_rdata),      // output wire [31 : 0] s_axi_rdata
-  .s_axi_rresp(ocl_sh_rresp),      // output wire [1 : 0] s_axi_rresp
-  .s_axi_rvalid(ocl_sh_rvalid),    // output wire s_axi_rvalid
-  .s_axi_rready(sh_ocl_rready),    // input wire s_axi_rready
+  .s_axi_awvalid(ocl_cl_awvalid),  // input wire s_axi_awvalid
+  .s_axi_awready(cl_ocl_awready),  // output wire s_axi_awready
+  .s_axi_wdata(ocl_cl_wdata),      // input wire [31 : 0] s_axi_wdata
+  .s_axi_wstrb(ocl_cl_wstrb),      // input wire [3 : 0] s_axi_wstrb
+  .s_axi_wvalid(ocl_cl_wvalid),    // input wire s_axi_wvalid
+  .s_axi_wready(cl_ocl_wready),    // output wire s_axi_wready
+  .s_axi_bresp(cl_ocl_bresp),      // output wire [1 : 0] s_axi_bresp
+  .s_axi_bvalid(cl_ocl_bvalid),    // output wire s_axi_bvalid
+  .s_axi_bready(ocl_cl_bready),    // input wire s_axi_bready
+  .s_axi_araddr(ocl_cl_araddr),    // input wire [31 : 0] s_axi_araddr
+//   .s_axi_arprot(3'h0),             // input wire [2 : 0] s_axi_arprot
+  .s_axi_arvalid(ocl_cl_arvalid),  // input wire s_axi_arvalid
+  .s_axi_arready(cl_ocl_arready),  // output wire s_axi_arready
+  .s_axi_rdata(cl_ocl_rdata),      // output wire [31 : 0] s_axi_rdata
+  .s_axi_rresp(cl_ocl_rresp),      // output wire [1 : 0] s_axi_rresp
+  .s_axi_rvalid(cl_ocl_rvalid),    // output wire s_axi_rvalid
+  .s_axi_rready(ocl_cl_rready),    // input wire s_axi_rready
 
   .m_axi_aclk(firesim_internal_clock),        // input wire m_axi_aclk
   .m_axi_aresetn(rst_firesim_n_sync),  // input wire m_axi_aresetn
@@ -292,7 +401,7 @@ axi_clock_converter_oclnew ocl_clock_convert (
    assign cl_sh_dma_rd_full = 1'b0;
 
 axi_clock_converter_512_wide wide_pcis_clock_convert (
-  .s_axi_aclk(clk_main_a0),          // input wire s_axi_aclk
+  .s_axi_aclk(gen_clk_main_a0),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
 
   .s_axi_awid(sh_cl_dma_pcis_awid),          // input wire [5 : 0] s_axi_awid
@@ -759,39 +868,39 @@ logic[31:0] ddr_sh_stat_rdata_q;
 logic[7:0] ddr_sh_stat_int_q;
 
 
-lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({sh_ddr_stat_wr0, sh_ddr_stat_rd0, sh_ddr_stat_addr0, sh_ddr_stat_wdata0}),
-                                               .out_bus({sh_ddr_stat_wr_q[0], sh_ddr_stat_rd_q[0], sh_ddr_stat_addr_q[0], sh_ddr_stat_wdata_q[0]})
-                                               );
+// lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({sh_ddr_stat_wr0, sh_ddr_stat_rd0, sh_ddr_stat_addr0, sh_ddr_stat_wdata0}),
+//                                                .out_bus({sh_ddr_stat_wr_q[0], sh_ddr_stat_rd_q[0], sh_ddr_stat_addr_q[0], sh_ddr_stat_wdata_q[0]})
+//                                                );
 
 
-lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({ddr_sh_stat_ack_q[0], ddr_sh_stat_int_q[0], ddr_sh_stat_rdata_q[0]}),
-                                               .out_bus({ddr_sh_stat_ack0, ddr_sh_stat_int0, ddr_sh_stat_rdata0})
-                                               );
+// lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({ddr_sh_stat_ack_q[0], ddr_sh_stat_int_q[0], ddr_sh_stat_rdata_q[0]}),
+//                                                .out_bus({ddr_sh_stat_ack0, ddr_sh_stat_int0, ddr_sh_stat_rdata0})
+//                                                );
 
 
-lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT1 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({sh_ddr_stat_wr1, sh_ddr_stat_rd1, sh_ddr_stat_addr1, sh_ddr_stat_wdata1}),
-                                               .out_bus({sh_ddr_stat_wr_q[1], sh_ddr_stat_rd_q[1], sh_ddr_stat_addr_q[1], sh_ddr_stat_wdata_q[1]})
-                                               );
+// lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT1 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({sh_ddr_stat_wr1, sh_ddr_stat_rd1, sh_ddr_stat_addr1, sh_ddr_stat_wdata1}),
+//                                                .out_bus({sh_ddr_stat_wr_q[1], sh_ddr_stat_rd_q[1], sh_ddr_stat_addr_q[1], sh_ddr_stat_wdata_q[1]})
+//                                                );
 
 
-lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK1 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({ddr_sh_stat_ack_q[1], ddr_sh_stat_int_q[1], ddr_sh_stat_rdata_q[1]}),
-                                               .out_bus({ddr_sh_stat_ack1, ddr_sh_stat_int1, ddr_sh_stat_rdata1})
-                                               );
+// lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK1 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({ddr_sh_stat_ack_q[1], ddr_sh_stat_int_q[1], ddr_sh_stat_rdata_q[1]}),
+//                                                .out_bus({ddr_sh_stat_ack1, ddr_sh_stat_int1, ddr_sh_stat_rdata1})
+//                                                );
 
-lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT2 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({sh_ddr_stat_wr2, sh_ddr_stat_rd2, sh_ddr_stat_addr2, sh_ddr_stat_wdata2}),
-                                               .out_bus({sh_ddr_stat_wr_q[2], sh_ddr_stat_rd_q[2], sh_ddr_stat_addr_q[2], sh_ddr_stat_wdata_q[2]})
-                                               );
+// lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT2 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({sh_ddr_stat_wr2, sh_ddr_stat_rd2, sh_ddr_stat_addr2, sh_ddr_stat_wdata2}),
+//                                                .out_bus({sh_ddr_stat_wr_q[2], sh_ddr_stat_rd_q[2], sh_ddr_stat_addr_q[2], sh_ddr_stat_wdata_q[2]})
+//                                                );
 
 
-lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK2 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
-                                               .in_bus({ddr_sh_stat_ack_q[2], ddr_sh_stat_int_q[2], ddr_sh_stat_rdata_q[2]}),
-                                               .out_bus({ddr_sh_stat_ack2, ddr_sh_stat_int2, ddr_sh_stat_rdata2})
-                                               ); 
+// lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK2 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
+//                                                .in_bus({ddr_sh_stat_ack_q[2], ddr_sh_stat_int_q[2], ddr_sh_stat_rdata_q[2]}),
+//                                                .out_bus({ddr_sh_stat_ack2, ddr_sh_stat_int2, ddr_sh_stat_rdata2})
+//                                                ); 
 
 //convert to 2D 
 // logic[15:0] cl_sh_ddr_awid_2d[2:0];
@@ -2681,7 +2790,7 @@ endgenerate
 // Tie-Off Unused Global Signals
 //-------------------------------------------
 // The functionality for these signals is TBD so they can can be tied-off.
-  assign clk_hbm_ref = 1'b0;
+//   assign clk_hbm_ref = 1'b0;
   assign cl_sh_status0[31:0] = 32'h0;
   assign cl_sh_status1[31:0] = 32'h0;
   assign cl_sh_status2[31:0] = 32'h0; // new in f2

@@ -6,7 +6,7 @@ set VDEFINES ""
 
 # Common header
 source ${HDK_SHELL_DIR}/build/scripts/synth_cl_header.tcl
-# set DEVICE_TYPE xcvu47p-fsvh2892-2-e
+# set DEVICE_TYPE "xcvu47p-fsvh2892-2-e"
 
 
 ###############################################################################
@@ -51,8 +51,9 @@ puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Reading developer's 
 # Reading the .sv and .v files, as proper designs would not require
 # reading .v, .vh, nor .inc files
 
-# read_verilog -sv [glob $ENC_SRC_DIR/*.{v,sv}]
-read_verilog -sv [glob $ENC_SRC_DIR/*.{s,}v]
+read_verilog -sv [glob ${src_post_enc_dir}/*.{s,}v] 
+# getting ERROR: [Synth 8-9263] cannot open include file 'cl_common_defines.vh' 
+# read_verilog -sv [glob ${CL_DIR}/design/*.{s,}v]
 
 #---- End of section replaced by User ----
 
