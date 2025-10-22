@@ -23,11 +23,22 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#ifdef SV_TEST
-#ifndef VIVADO_SIM
-#include "svdpi.h"
-#endif
-#endif
+// #ifdef SV_TEST
+// #ifndef VIVADO_SIM
+// #include "svdpi.h"
+// #endif
+// #endif
+
+#include <utils/sh_dpi_tasks.h>
+
+// // #ifdef SV_TEST
+// // #include <fpga_pci_sv.h>
+// // #else
+// #include <fpga_pci.h>
+// #include <fpga_mgmt.h>
+// // # include "fpga_dma.h"
+// #include <utils/lcd.h>
+// // #endif
 
 #include "common_dma.h"
 
@@ -36,7 +47,7 @@
  * on the FPGA. the FireSim driver is then built and communicates via pipes
  * to this xsim simulation. */
 
-void test_main(uint32_t *exit_code) {
+void main(uint32_t *exit_code) {
 
     //The statements within SCOPE ifdef below are needed for HW/SW co-simulation with VCS
     #ifdef SCOPE
@@ -50,6 +61,7 @@ void test_main(uint32_t *exit_code) {
 
     /* initialize the fpga_pci library so we could have access to FPGA PCIe from this applications */
     rc = fpga_pci_init();
+    // rc = 0;
 
     int bar_id = APP_PF_BAR0;
     int pf_id = FPGA_APP_PF;
