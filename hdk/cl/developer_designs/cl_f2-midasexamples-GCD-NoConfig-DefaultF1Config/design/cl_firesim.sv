@@ -118,6 +118,70 @@ logic rst_extra1_n_sync;
   logic [ 1:0] ocl_sh_rresp_q;
   logic        sh_ocl_rready_q;
 
+//   axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_bram();
+//   axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_clkgen();
+
+//   logic sda_xbar_sync_rst_n;
+
+//   // NOTE:
+//   // Using rst_main_n to feed CL_SDA_AXIL_XBAR. Since this XBAR is before AWS_CLK_GEN
+//   xpm_cdc_async_rst CDC_ASYNC_RST_N_SDA_XBAR
+//   (
+//     .src_arst               (rst_main_n               ),
+//     .dest_clk               (clk_main_a0              ),
+//     .dest_arst              (sda_xbar_sync_rst_n      )
+//   );
+
+//   //-----------------------------------------
+//   // SDA-AXIL XBAR:
+//   // Addr 0x0000_0000 - 0x0004_FFFF : SDA-BRAM
+//   // Addr 0x0005_0000 - 0xFFFF_FFFF : AWS_CLK_GEN
+//   //-----------------------------------------
+//   cl_sda_axil_xbar CL_SDA_AXIL_CROSSBAR
+//   (
+//     .aclk                   (clk_main_a0              ),
+//     .aresetn                (sda_xbar_sync_rst_n      ),
+//     .s_axi_awaddr           (sda_cl_awaddr            ),
+//     .s_axi_awprot           (`DEF_AXPROT              ),
+//     .s_axi_awvalid          (sda_cl_awvalid           ),
+//     .s_axi_awready          (cl_sda_awready           ),
+//     .s_axi_wdata            (sda_cl_wdata             ),
+//     .s_axi_wstrb            (4'hF                     ),
+//     .s_axi_wvalid           (sda_cl_wvalid            ),
+//     .s_axi_wready           (cl_sda_wready            ),
+//     .s_axi_bresp            (cl_sda_bresp             ),
+//     .s_axi_bvalid           (cl_sda_bvalid            ),
+//     .s_axi_bready           (sda_cl_bready            ),
+//     .s_axi_araddr           (sda_cl_araddr            ),
+//     .s_axi_arprot           (`DEF_AXPROT              ),
+//     .s_axi_arvalid          (sda_cl_arvalid           ),
+//     .s_axi_arready          (cl_sda_arready           ),
+//     .s_axi_rdata            (cl_sda_rdata             ),
+//     .s_axi_rresp            (cl_sda_rresp             ),
+//     .s_axi_rvalid           (cl_sda_rvalid            ),
+//     .s_axi_rready           (sda_cl_rready            ),
+
+//     .m_axi_awaddr           ({sda_axil_clkgen.awaddr,   sda_axil_bram.awaddr }),
+//     .m_axi_awprot           (                                                 ),
+//     .m_axi_awvalid          ({sda_axil_clkgen.awvalid,  sda_axil_bram.awvalid}),
+//     .m_axi_awready          ({sda_axil_clkgen.awready,  sda_axil_bram.awready}),
+//     .m_axi_wdata            ({sda_axil_clkgen.wdata,    sda_axil_bram.wdata  }),
+//     .m_axi_wstrb            ({sda_axil_clkgen.wstrb,    sda_axil_bram.wstrb  }),
+//     .m_axi_wvalid           ({sda_axil_clkgen.wvalid,   sda_axil_bram.wvalid }),
+//     .m_axi_wready           ({sda_axil_clkgen.wready,   sda_axil_bram.wready }),
+//     .m_axi_bresp            ({sda_axil_clkgen.bresp,    sda_axil_bram.bresp  }),
+//     .m_axi_bvalid           ({sda_axil_clkgen.bvalid,   sda_axil_bram.bvalid }),
+//     .m_axi_bready           ({sda_axil_clkgen.bready,   sda_axil_bram.bready }),
+//     .m_axi_araddr           ({sda_axil_clkgen.araddr,   sda_axil_bram.araddr }),
+//     .m_axi_arprot           (                                                 ),
+//     .m_axi_arvalid          ({sda_axil_clkgen.arvalid,  sda_axil_bram.arvalid}),
+//     .m_axi_arready          ({sda_axil_clkgen.arready,  sda_axil_bram.arready}),
+//     .m_axi_rdata            ({sda_axil_clkgen.rdata  ,  sda_axil_bram.rdata  }),
+//     .m_axi_rresp            ({sda_axil_clkgen.rresp  ,  sda_axil_bram.rresp  }),
+//     .m_axi_rvalid           ({sda_axil_clkgen.rvalid ,  sda_axil_bram.rvalid }),
+//     .m_axi_rready           ({sda_axil_clkgen.rready ,  sda_axil_bram.rready })
+//   );
+
   aws_clk_gen
   #(
     .CLK_GRP_A_EN           (1                        ),
@@ -149,6 +213,28 @@ logic rst_extra1_n_sync;
     .s_axil_ctrl_rvalid     (ocl_sh_rvalid_q   ),
     .s_axil_ctrl_rready     (sh_ocl_rready_q   ),
 
+   //  .i_clk_main_a0          (clk_main_a0              ),
+   //  .i_rst_main_n           (sda_xbar_sync_rst_n      ),
+   //  .i_clk_hbm_ref          (clk_hbm_ref              ),
+
+   //  .s_axil_ctrl_awaddr     (sda_axil_clkgen.awaddr   ),
+   //  .s_axil_ctrl_awvalid    (sda_axil_clkgen.awvalid  ),
+   //  .s_axil_ctrl_awready    (sda_axil_clkgen.awready  ),
+   //  .s_axil_ctrl_wdata      (sda_axil_clkgen.wdata    ),
+   //  .s_axil_ctrl_wstrb      (sda_axil_clkgen.wstrb    ),
+   //  .s_axil_ctrl_wvalid     (sda_axil_clkgen.wvalid   ),
+   //  .s_axil_ctrl_wready     (sda_axil_clkgen.wready   ),
+   //  .s_axil_ctrl_bresp      (sda_axil_clkgen.bresp    ),
+   //  .s_axil_ctrl_bvalid     (sda_axil_clkgen.bvalid   ),
+   //  .s_axil_ctrl_bready     (sda_axil_clkgen.bready   ),
+   //  .s_axil_ctrl_araddr     (sda_axil_clkgen.araddr   ),
+   //  .s_axil_ctrl_arvalid    (sda_axil_clkgen.arvalid  ),
+   //  .s_axil_ctrl_arready    (sda_axil_clkgen.arready  ),
+   //  .s_axil_ctrl_rdata      (sda_axil_clkgen.rdata    ),
+   //  .s_axil_ctrl_rresp      (sda_axil_clkgen.rresp    ),
+   //  .s_axil_ctrl_rvalid     (sda_axil_clkgen.rvalid   ),
+   //  .s_axil_ctrl_rready     (sda_axil_clkgen.rready   ),
+
     .o_clk_hbm_ref          (gen_clk_hbm_ref          ),
     .o_clk_main_a0          (gen_clk_main_a0          ),
     .o_clk_extra_a1         (gen_clk_extra_a1         ),
@@ -178,41 +264,41 @@ logic rst_extra1_n_sync;
 // See: https://forums.aws.amazon.com/thread.jspa?messageID=939230&#939230
 //-------------------------------------------------
 // ============= F2: extra clock signals removed ==================
-(* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
-(* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
-(* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_a1_reg;                          //Extra clock A1 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_a2_reg;                          //Extra clock A2 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_a3_reg;                          //Extra clock A3 (phase aligned to "A" clock group)
+// (* dont_touch = "true" *) logic clk_extra_b0_reg;                          //Extra clock B0 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_b1_reg;                          //Extra clock B1 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_c0_reg;                          //Extra clock C0 (phase aligned to "B" clock group)
+// (* dont_touch = "true" *) logic clk_extra_c1_reg;                          //Extra clock C1 (phase aligned to "B" clock group)
 
-always_ff @(posedge gen_clk_extra_a1) begin
-    clk_extra_a1_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_a1) begin
+//     clk_extra_a1_reg <= 1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_a2) begin
-    clk_extra_a2_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_a2) begin
+//     clk_extra_a2_reg <= 1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_a3) begin
-    clk_extra_a3_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_a3) begin
+//     clk_extra_a3_reg <= 1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_b0) begin
-    clk_extra_b0_reg <=  1'b1;
-end
+// always_ff @(posedge gen_clk_extra_b0) begin
+//     clk_extra_b0_reg <=  1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_b1) begin
-    clk_extra_b1_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_b1) begin
+//     clk_extra_b1_reg <= 1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_c0) begin
-    clk_extra_c0_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_c0) begin
+//     clk_extra_c0_reg <= 1'b1;
+// end
 
-always_ff @(posedge gen_clk_extra_c1) begin
-    clk_extra_c1_reg <= 1'b1;
-end
+// always_ff @(posedge gen_clk_extra_c1) begin
+//     clk_extra_c1_reg <= 1'b1;
+// end
 
 //-------------------------------------------------
 // Reset Synchronization Outer
@@ -2816,7 +2902,7 @@ logic zeroila;
 assign zeroila = 64'b0;
 
 // Integrated Logic Analyzers (ILA)
-   ila_0 CL_ILA_0 (
+   ila_1 CL_ILA_0 (
                    .clk    (clk_main_a0),
                    .probe0 (zeroila),
                    .probe1 (zeroila),
@@ -2826,7 +2912,7 @@ assign zeroila = 64'b0;
                    .probe5 (zeroila)
                    );
 
-   ila_0 CL_ILA_1 (
+   ila_1 CL_ILA_1 (
                    .clk    (clk_main_a0),
                    .probe0 (zeroila),
                    .probe1 (zeroila),
