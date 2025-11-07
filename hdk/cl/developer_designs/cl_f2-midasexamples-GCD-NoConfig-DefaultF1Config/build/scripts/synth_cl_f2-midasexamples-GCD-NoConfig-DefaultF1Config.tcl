@@ -233,6 +233,8 @@ if { $failval==0 } {
 	exit 1
 }
 
+# set timestamp [{date +"%y_%m_%d-%H%M%S"}]
+set timestamp [clock format [clock seconds] -format "%y_%m_%d-%H%M%S"]
 puts "AWS FPGA: ([clock format [clock seconds] -format %T]) writing post synth checkpoint.";
 write_checkpoint -force $CL_DIR/build/checkpoints/${timestamp}.CL.post_synth.dcp
 
