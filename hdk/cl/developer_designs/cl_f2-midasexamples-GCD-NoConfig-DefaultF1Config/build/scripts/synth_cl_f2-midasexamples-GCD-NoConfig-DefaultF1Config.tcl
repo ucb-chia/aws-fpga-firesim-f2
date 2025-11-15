@@ -13,7 +13,7 @@ source ${HDK_SHELL_DIR}/build/scripts/synth_cl_header.tcl
 print "Reading encrypted user source codes"
 ###############################################################################
 
-create_project -in_memory -part [$DEVICE_TYPE] -force
+# create_project -in_memory -part [$DEVICE_TYPE] -force
 
 # Generate IP instantated in Golden-Gate generated RTL
 file mkdir $CL_DIR/design/ipgen
