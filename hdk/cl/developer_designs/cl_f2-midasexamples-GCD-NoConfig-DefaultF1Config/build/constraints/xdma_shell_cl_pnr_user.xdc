@@ -15,7 +15,7 @@
 # limitations under the License.
 # =============================================================================
 
-# Level 1 CL_DRAM_HBM_DMA floorplan for Small Shell
+# Level 1 CL_DRAM_HBM_DMA floorplan for XDMA Shell
 
 
 ###############################################################################
@@ -27,7 +27,7 @@
 create_pblock pblock_CL_SLR2
 
 # Complete CRs in SLR2
-resize_pblock pblock_CL_SLR2 -add {CLOCKREGION_X0Y8:CLOCKREGION_X7Y11}
+resize_pblock pblock_CL_SLR2 -add {CLOCKREGION_X0Y8:CLOCKREGION_X5Y11}
 
 set_property parent pblock_CL [get_pblocks pblock_CL_SLR2]
 
@@ -38,6 +38,7 @@ add_cells_to_pblock pblock_CL_SLR2 [get_cells [list WRAPPER/CL/SH_DDR \
                                                     WRAPPER/CL/PIPE_DDR_STAT* \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/CDC_ASYNC_RST_N_SLR2 \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/SLR2_PIPE_RST_N \
+                                                    WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_REG_SLC_PCIS_SLR2 \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_REG_SLC_DDRA_SLR2 \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/CL_TST_DDRA ]]
 
@@ -49,7 +50,6 @@ add_cells_to_pblock pblock_CL_SLR2 [get_cells [list WRAPPER/CL/SH_DDR \
 # Pblock
 ########################################
 create_pblock pblock_CL_SLR1
-# resize_pblock pblock_CL_SLR1_XBAR -add {CLOCKREGION_X0Y4:CLOCKREGION_X4Y7}
 
 # Complete CRs in SLR1
 resize_pblock pblock_CL_SLR1 -add {CLOCKREGION_X0Y4:CLOCKREGION_X3Y7}
@@ -83,29 +83,6 @@ add_cells_to_pblock pblock_CL_SLR1 [get_cells [list WRAPPER/CL/CL_OCL_SLV \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_REG_SLC_DDRA_SLR1 \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_REG_SLC_DDRB_SLR1 \
                                                     WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_CROSSBAR]]
-
-
-###############################################################################
-# Grandchild Pblock
-# NOTE:
-#   This pblock is to help move the PCIS interconnect away from the Shell to
-#   avoid routing congestion
-###############################################################################
-########################################
-# Pblock
-########################################
-# create_pblock pblock_CL_SLR1_XBAR
-
-# # Complete CRs in SLR1
-# resize_pblock pblock_CL_SLR1_XBAR -add {CLOCKREGION_X0Y4:CLOCKREGION_X4Y7}
-
-# # Partial CRs
-# set_property parent pblock_CL_SLR1 [get_pblocks pblock_CL_SLR1_XBAR]
-
-# ########################################
-# # Module Mapping
-# ########################################
-# add_cells_to_pblock pblock_CL_SLR1_XBAR [get_cells [list WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_CROSSBAR ]]
 
 
 ###############################################################################

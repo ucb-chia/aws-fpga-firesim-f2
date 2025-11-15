@@ -1,1 +1,0 @@
-../../../../../common/shell_stable/build/scripts/encrypt.tcl
