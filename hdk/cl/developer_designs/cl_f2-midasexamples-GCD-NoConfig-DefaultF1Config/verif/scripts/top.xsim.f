@@ -43,3 +43,17 @@ ${CL_DIR}/ip/axi_clock_converter_dramslim/axi_clock_converter_dramslim_sim_netli
 ${CL_DIR}/ip/axi_clock_converter_oclnew/axi_clock_converter_oclnew_sim_netlist.v
 ${CL_DIR}/ip/axi_dwidth_converter_0/axi_dwidth_converter_0_sim_netlist.v
 ${CL_DIR}/ip/clk_wiz_0_firesim/clk_wiz_0_firesim_sim_netlist.v
+
+-include $CL_DIR/../../examples/cl_dram_hbm_dma
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/axil_slave.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_tst_scrb.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_tst.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_int_tst.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_dram_dma_pkg.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_pcim_mstr.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_ila.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_vio.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_int_slv.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_sda_slv.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/cl_dram_dma_axi_mstr.sv
+${CL_DIR}/../../examples/cl_dram_hbm_dma/design/mem_scrb.sv

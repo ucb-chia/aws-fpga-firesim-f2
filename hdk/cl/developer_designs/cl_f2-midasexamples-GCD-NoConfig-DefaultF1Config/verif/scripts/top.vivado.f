@@ -85,6 +85,19 @@ ${CL_ROOT}/design/FireSim-generated.sv
 ${CL_ROOT}/design/FireSim-generated.defines.vh
 ${CL_ROOT}/design/cl_firesim.sv
 
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/axil_slave.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_tst_scrb.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_tst.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_int_tst.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_dram_dma_pkg.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_pcim_mstr.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_ila.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_vio.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_int_slv.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_sda_slv.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/cl_dram_dma_axi_mstr.sv
+${CL_ROOT}/../../examples/cl_dram_hbm_dma/design/mem_scrb.sv
+
 -f ${HDK_COMMON_DIR}/verif/tb/filelists/tb.${SIMULATOR}.f
 
 ${TEST_NAME}
