@@ -26,13 +26,4 @@
 // Uncomment to disable Virtual JTAG
 //`define DISABLE_VJTAG_DEBUG
 
-// Default AXI values
-`define DEF_AXSIZE    3'd6   // 64 Bytes per beat
-`define DEF_AXBURST   2'd1   // INCR burst
-`define DEF_AXCACHE   4'd1   // Bufferable, Non-Cacheable, No Read-Allocate, No Write-Allocate
-`define DEF_AXLOCK    1'd0   // Normal access
-`define DEF_AXPROT    3'd2   // Unprivileged access, Non-Secure Access
-`define DEF_AXQOS     4'd0   // Regular Identifier
-`define DEF_AXREGION  4'd0   // Single region
-
 `endif
