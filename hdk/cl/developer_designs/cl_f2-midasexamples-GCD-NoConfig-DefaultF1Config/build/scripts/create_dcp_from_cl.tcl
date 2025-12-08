@@ -15,11 +15,21 @@
 
 package require tar
 
+## Define the print procedure used by AWS scripts
+proc print {message} {
+    set prefix "\nAWS FPGA: ([clock format [clock seconds] -format %T]): "
+    append output $prefix $message "\n"
+    puts $output
+}
+
 ## Do not edit $TOP
 set TOP top_sp
 
 ## Replace with the name of your module
 set CL_MODULE cl_firesim
+
+## Set CL variable for synthesis scripts
+set CL $CL_MODULE
 
 #################################################
 ## Command-line Arguments
@@ -35,10 +45,11 @@ set subsystem_vendor_id [lindex $argv  7]
 set clock_recipe_a      [lindex $argv  8]
 set clock_recipe_b      [lindex $argv  9]
 set clock_recipe_c      [lindex $argv 10]
-set uram_option         [lindex $argv 11]
-set notify_via_sns      [lindex $argv 12]
-set frequency           [lindex $argv 13]
-set VDEFINES            [lindex $argv 14]
+set clock_recipe_hbm    [lindex $argv 11]
+set uram_option         [lindex $argv 12]
+set notify_via_sns      [lindex $argv 13]
+set frequency           [lindex $argv 14]
+set VDEFINES            [lindex $argv 15]
 ##################################################
 ## Flow control variables
 ##################################################
@@ -62,6 +73,7 @@ puts "PCI Subsystem Vendor ID $subsystem_vendor_id";
 puts "Clock Recipe A:         $clock_recipe_a";
 puts "Clock Recipe B:         $clock_recipe_b";
 puts "Clock Recipe C:         $clock_recipe_c";
+puts "Clock Recipe HBM:       $clock_recipe_hbm";
 puts "URAM option:            $uram_option";
 puts "Notify when done:       $notify_via_sns";
 
@@ -250,6 +262,15 @@ source $HDK_SHELL_DIR/build/scripts/step_user.tcl -notrace
 puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Calling aws_gen_clk_constraints.tcl to generate clock constraints from developer's specified recipe.";
 
 source $HDK_SHELL_DIR/build/scripts/aws_gen_clk_constraints.tcl
+
+# For compatibility with flows/XDCs that still expect cl_clocks_aws.xdc,
+# mirror the auto-generated clock constraints from generated_cl_clocks_aws.xdc.
+if { [file exists "$CL_DIR/build/constraints/generated_cl_clocks_aws.xdc"] } {
+    puts "AWS FPGA: Copying generated_cl_clocks_aws.xdc to cl_clocks_aws.xdc for compatibility."
+    file copy -force "$CL_DIR/build/constraints/generated_cl_clocks_aws.xdc" \
+                     "$CL_DIR/build/constraints/cl_clocks_aws.xdc"
+}
+
 #################################################################
 ##### Do not remove this setting. Need to workaround bug
 ##################################################################

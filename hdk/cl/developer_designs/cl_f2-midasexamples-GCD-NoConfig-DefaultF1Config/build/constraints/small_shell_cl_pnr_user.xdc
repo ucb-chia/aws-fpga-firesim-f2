@@ -93,18 +93,12 @@ add_cells_to_pblock pblock_CL_SLR1 [get_cells [list WRAPPER/CL/CL_OCL_SLV \
 ########################################
 # Pblock
 ########################################
-create_pblock pblock_CL_SLR1_XBAR
-
-# Complete CRs in SLR1
-resize_pblock pblock_CL_SLR1_XBAR -add {CLOCKREGION_X0Y4:CLOCKREGION_X4Y7}
-
-# Partial CRs
-set_property parent pblock_CL_SLR1 [get_pblocks pblock_CL_SLR1_XBAR]
-
-########################################
-# Module Mapping
-########################################
-add_cells_to_pblock pblock_CL_SLR1_XBAR [get_cells [list WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_CROSSBAR ]]
+# FIX: Commenting out pblock_CL_SLR1_XBAR because the module WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_CROSSBAR
+# doesn't exist in the FireSim design (FireSim has a different DMA architecture)
+# create_pblock pblock_CL_SLR1_XBAR
+# resize_pblock pblock_CL_SLR1_XBAR -add {CLOCKREGION_X0Y4:CLOCKREGION_X3Y7}
+# set_property parent pblock_CL_SLR1 [get_pblocks pblock_CL_SLR1_XBAR]
+# add_cells_to_pblock pblock_CL_SLR1_XBAR [get_cells [list WRAPPER/CL/CL_DMA_PCIS_SLV/AXI4_CROSSBAR ]]
 
 
 ###############################################################################

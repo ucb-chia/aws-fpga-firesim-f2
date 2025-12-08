@@ -1,6 +1,7 @@
 #Param needed to avoid clock name collisions
 # set_param sta.enableAutoGenClkNamePersistence 0
 set CL_MODULE cl_firesim
+set CL cl_firesim
 # set VDEFINES $VDEFINES
 set VDEFINES ""
 
@@ -53,6 +54,8 @@ puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Reading developer's 
 
 # read_verilog -sv [glob ${src_post_enc_dir}/*.{s,}v] 
 # getting ERROR: [Synth 8-9263] cannot open include file 'cl_common_defines.vh' 
+# Set include directories for header files
+set_property include_dirs [list $HDK_COMMON_DIR/verif/include $CL_DIR/design] [current_fileset]
 read_verilog -sv [glob ${CL_DIR}/design/*.{s,}v]
 
 #---- End of section replaced by User ----
@@ -99,6 +102,9 @@ read_ip [ list \
   $HDK_SHELL_DESIGN_DIR/../../ip/cl_ip/cl_ip.srcs/sources_1/ip/cl_clk_axil_xbar/cl_clk_axil_xbar.xci \
   $HDK_SHELL_DESIGN_DIR/../../ip/cl_ip/cl_ip.srcs/sources_1/ip/cl_sda_axil_xbar/cl_sda_axil_xbar.xci
 ]
+generate_target all [get_ips clk_mmcm_*]
+generate_target all [get_ips cl_clk_axil_xbar]
+generate_target all [get_ips cl_sda_axil_xbar]
 
 #Read IP for axi register slices
 # read_ip [ list \
@@ -122,6 +128,7 @@ read_ip [ list \
   ${HDK_IP_SRC_DIR}/axi_register_slice/axi_register_slice.xci \
   ${HDK_IP_SRC_DIR}/axi_register_slice_light/axi_register_slice_light.xci
 ]
+generate_target all [get_ips *register_slice*]
 
 #Read IP for virtual jtag / ILA/VIO
 # read_ip [ list \
@@ -148,6 +155,11 @@ read_ip [ list \
   $CL_DIR/ip/axi_clock_converter_512_pcim/axi_clock_converter_512_pcim.xci \
   $CL_DIR/ip/axi_dwidth_converter_0/axi_dwidth_converter_0.xci
 ]
+generate_target all [get_ips cl_debug_bridge]
+generate_target all [get_ips ila_*]
+generate_target all [get_ips vio_0]
+generate_target all [get_ips axi_clock_converter_*]
+generate_target all [get_ips axi_dwidth_converter_0]
 #   $CL_DIR/ip/axi_dwidth_converter_0/axi_dwidth_converter_0.xci \
 #   $CL_DIR/ip/clk_wiz_0_firesim/clk_wiz_0_firesim.xci
 # ]
@@ -157,6 +169,7 @@ read_ip [ list \
   ${HDK_IP_SRC_DIR}/cl_axi_clock_converter/cl_axi_clock_converter.xci \
   ${HDK_IP_SRC_DIR}/cl_axi_clock_converter_light/cl_axi_clock_converter_light.xci
 ]
+generate_target all [get_ips cl_axi_clock_converter*]
 
 # Additional IP's that might be needed if using the DDR
 # read_ip [ list \
@@ -168,6 +181,7 @@ read_ip [ list \
   ${HDK_IP_SRC_DIR}/cl_ddr4/cl_ddr4.xci \
   ${HDK_IP_SRC_DIR}/cl_ddr4_64g_ap/cl_ddr4_64g_ap.xci
 ]
+generate_target all [get_ips cl_ddr4*]
 # read_bd [ list \
 #  $HDK_SHELL_DESIGN_DIR/ip/cl_axi_interconnect/cl_axi_interconnect.bd
 # ]
@@ -175,6 +189,7 @@ read_ip [ list \
  ${HDK_IP_SRC_DIR}/cl_axi_interconnect/cl_axi_interconnect.xci \
  ${HDK_IP_SRC_DIR}/cl_axi_interconnect_64G_ddr/cl_axi_interconnect_64G_ddr.xci
 ]
+generate_target all [get_ips cl_axi_interconnect*]
 
 puts "AWS FPGA: Reading AWS constraints";
 
@@ -192,7 +207,7 @@ read_xdc [ list \
 #    $HDK_SHELL_DIR/build/constraints/cl_synth_aws.xdc \
 
 # FireSim custom clocking
-source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
+# source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
 
 #Do not propagate local clock constraints for clocks generated in the SH
 set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files generated_cl_clocks_aws.xdc]

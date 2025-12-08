@@ -195,23 +195,26 @@ logic rst_extra1_n_sync;
     .i_rst_main_n           (rst_main_n               ),
     .i_clk_hbm_ref          (clk_hbm_ref              ),
 
-    .s_axil_ctrl_awaddr     (sh_ocl_awaddr_q   ),
-    .s_axil_ctrl_awvalid    (sh_ocl_awvalid_q  ),
-    .s_axil_ctrl_awready    (ocl_sh_awready_q  ),
-    .s_axil_ctrl_wdata      (sh_ocl_wdata_q    ),
-    .s_axil_ctrl_wstrb      (sh_ocl_wstrb_q    ),
-    .s_axil_ctrl_wvalid     (sh_ocl_wvalid_q   ),
-    .s_axil_ctrl_wready     (ocl_sh_wready_q   ),
-    .s_axil_ctrl_bresp      (ocl_sh_bresp_q    ),
-    .s_axil_ctrl_bvalid     (ocl_sh_bvalid_q   ),
-    .s_axil_ctrl_bready     (sh_ocl_bready_q   ),
-    .s_axil_ctrl_araddr     (sh_ocl_araddr_q   ),
-    .s_axil_ctrl_arvalid    (sh_ocl_arvalid_q  ),
-    .s_axil_ctrl_arready    (ocl_sh_arready_q  ),
-    .s_axil_ctrl_rdata      (ocl_sh_rdata_q    ),
-    .s_axil_ctrl_rresp      (ocl_sh_rresp_q    ),
-    .s_axil_ctrl_rvalid     (ocl_sh_rvalid_q   ),
-    .s_axil_ctrl_rready     (sh_ocl_rready_q   ),
+    // FIX: AWS_CLK_GEN should NOT be connected to OCL interface!
+    // AWS_CLK_GEN is only for clock generation, not for OCL traffic routing.
+    // Tie off the control interface since we don't need dynamic clock control.
+    .s_axil_ctrl_awaddr     (32'h0   ),
+    .s_axil_ctrl_awvalid    (1'b0    ),
+    .s_axil_ctrl_awready    (   ),  // leave unconnected
+    .s_axil_ctrl_wdata      (32'h0   ),
+    .s_axil_ctrl_wstrb      (4'h0    ),
+    .s_axil_ctrl_wvalid     (1'b0    ),
+    .s_axil_ctrl_wready     (   ),  // leave unconnected
+    .s_axil_ctrl_bresp      (   ),  // leave unconnected
+    .s_axil_ctrl_bvalid     (   ),  // leave unconnected
+    .s_axil_ctrl_bready     (1'b0    ),
+    .s_axil_ctrl_araddr     (32'h0   ),
+    .s_axil_ctrl_arvalid    (1'b0    ),
+    .s_axil_ctrl_arready    (   ),  // leave unconnected
+    .s_axil_ctrl_rdata      (   ),  // leave unconnected
+    .s_axil_ctrl_rresp      (   ),  // leave unconnected
+    .s_axil_ctrl_rvalid     (   ),  // leave unconnected
+    .s_axil_ctrl_rready     (1'b0    ),
 
    //  .i_clk_main_a0          (clk_main_a0              ),
    //  .i_rst_main_n           (sda_xbar_sync_rst_n      ),
@@ -334,19 +337,10 @@ always_ff @(negedge gen_rst_main_n or posedge gen_clk_extra_a1)
 //---------------------------
 
 logic firesim_internal_clock;
+assign firesim_internal_clock = gen_clk_extra_a1;
 
-clk_wiz_0_firesim firesim_clocking
-(
-    // Clock out ports
-    .clk_out1(firesim_internal_clock),
-    // Status and control signals
-    .reset(!rst_extra1_n_sync), // input reset
-   // .reset(rst_main_n_sync), // F2: no extra rst signal
-    .locked(),       // output locked
-   // Clock in ports
-    .clk_in1(gen_clk_extra_a1)      // input clk_in1, expects 125 mhz
-   // .clk_in1(clk_main_a0) // F2: no extra clock signal
-);
+// REMOVED: clk_wiz_0_firesim instantiation
+// using AWS_CLK_GEN output directly
 
 //-------------------------------------------------
 // Reset Synchronization Inner
@@ -486,6 +480,8 @@ axi_clock_converter_oclnew ocl_clock_convert (
    assign cl_sh_dma_wr_full = 1'b0;
    assign cl_sh_dma_rd_full = 1'b0;
 
+// FIX: PCIS not used in this design - disable clock converter
+generate if (0) begin : gen_disabled_pcis
 axi_clock_converter_512_wide wide_pcis_clock_convert (
   .s_axi_aclk(gen_clk_main_a0),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
@@ -586,6 +582,7 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
   .m_axi_rvalid(cl_sh_dma_pcis_rvalid_FIRESIM),      // input wire m_axi_rvalid
   .m_axi_rready(sh_cl_dma_pcis_rready_FIRESIM)      // output wire m_axi_rready
 );
+end endgenerate // gen_disabled_pcis
 
 // F2: tie off outputs from cl_firesim
 assign cl_sh_dma_pcis_awready = 1'b0;
@@ -639,6 +636,8 @@ assign cl_sh_dma_pcis_rvalid = 0;
    logic sh_cl_pcim_rvalid_FIRESIM;
    logic cl_sh_pcim_rready_FIRESIM;
 
+// FIX: PCIM not used in this design - disable clock converter
+generate if (0) begin : gen_disabled_pcim
    axi_clock_converter_512_wide wide_pcim_clock_convert (
       .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
       .s_axi_aresetn(rst_firesim_n_sync),    // input wire s_axi_aresetn
@@ -739,6 +738,7 @@ assign cl_sh_dma_pcis_rvalid = 0;
             .m_axi_rvalid(sh_cl_pcim_rvalid),      // input wire m_axi_rvalid
             .m_axi_rready()      // output wire m_axi_rready
          );
+end endgenerate // gen_disabled_pcim
 
 assign cl_sh_pcim_awuser = 55'h0; // widths changed in f2
 assign cl_sh_pcim_aruser = 55'h0;
@@ -1437,15 +1437,19 @@ wire fsimtop_s_3_axi_rready;
   F1Shim firesim_top (
    .clock(firesim_internal_clock),
    .reset(!rst_firesim_n_sync),
-   .io_master_aw_ready(ocl_sh_awready_q),
-   .io_master_aw_valid(sh_ocl_awvalid_q),
+   // FIX: Connect ocl_clock_convert outputs DIRECTLY to firesim_top (bypass AWS_CLK_GEN)
+   // Signal flow: Shell → ocl_clock_convert (slave) → ocl_clock_convert (master) → firesim_top
+   // ocl_clock_convert master OUTPUTS (sh_ocl_*_q) are INPUTS to firesim
+   // firesim OUTPUTS (ocl_sh_*_q) are INPUTS to ocl_clock_convert master
+   .io_master_aw_ready(ocl_sh_awready_q),  // Output from firesim → ocl_clock_convert.m_axi_awready
+   .io_master_aw_valid(sh_ocl_awvalid_q),  // Input: ocl_clock_convert.m_axi_awvalid → firesim
    .io_master_aw_bits_addr(sh_ocl_awaddr_q[24:0]),
    .io_master_aw_bits_len(8'h0),
    .io_master_aw_bits_size(3'h2),
    .io_master_aw_bits_burst(2'h1),
    .io_master_aw_bits_lock(1'h0),
    .io_master_aw_bits_cache(4'h0),
-   .io_master_aw_bits_prot(3'h0), //unused? (could connect?)
+   .io_master_aw_bits_prot(3'h0),
    .io_master_aw_bits_qos(4'h0),
    .io_master_aw_bits_region(4'h0),
    .io_master_aw_bits_id(12'h0),
@@ -1455,7 +1459,7 @@ wire fsimtop_s_3_axi_rready;
    .io_master_w_bits_data(sh_ocl_wdata_q),
    .io_master_w_bits_last(1'h1),
    .io_master_w_bits_id(12'h0),
-   .io_master_w_bits_strb(sh_ocl_wstrb_q), //OR 8'hff
+   .io_master_w_bits_strb(sh_ocl_wstrb_q),
    .io_master_w_bits_user(1'h0),
    .io_master_b_ready(sh_ocl_bready_q),
    .io_master_b_valid(ocl_sh_bvalid_q),
@@ -1802,6 +1806,10 @@ wire          clock_converted_axi_0_rlast;
 wire          clock_converted_axi_0_rvalid;
 wire          clock_converted_axi_0_rready;
 
+// FIX: Only instantiate dramslim_0 when EN_DDR==1
+generate
+  if (EN_DDR == 1) begin : gen_main_ddr_dramslim
+
 axi_clock_converter_dramslim clock_convert_dramslim_0 (
   .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_firesim_n_sync),    // input wire s_axi_aresetn
@@ -1902,6 +1910,9 @@ axi_clock_converter_dramslim clock_convert_dramslim_0 (
   .m_axi_rready(clock_converted_axi_0_rready)      // output wire m_axi_rready
 );
 
+  end // gen_main_ddr_dramslim
+endgenerate
+
 /* steps to move:
  * 1) copy clock converter's M interfaces to dwidth converter's M interfaces: DONE
  * 2) create clock_converted_* signals for clock M to width adapt S: DONE
@@ -1913,6 +1924,10 @@ axi_clock_converter_dramslim clock_convert_dramslim_0 (
 // F2: cl_sh_ddr_awid & arid deleted
 // unused: sh_cl_ddr_bid
 // unused: sh_cl_ddr_rid
+
+// FIX: Only instantiate dwidth converter when DDR is enabled
+generate
+  if (EN_DDR == 1) begin : gen_main_ddr_dwidth
 
 axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
   .s_axi_aclk(clk_main_a0),          // input wire s_axi_aclk
@@ -1962,49 +1977,51 @@ axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
   .s_axi_rvalid(clock_converted_axi_0_rvalid),      // output wire s_axi_rvalid
   .s_axi_rready(clock_converted_axi_0_rready),      // input wire s_axi_rready
 
-
-  .m_axi_awaddr(cl_sh_ddr_awaddr),      // output wire [63 : 0] m_axi_awaddr
-  .m_axi_awlen(cl_sh_ddr_awlen),        // output wire [7 : 0] m_axi_awlen
-  .m_axi_awsize(cl_sh_ddr_awsize),      // output wire [2 : 0] m_axi_awsize
-  .m_axi_awburst(cl_sh_ddr_awburst),    // output wire [1 : 0] m_axi_awburst
+  // FIX: Connect to intermediate wires mc_ddr_s_1_axi_* instead of cl_sh_ddr_*
+  // The assign statements at lines 1052-1113 will then drive cl_sh_ddr_* to the Shell
+  .m_axi_awaddr(mc_ddr_s_1_axi_awaddr),      // output wire [63 : 0] m_axi_awaddr
+  .m_axi_awlen(mc_ddr_s_1_axi_awlen),        // output wire [7 : 0] m_axi_awlen
+  .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize - unused, using constant 3'b110 from line 1060
+  .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst - unused, using constant 2'b01 from line 1062
   .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
   .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
   .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
   .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
   .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-  .m_axi_awvalid(cl_sh_ddr_awvalid),    // output wire m_axi_awvalid
-  .m_axi_awready(sh_cl_ddr_awready),    // input wire m_axi_awready
+  .m_axi_awvalid(mc_ddr_s_1_axi_awvalid),    // output wire m_axi_awvalid
+  .m_axi_awready(mc_ddr_s_1_axi_awready),    // input wire m_axi_awready
 
-  .m_axi_wdata(cl_sh_ddr_wdata),        // output wire [511 : 0] m_axi_wdata
-  .m_axi_wstrb(cl_sh_ddr_wstrb),        // output wire [63 : 0] m_axi_wstrb
-  .m_axi_wlast(cl_sh_ddr_wlast),        // output wire m_axi_wlast
-  .m_axi_wvalid(cl_sh_ddr_wvalid),      // output wire m_axi_wvalid
-  .m_axi_wready(sh_cl_ddr_wready),      // input wire m_axi_wready
+  .m_axi_wdata(mc_ddr_s_1_axi_wdata),        // output wire [511 : 0] m_axi_wdata
+  .m_axi_wstrb(mc_ddr_s_1_axi_wstrb),        // output wire [63 : 0] m_axi_wstrb
+  .m_axi_wlast(mc_ddr_s_1_axi_wlast),        // output wire m_axi_wlast
+  .m_axi_wvalid(mc_ddr_s_1_axi_wvalid),      // output wire m_axi_wvalid
+  .m_axi_wready(mc_ddr_s_1_axi_wready),      // input wire m_axi_wready
 
-  .m_axi_bresp(sh_cl_ddr_bresp),        // input wire [1 : 0] m_axi_bresp
-  .m_axi_bvalid(sh_cl_ddr_bvalid),      // input wire m_axi_bvalid
-  .m_axi_bready(cl_sh_ddr_bready),      // output wire m_axi_bready
+  .m_axi_bresp(mc_ddr_s_1_axi_bresp),        // input wire [1 : 0] m_axi_bresp
+  .m_axi_bvalid(mc_ddr_s_1_axi_bvalid),      // input wire m_axi_bvalid
+  .m_axi_bready(mc_ddr_s_1_axi_bready),      // output wire m_axi_bready
 
-  .m_axi_araddr(cl_sh_ddr_araddr),      // output wire [63 : 0] m_axi_araddr
-  .m_axi_arlen(cl_sh_ddr_arlen),        // output wire [7 : 0] m_axi_arlen
-  .m_axi_arsize(cl_sh_ddr_arsize),      // output wire [2 : 0] m_axi_arsize
-  .m_axi_arburst(cl_sh_ddr_arburst),    // output wire [1 : 0] m_axi_arburst
+  .m_axi_araddr(mc_ddr_s_1_axi_araddr),      // output wire [63 : 0] m_axi_araddr
+  .m_axi_arlen(mc_ddr_s_1_axi_arlen),        // output wire [7 : 0] m_axi_arlen
+  .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize - unused, using constant 3'b110 from line 1097
+  .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst - unused, using constant 2'b01 from line 1099
   .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
   .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
   .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
   .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
   .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-  .m_axi_arvalid(cl_sh_ddr_arvalid),    // output wire m_axi_arvalid
-  .m_axi_arready(sh_cl_ddr_arready),    // input wire m_axi_arready
+  .m_axi_arvalid(mc_ddr_s_1_axi_arvalid),    // output wire m_axi_arvalid
+  .m_axi_arready(mc_ddr_s_1_axi_arready),    // input wire m_axi_arready
 
-  .m_axi_rdata(sh_cl_ddr_rdata),        // input wire [511 : 0] m_axi_rdata
-  .m_axi_rresp(sh_cl_ddr_rresp),        // input wire [1 : 0] m_axi_rresp
-  .m_axi_rlast(sh_cl_ddr_rlast),        // input wire m_axi_rlast
-  .m_axi_rvalid(sh_cl_ddr_rvalid),      // input wire m_axi_rvalid
-  .m_axi_rready(cl_sh_ddr_rready)      // output wire m_axi_rready
+  .m_axi_rdata(mc_ddr_s_1_axi_rdata),        // input wire [511 : 0] m_axi_rdata
+  .m_axi_rresp(mc_ddr_s_1_axi_rresp),        // input wire [1 : 0] m_axi_rresp
+  .m_axi_rlast(mc_ddr_s_1_axi_rlast),        // input wire m_axi_rlast
+  .m_axi_rvalid(mc_ddr_s_1_axi_rvalid),      // input wire m_axi_rvalid
+  .m_axi_rready(mc_ddr_s_1_axi_rready)      // output wire m_axi_rready
 );
 
-
+  end // gen_main_ddr_dwidth
+endgenerate
 
 //****************DDR CHANNEL A****************************
 generate
