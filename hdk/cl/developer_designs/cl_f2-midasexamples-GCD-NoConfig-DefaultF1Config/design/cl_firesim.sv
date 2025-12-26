@@ -47,7 +47,7 @@ logic rst_extra1_n_sync;
 `include "unused_flr_template.inc"
 //`include "unused_ddr_template.inc"
 //`include "unused_pcim_template.inc"
-`include "unused_cl_sda_template.inc"
+// `include "unused_cl_sda_template.inc"
 // `include "unused_sh_bar1_template.inc" // does not exist in F2
 `include "unused_apppf_irq_template.inc"
 // `include "unused_sh_ocl_template.inc" // F2: tie off cl_ocl_* signals
@@ -118,69 +118,158 @@ logic rst_extra1_n_sync;
   logic [ 1:0] ocl_sh_rresp_q;
   logic        sh_ocl_rready_q;
 
-//   axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_bram();
-//   axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_clkgen();
+  interface axi_bus_t #(DATA_WIDTH=512, ADDR_WIDTH=64, ID_WIDTH=16, LEN_WIDTH=8);
+   logic [ID_WIDTH-1:0]   awid;
+   logic [ADDR_WIDTH-1:0] awaddr;
+   logic [LEN_WIDTH-1:0]  awlen;
+   logic [2:0]            awsize;
+   logic                  awvalid;
+   logic                  awready;
+   logic [1:0]            awburst;
 
-//   logic sda_xbar_sync_rst_n;
+   logic [ID_WIDTH-1:0]   wid;
+   logic [DATA_WIDTH-1:0] wdata;
+   logic [DATA_WIDTH/8-1:0] wstrb;
+   logic                  wlast;
+   logic                  wvalid;
+   logic                  wready;
 
-//   // NOTE:
-//   // Using rst_main_n to feed CL_SDA_AXIL_XBAR. Since this XBAR is before AWS_CLK_GEN
-//   xpm_cdc_async_rst CDC_ASYNC_RST_N_SDA_XBAR
-//   (
-//     .src_arst               (rst_main_n               ),
-//     .dest_clk               (clk_main_a0              ),
-//     .dest_arst              (sda_xbar_sync_rst_n      )
-//   );
+   logic [ID_WIDTH-1:0]   bid;
+   logic [1:0]            bresp;
+   logic                  bvalid;
+   logic                  bready;
 
-//   //-----------------------------------------
-//   // SDA-AXIL XBAR:
-//   // Addr 0x0000_0000 - 0x0004_FFFF : SDA-BRAM
-//   // Addr 0x0005_0000 - 0xFFFF_FFFF : AWS_CLK_GEN
-//   //-----------------------------------------
-//   cl_sda_axil_xbar CL_SDA_AXIL_CROSSBAR
-//   (
-//     .aclk                   (clk_main_a0              ),
-//     .aresetn                (sda_xbar_sync_rst_n      ),
-//     .s_axi_awaddr           (sda_cl_awaddr            ),
-//     .s_axi_awprot           (`DEF_AXPROT              ),
-//     .s_axi_awvalid          (sda_cl_awvalid           ),
-//     .s_axi_awready          (cl_sda_awready           ),
-//     .s_axi_wdata            (sda_cl_wdata             ),
-//     .s_axi_wstrb            (4'hF                     ),
-//     .s_axi_wvalid           (sda_cl_wvalid            ),
-//     .s_axi_wready           (cl_sda_wready            ),
-//     .s_axi_bresp            (cl_sda_bresp             ),
-//     .s_axi_bvalid           (cl_sda_bvalid            ),
-//     .s_axi_bready           (sda_cl_bready            ),
-//     .s_axi_araddr           (sda_cl_araddr            ),
-//     .s_axi_arprot           (`DEF_AXPROT              ),
-//     .s_axi_arvalid          (sda_cl_arvalid           ),
-//     .s_axi_arready          (cl_sda_arready           ),
-//     .s_axi_rdata            (cl_sda_rdata             ),
-//     .s_axi_rresp            (cl_sda_rresp             ),
-//     .s_axi_rvalid           (cl_sda_rvalid            ),
-//     .s_axi_rready           (sda_cl_rready            ),
+   logic [ID_WIDTH-1:0]   arid;
+   logic [ADDR_WIDTH-1:0] araddr;
+   logic [LEN_WIDTH-1:0]  arlen;
+   logic [2:0]            arsize;
+   logic                  arvalid;
+   logic                  arready;
+   logic [1:0]            arburst;
 
-//     .m_axi_awaddr           ({sda_axil_clkgen.awaddr,   sda_axil_bram.awaddr }),
-//     .m_axi_awprot           (                                                 ),
-//     .m_axi_awvalid          ({sda_axil_clkgen.awvalid,  sda_axil_bram.awvalid}),
-//     .m_axi_awready          ({sda_axil_clkgen.awready,  sda_axil_bram.awready}),
-//     .m_axi_wdata            ({sda_axil_clkgen.wdata,    sda_axil_bram.wdata  }),
-//     .m_axi_wstrb            ({sda_axil_clkgen.wstrb,    sda_axil_bram.wstrb  }),
-//     .m_axi_wvalid           ({sda_axil_clkgen.wvalid,   sda_axil_bram.wvalid }),
-//     .m_axi_wready           ({sda_axil_clkgen.wready,   sda_axil_bram.wready }),
-//     .m_axi_bresp            ({sda_axil_clkgen.bresp,    sda_axil_bram.bresp  }),
-//     .m_axi_bvalid           ({sda_axil_clkgen.bvalid,   sda_axil_bram.bvalid }),
-//     .m_axi_bready           ({sda_axil_clkgen.bready,   sda_axil_bram.bready }),
-//     .m_axi_araddr           ({sda_axil_clkgen.araddr,   sda_axil_bram.araddr }),
-//     .m_axi_arprot           (                                                 ),
-//     .m_axi_arvalid          ({sda_axil_clkgen.arvalid,  sda_axil_bram.arvalid}),
-//     .m_axi_arready          ({sda_axil_clkgen.arready,  sda_axil_bram.arready}),
-//     .m_axi_rdata            ({sda_axil_clkgen.rdata  ,  sda_axil_bram.rdata  }),
-//     .m_axi_rresp            ({sda_axil_clkgen.rresp  ,  sda_axil_bram.rresp  }),
-//     .m_axi_rvalid           ({sda_axil_clkgen.rvalid ,  sda_axil_bram.rvalid }),
-//     .m_axi_rready           ({sda_axil_clkgen.rready ,  sda_axil_bram.rready })
-//   );
+   logic [ID_WIDTH-1:0]   rid;
+   logic [DATA_WIDTH-1:0] rdata;
+   logic [1:0]            rresp;
+   logic                  rlast;
+   logic                  rvalid;
+   logic                  rready;
+
+   modport master (input awid, awaddr, awlen, awsize, awvalid, awburst, output awready,
+                   input  wid, wdata, wstrb, wlast, wvalid, output wready,
+                   output bid, bresp, bvalid, input bready,
+                   input  arid, araddr, arlen, arsize, arvalid, arburst, output arready,
+                   output rid, rdata, rresp, rlast, rvalid, input rready);
+
+   modport slave (output awid, awaddr, awlen, awsize, awvalid, awburst, input awready,
+                  output wid, wdata, wstrb, wlast, wvalid, input wready,
+                  input  bid, bresp, bvalid, output bready,
+                  output arid, araddr, arlen, arsize, arvalid, arburst, input arready,
+                  input  rid, rdata, rresp, rlast, rvalid, output rready);
+  endinterface
+
+  interface scrb_bus_t;
+   logic [63:0]          addr;
+   logic [2:0]           state;
+   logic                 enable;
+   logic                 done;
+
+   modport master (input enable, output addr, state, done);
+
+   modport slave (output enable, input addr, state, done);
+  endinterface
+
+  //----------------------------
+  // Internal interfaces
+  //----------------------------
+  axi_bus_t   lcl_cl_sh_ddra();
+  axi_bus_t   lcl_cl_sh_ddrb();
+  axi_bus_t   axi_bus_tied();
+  axi_bus_t   sh_cl_dma_pcis_bus();
+  axi_bus_t   sh_cl_dma_pcis_q();
+  axi_bus_t   cl_axi_mstr_bus();
+  axi_bus_t   cl_sh_pcim_bus();
+  axi_bus_t   sh_ocl_bus();
+
+  cfg_bus_t   pcim_tst_cfg_bus();
+  cfg_bus_t   ddra_tst_cfg_bus();
+  cfg_bus_t   ddrb_tst_cfg_bus();
+  cfg_bus_t   hbm_stat_cfg_bus();
+  cfg_bus_t   hbm_kern_cfg_bus();
+  cfg_bus_t   axi_mstr_cfg_bus();
+  cfg_bus_t   int_tst_cfg_bus();
+  cfg_bus_t   clk_freq_cfg_bus();
+
+  scrb_bus_t  ddra_scrb_bus();
+  scrb_bus_t  ddrb_scrb_bus();
+  scrb_bus_t  ddrc_scrb_bus();
+  scrb_bus_t  ddrd_scrb_bus();
+  //----------------------------
+  // End internal interfaces
+  //----------------------------
+
+  axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_bram();
+  axi_bus_t #(.DATA_WIDTH(32), .ADDR_WIDTH(32), .ID_WIDTH(0), .LEN_WIDTH(8)) sda_axil_clkgen();
+
+  logic sda_xbar_sync_rst_n;
+
+  // NOTE:
+  // Using rst_main_n to feed CL_SDA_AXIL_XBAR. Since this XBAR is before AWS_CLK_GEN
+  xpm_cdc_async_rst CDC_ASYNC_RST_N_SDA_XBAR
+  (
+    .src_arst               (rst_main_n               ),
+    .dest_clk               (clk_main_a0              ),
+    .dest_arst              (sda_xbar_sync_rst_n      )
+  );
+
+  //-----------------------------------------
+  // SDA-AXIL XBAR:
+  // Addr 0x0000_0000 - 0x0004_FFFF : SDA-BRAM
+  // Addr 0x0005_0000 - 0xFFFF_FFFF : AWS_CLK_GEN
+  //-----------------------------------------
+  cl_sda_axil_xbar CL_SDA_AXIL_CROSSBAR
+  (
+    .aclk                   (clk_main_a0              ),
+    .aresetn                (sda_xbar_sync_rst_n      ),
+    .s_axi_awaddr           (sda_cl_awaddr            ),
+    .s_axi_awprot           (`DEF_AXPROT              ),
+    .s_axi_awvalid          (sda_cl_awvalid           ),
+    .s_axi_awready          (cl_sda_awready           ),
+    .s_axi_wdata            (sda_cl_wdata             ),
+    .s_axi_wstrb            (4'hF                     ),
+    .s_axi_wvalid           (sda_cl_wvalid            ),
+    .s_axi_wready           (cl_sda_wready            ),
+    .s_axi_bresp            (cl_sda_bresp             ),
+    .s_axi_bvalid           (cl_sda_bvalid            ),
+    .s_axi_bready           (sda_cl_bready            ),
+    .s_axi_araddr           (sda_cl_araddr            ),
+    .s_axi_arprot           (`DEF_AXPROT              ),
+    .s_axi_arvalid          (sda_cl_arvalid           ),
+    .s_axi_arready          (cl_sda_arready           ),
+    .s_axi_rdata            (cl_sda_rdata             ),
+    .s_axi_rresp            (cl_sda_rresp             ),
+    .s_axi_rvalid           (cl_sda_rvalid            ),
+    .s_axi_rready           (sda_cl_rready            ),
+
+    .m_axi_awaddr           ({sda_axil_clkgen.awaddr,   sda_axil_bram.awaddr }),
+    .m_axi_awprot           (                                                 ),
+    .m_axi_awvalid          ({sda_axil_clkgen.awvalid,  sda_axil_bram.awvalid}),
+    .m_axi_awready          ({sda_axil_clkgen.awready,  sda_axil_bram.awready}),
+    .m_axi_wdata            ({sda_axil_clkgen.wdata,    sda_axil_bram.wdata  }),
+    .m_axi_wstrb            ({sda_axil_clkgen.wstrb,    sda_axil_bram.wstrb  }),
+    .m_axi_wvalid           ({sda_axil_clkgen.wvalid,   sda_axil_bram.wvalid }),
+    .m_axi_wready           ({sda_axil_clkgen.wready,   sda_axil_bram.wready }),
+    .m_axi_bresp            ({sda_axil_clkgen.bresp,    sda_axil_bram.bresp  }),
+    .m_axi_bvalid           ({sda_axil_clkgen.bvalid,   sda_axil_bram.bvalid }),
+    .m_axi_bready           ({sda_axil_clkgen.bready,   sda_axil_bram.bready }),
+    .m_axi_araddr           ({sda_axil_clkgen.araddr,   sda_axil_bram.araddr }),
+    .m_axi_arprot           (                                                 ),
+    .m_axi_arvalid          ({sda_axil_clkgen.arvalid,  sda_axil_bram.arvalid}),
+    .m_axi_arready          ({sda_axil_clkgen.arready,  sda_axil_bram.arready}),
+    .m_axi_rdata            ({sda_axil_clkgen.rdata  ,  sda_axil_bram.rdata  }),
+    .m_axi_rresp            ({sda_axil_clkgen.rresp  ,  sda_axil_bram.rresp  }),
+    .m_axi_rvalid           ({sda_axil_clkgen.rvalid ,  sda_axil_bram.rvalid }),
+    .m_axi_rready           ({sda_axil_clkgen.rready ,  sda_axil_bram.rready })
+  );
 
   aws_clk_gen
   #(
@@ -192,7 +281,7 @@ logic rst_extra1_n_sync;
   AWS_CLK_GEN
   (
     .i_clk_main_a0          (clk_main_a0              ),
-    .i_rst_main_n           (rst_main_n               ),
+    .i_rst_main_n           (sda_xbar_sync_rst_n      ),
     .i_clk_hbm_ref          (clk_hbm_ref              ),
 
     // FIX: AWS_CLK_GEN should NOT be connected to OCL interface!
@@ -406,7 +495,7 @@ axi_clock_converter_oclnew ocl_clock_convert (
   .s_axi_bvalid(cl_ocl_bvalid),    // output wire s_axi_bvalid
   .s_axi_bready(ocl_cl_bready),    // input wire s_axi_bready
   .s_axi_araddr(ocl_cl_araddr),    // input wire [31 : 0] s_axi_araddr
-//   .s_axi_arprot(3'h0),             // input wire [2 : 0] s_axi_arprot
+  .s_axi_arprot(3'h0),             // input wire [2 : 0] s_axi_arprot
   .s_axi_arvalid(ocl_cl_arvalid),  // input wire s_axi_arvalid
   .s_axi_arready(cl_ocl_arready),  // output wire s_axi_arready
   .s_axi_rdata(cl_ocl_rdata),      // output wire [31 : 0] s_axi_rdata
@@ -486,94 +575,94 @@ axi_clock_converter_512_wide wide_pcis_clock_convert (
   .s_axi_aclk(gen_clk_main_a0),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
 
-  .s_axi_awid(sh_cl_dma_pcis_awid),          // input wire [5 : 0] s_axi_awid
-  .s_axi_awaddr(sh_cl_dma_pcis_awaddr),      // input wire [63 : 0] s_axi_awaddr
-  .s_axi_awlen(sh_cl_dma_pcis_awlen),        // input wire [7 : 0] s_axi_awlen
-  .s_axi_awsize(sh_cl_dma_pcis_awsize),      // input wire [2 : 0] s_axi_awsize
-  .s_axi_awburst(2'b1),    // input wire [1 : 0] s_axi_awburst
-  .s_axi_awlock(1'b0),      // input wire [0 : 0] s_axi_awlock
-  // CACHE = xx1x indicates the transcation is modifiable and
-  // that the converter should pack narrow reads into wider ones
-  .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
-  .s_axi_awprot(3'b0),      // input wire [2 : 0] s_axi_awprot
-  .s_axi_awregion(4'b0),  // input wire [3 : 0] s_axi_awregion
-  .s_axi_awqos(4'b0),        // input wire [3 : 0] s_axi_awqos
-  .s_axi_awvalid(sh_cl_dma_pcis_awvalid),    // input wire s_axi_awvalid
-  .s_axi_awready(),    // output wire s_axi_awready
+//   .s_axi_awid(sh_cl_dma_pcis_awid),          // input wire [5 : 0] s_axi_awid
+//   .s_axi_awaddr(sh_cl_dma_pcis_awaddr),      // input wire [63 : 0] s_axi_awaddr
+//   .s_axi_awlen(sh_cl_dma_pcis_awlen),        // input wire [7 : 0] s_axi_awlen
+//   .s_axi_awsize(sh_cl_dma_pcis_awsize),      // input wire [2 : 0] s_axi_awsize
+//   .s_axi_awburst(2'b1),    // input wire [1 : 0] s_axi_awburst
+//   .s_axi_awlock(1'b0),      // input wire [0 : 0] s_axi_awlock
+//   // CACHE = xx1x indicates the transcation is modifiable and
+//   // that the converter should pack narrow reads into wider ones
+//   .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
+//   .s_axi_awprot(3'b0),      // input wire [2 : 0] s_axi_awprot
+//   .s_axi_awregion(4'b0),  // input wire [3 : 0] s_axi_awregion
+//   .s_axi_awqos(4'b0),        // input wire [3 : 0] s_axi_awqos
+//   .s_axi_awvalid(sh_cl_dma_pcis_awvalid),    // input wire s_axi_awvalid
+//   .s_axi_awready(),    // output wire s_axi_awready
 
-  .s_axi_wdata(sh_cl_dma_pcis_wdata),        // input wire [511 : 0] s_axi_wdata
-  .s_axi_wstrb(sh_cl_dma_pcis_wstrb),        // input wire [63 : 0] s_axi_wstrb
-  .s_axi_wlast(sh_cl_dma_pcis_wlast),        // input wire s_axi_wlast
-  .s_axi_wvalid(sh_cl_dma_pcis_wvalid),      // input wire s_axi_wvalid
-  .s_axi_wready(),      // output wire s_axi_wready
+//   .s_axi_wdata(sh_cl_dma_pcis_wdata),        // input wire [511 : 0] s_axi_wdata
+//   .s_axi_wstrb(sh_cl_dma_pcis_wstrb),        // input wire [63 : 0] s_axi_wstrb
+//   .s_axi_wlast(sh_cl_dma_pcis_wlast),        // input wire s_axi_wlast
+//   .s_axi_wvalid(sh_cl_dma_pcis_wvalid),      // input wire s_axi_wvalid
+//   .s_axi_wready(),      // output wire s_axi_wready
 
-  .s_axi_bid(),            // output wire [5 : 0] s_axi_bid
-  .s_axi_bresp(),        // output wire [1 : 0] s_axi_bresp
-  .s_axi_bvalid(),      // output wire s_axi_bvalid
-  .s_axi_bready(sh_cl_dma_pcis_bready),      // input wire s_axi_bready
+//   .s_axi_bid(),            // output wire [5 : 0] s_axi_bid
+//   .s_axi_bresp(),        // output wire [1 : 0] s_axi_bresp
+//   .s_axi_bvalid(),      // output wire s_axi_bvalid
+//   .s_axi_bready(sh_cl_dma_pcis_bready),      // input wire s_axi_bready
 
-  .s_axi_arid(sh_cl_dma_pcis_arid),          // input wire [5 : 0] s_axi_arid
-  .s_axi_araddr(sh_cl_dma_pcis_araddr),      // input wire [63 : 0] s_axi_araddr
-  .s_axi_arlen(sh_cl_dma_pcis_arlen),        // input wire [7 : 0] s_axi_arlen
-  .s_axi_arsize(sh_cl_dma_pcis_arsize),      // input wire [2 : 0] s_axi_arsize
-  .s_axi_arburst(2'b1),    // input wire [1 : 0] s_axi_arburst
-  .s_axi_arlock(1'b0),      // input wire [0 : 0] s_axi_arlock
-  // CACHE = xx1x indicates the transcation is modifiable and
-  // that the converter should pack narrow reads into wider ones
-  .s_axi_arcache(4'h2),    // input wire [3 : 0] s_axi_arcache
-  .s_axi_arprot(3'b0),      // input wire [2 : 0] s_axi_arprot
-  .s_axi_arregion(4'b0),  // input wire [3 : 0] s_axi_arregion
-  .s_axi_arqos(4'b0),        // input wire [3 : 0] s_axi_arqos
-  .s_axi_arvalid(sh_cl_dma_pcis_arvalid),    // input wire s_axi_arvalid
-  .s_axi_arready(),    // output wire s_axi_arready
+//   .s_axi_arid(sh_cl_dma_pcis_arid),          // input wire [5 : 0] s_axi_arid
+//   .s_axi_araddr(sh_cl_dma_pcis_araddr),      // input wire [63 : 0] s_axi_araddr
+//   .s_axi_arlen(sh_cl_dma_pcis_arlen),        // input wire [7 : 0] s_axi_arlen
+//   .s_axi_arsize(sh_cl_dma_pcis_arsize),      // input wire [2 : 0] s_axi_arsize
+//   .s_axi_arburst(2'b1),    // input wire [1 : 0] s_axi_arburst
+//   .s_axi_arlock(1'b0),      // input wire [0 : 0] s_axi_arlock
+//   // CACHE = xx1x indicates the transcation is modifiable and
+//   // that the converter should pack narrow reads into wider ones
+//   .s_axi_arcache(4'h2),    // input wire [3 : 0] s_axi_arcache
+//   .s_axi_arprot(3'b0),      // input wire [2 : 0] s_axi_arprot
+//   .s_axi_arregion(4'b0),  // input wire [3 : 0] s_axi_arregion
+//   .s_axi_arqos(4'b0),        // input wire [3 : 0] s_axi_arqos
+//   .s_axi_arvalid(sh_cl_dma_pcis_arvalid),    // input wire s_axi_arvalid
+//   .s_axi_arready(),    // output wire s_axi_arready
 
-  .s_axi_rid(),            // output wire [5 : 0] s_axi_rid
-  .s_axi_rdata(),        // output wire [511 : 0] s_axi_rdata
-  .s_axi_rresp(),        // output wire [1 : 0] s_axi_rresp
-  .s_axi_rlast(),        // output wire s_axi_rlast
-  .s_axi_rvalid(),      // output wire s_axi_rvalid
-  .s_axi_rready(sh_cl_dma_pcis_rready),      // input wire s_axi_rready
+//   .s_axi_rid(),            // output wire [5 : 0] s_axi_rid
+//   .s_axi_rdata(),        // output wire [511 : 0] s_axi_rdata
+//   .s_axi_rresp(),        // output wire [1 : 0] s_axi_rresp
+//   .s_axi_rlast(),        // output wire s_axi_rlast
+//   .s_axi_rvalid(),      // output wire s_axi_rvalid
+//   .s_axi_rready(sh_cl_dma_pcis_rready),      // input wire s_axi_rready
 
 
-  .m_axi_aclk(firesim_internal_clock),          // input wire m_axi_aclk
-  .m_axi_aresetn(rst_firesim_n_sync),    // input wire m_axi_aresetn
+//   .m_axi_aclk(firesim_internal_clock),          // input wire m_axi_aclk
+//   .m_axi_aresetn(rst_firesim_n_sync),    // input wire m_axi_aresetn
 
-  .m_axi_awid(sh_cl_dma_pcis_awid_FIRESIM),          // output wire [5 : 0] m_axi_awid
-  .m_axi_awaddr(sh_cl_dma_pcis_awaddr_FIRESIM),      // output wire [63 : 0] m_axi_awaddr
-  .m_axi_awlen(sh_cl_dma_pcis_awlen_FIRESIM),        // output wire [7 : 0] m_axi_awlen
-  .m_axi_awsize(sh_cl_dma_pcis_awsize_FIRESIM),      // output wire [2 : 0] m_axi_awsize
-  .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
-  .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
-  .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
-  .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
-  .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
-  .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-  .m_axi_awvalid(sh_cl_dma_pcis_awvalid_FIRESIM),    // output wire m_axi_awvalid
-  .m_axi_awready(cl_sh_dma_pcis_awready_FIRESIM),    // input wire m_axi_awready
+//   .m_axi_awid(sh_cl_dma_pcis_awid_FIRESIM),          // output wire [5 : 0] m_axi_awid
+//   .m_axi_awaddr(sh_cl_dma_pcis_awaddr_FIRESIM),      // output wire [63 : 0] m_axi_awaddr
+//   .m_axi_awlen(sh_cl_dma_pcis_awlen_FIRESIM),        // output wire [7 : 0] m_axi_awlen
+//   .m_axi_awsize(sh_cl_dma_pcis_awsize_FIRESIM),      // output wire [2 : 0] m_axi_awsize
+//   .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
+//   .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
+//   .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
+//   .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
+//   .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
+//   .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
+//   .m_axi_awvalid(sh_cl_dma_pcis_awvalid_FIRESIM),    // output wire m_axi_awvalid
+//   .m_axi_awready(cl_sh_dma_pcis_awready_FIRESIM),    // input wire m_axi_awready
 
-  .m_axi_wdata(sh_cl_dma_pcis_wdata_FIRESIM),        // output wire [511 : 0] m_axi_wdata
-  .m_axi_wstrb(sh_cl_dma_pcis_wstrb_FIRESIM),        // output wire [63 : 0] m_axi_wstrb
-  .m_axi_wlast(sh_cl_dma_pcis_wlast_FIRESIM),        // output wire m_axi_wlast
-  .m_axi_wvalid(sh_cl_dma_pcis_wvalid_FIRESIM),      // output wire m_axi_wvalid
-  .m_axi_wready(cl_sh_dma_pcis_wready_FIRESIM),      // input wire m_axi_wready
+//   .m_axi_wdata(sh_cl_dma_pcis_wdata_FIRESIM),        // output wire [511 : 0] m_axi_wdata
+//   .m_axi_wstrb(sh_cl_dma_pcis_wstrb_FIRESIM),        // output wire [63 : 0] m_axi_wstrb
+//   .m_axi_wlast(sh_cl_dma_pcis_wlast_FIRESIM),        // output wire m_axi_wlast
+//   .m_axi_wvalid(sh_cl_dma_pcis_wvalid_FIRESIM),      // output wire m_axi_wvalid
+//   .m_axi_wready(cl_sh_dma_pcis_wready_FIRESIM),      // input wire m_axi_wready
 
-  .m_axi_bid(cl_sh_dma_pcis_bid_FIRESIM),            // input wire [5 : 0] m_axi_bid
-  .m_axi_bresp(cl_sh_dma_pcis_bresp_FIRESIM),        // input wire [1 : 0] m_axi_bresp
-  .m_axi_bvalid(cl_sh_dma_pcis_bvalid_FIRESIM),      // input wire m_axi_bvalid
-  .m_axi_bready(sh_cl_dma_pcis_bready_FIRESIM),      // output wire m_axi_bready
+//   .m_axi_bid(cl_sh_dma_pcis_bid_FIRESIM),            // input wire [5 : 0] m_axi_bid
+//   .m_axi_bresp(cl_sh_dma_pcis_bresp_FIRESIM),        // input wire [1 : 0] m_axi_bresp
+//   .m_axi_bvalid(cl_sh_dma_pcis_bvalid_FIRESIM),      // input wire m_axi_bvalid
+//   .m_axi_bready(sh_cl_dma_pcis_bready_FIRESIM),      // output wire m_axi_bready
 
-  .m_axi_arid(sh_cl_dma_pcis_arid_FIRESIM),          // output wire [5 : 0] m_axi_arid
-  .m_axi_araddr(sh_cl_dma_pcis_araddr_FIRESIM),      // output wire [63 : 0] m_axi_araddr
-  .m_axi_arlen(sh_cl_dma_pcis_arlen_FIRESIM),        // output wire [7 : 0] m_axi_arlen
-  .m_axi_arsize(sh_cl_dma_pcis_arsize_FIRESIM),      // output wire [2 : 0] m_axi_arsize
-  .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
-  .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
-  .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
-  .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
-  .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
-  .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-  .m_axi_arvalid(sh_cl_dma_pcis_arvalid_FIRESIM),    // output wire m_axi_arvalid
-  .m_axi_arready(cl_sh_dma_pcis_arready_FIRESIM),    // input wire m_axi_arready
+//   .m_axi_arid(sh_cl_dma_pcis_arid_FIRESIM),          // output wire [5 : 0] m_axi_arid
+//   .m_axi_araddr(sh_cl_dma_pcis_araddr_FIRESIM),      // output wire [63 : 0] m_axi_araddr
+//   .m_axi_arlen(sh_cl_dma_pcis_arlen_FIRESIM),        // output wire [7 : 0] m_axi_arlen
+//   .m_axi_arsize(sh_cl_dma_pcis_arsize_FIRESIM),      // output wire [2 : 0] m_axi_arsize
+//   .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
+//   .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
+//   .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
+//   .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
+//   .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
+//   .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
+//   .m_axi_arvalid(sh_cl_dma_pcis_arvalid_FIRESIM),    // output wire m_axi_arvalid
+//   .m_axi_arready(cl_sh_dma_pcis_arready_FIRESIM),    // input wire m_axi_arready
 
   .m_axi_rid(cl_sh_dma_pcis_rid_FIRESIM),            // input wire [5 : 0] m_axi_rid
   .m_axi_rdata(cl_sh_dma_pcis_rdata_FIRESIM),        // input wire [511 : 0] m_axi_rdata
@@ -642,94 +731,94 @@ generate if (0) begin : gen_disabled_pcim
       .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
       .s_axi_aresetn(rst_firesim_n_sync),    // input wire s_axi_aresetn
 
-      .s_axi_awid(cl_sh_pcim_awid_FIRESIM),          // input wire [5 : 0] s_axi_awid
-      .s_axi_awaddr(cl_sh_pcim_awaddr_FIRESIM),      // input wire [63 : 0] s_axi_awaddr
-      .s_axi_awlen(cl_sh_pcim_awlen_FIRESIM),        // input wire [7 : 0] s_axi_awlen
-      .s_axi_awsize(cl_sh_pcim_awsize_FIRESIM),      // input wire [2 : 0] s_axi_awsize
-      .s_axi_awburst(2'b1),    // input wire [1 : 0] s_axi_awburst
-      .s_axi_awlock(1'b0),      // input wire [0 : 0] s_axi_awlock
-      // CACHE = xx1x indicates the transcation is modifiable and
-      // that the converter should pack narrow reads into wider ones
-      .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
-         .s_axi_awprot(3'b0),      // input wire [2 : 0] s_axi_awprot
-         .s_axi_awregion(4'b0),  // input wire [3 : 0] s_axi_awregion
-         .s_axi_awqos(4'b0),        // input wire [3 : 0] s_axi_awqos
-         .s_axi_awvalid(cl_sh_pcim_awvalid_FIRESIM),    // input wire s_axi_awvalid
-         .s_axi_awready(sh_cl_pcim_awready_FIRESIM),    // output wire s_axi_awready
+  //     .s_axi_awid(cl_sh_pcim_awid_FIRESIM),          // input wire [5 : 0] s_axi_awid
+  //     .s_axi_awaddr(cl_sh_pcim_awaddr_FIRESIM),      // input wire [63 : 0] s_axi_awaddr
+  //     .s_axi_awlen(cl_sh_pcim_awlen_FIRESIM),        // input wire [7 : 0] s_axi_awlen
+  //     .s_axi_awsize(cl_sh_pcim_awsize_FIRESIM),      // input wire [2 : 0] s_axi_awsize
+  //     .s_axi_awburst(2'b1),    // input wire [1 : 0] s_axi_awburst
+  //     .s_axi_awlock(1'b0),      // input wire [0 : 0] s_axi_awlock
+  //     // CACHE = xx1x indicates the transcation is modifiable and
+  //     // that the converter should pack narrow reads into wider ones
+  //     .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
+  //        .s_axi_awprot(3'b0),      // input wire [2 : 0] s_axi_awprot
+  //        .s_axi_awregion(4'b0),  // input wire [3 : 0] s_axi_awregion
+  //        .s_axi_awqos(4'b0),        // input wire [3 : 0] s_axi_awqos
+  //        .s_axi_awvalid(cl_sh_pcim_awvalid_FIRESIM),    // input wire s_axi_awvalid
+  //        .s_axi_awready(sh_cl_pcim_awready_FIRESIM),    // output wire s_axi_awready
 
-         .s_axi_wdata(cl_sh_pcim_wdata_FIRESIM),        // input wire [511 : 0] s_axi_wdata
-         .s_axi_wstrb(cl_sh_pcim_wstrb_FIRESIM),        // input wire [63 : 0] s_axi_wstrb
-         .s_axi_wlast(cl_sh_pcim_wlast_FIRESIM),        // input wire s_axi_wlast
-         .s_axi_wvalid(cl_sh_pcim_wvalid_FIRESIM),      // input wire s_axi_wvalid
-         .s_axi_wready(sh_cl_pcim_wready_FIRESIM),      // output wire s_axi_wready
+  //        .s_axi_wdata(cl_sh_pcim_wdata_FIRESIM),        // input wire [511 : 0] s_axi_wdata
+  //        .s_axi_wstrb(cl_sh_pcim_wstrb_FIRESIM),        // input wire [63 : 0] s_axi_wstrb
+  //        .s_axi_wlast(cl_sh_pcim_wlast_FIRESIM),        // input wire s_axi_wlast
+  //        .s_axi_wvalid(cl_sh_pcim_wvalid_FIRESIM),      // input wire s_axi_wvalid
+  //        .s_axi_wready(sh_cl_pcim_wready_FIRESIM),      // output wire s_axi_wready
 
-         .s_axi_bid(sh_cl_pcim_bid_FIRESIM),            // output wire [5 : 0] s_axi_bid
-         .s_axi_bresp(sh_cl_pcim_bresp_FIRESIM),        // output wire [1 : 0] s_axi_bresp
-         .s_axi_bvalid(sh_cl_pcim_bvalid_FIRESIM),      // output wire s_axi_bvalid
-         .s_axi_bready(cl_sh_pcim_bready_FIRESIM),      // input wire s_axi_bready
+  //        .s_axi_bid(sh_cl_pcim_bid_FIRESIM),            // output wire [5 : 0] s_axi_bid
+  //        .s_axi_bresp(sh_cl_pcim_bresp_FIRESIM),        // output wire [1 : 0] s_axi_bresp
+  //        .s_axi_bvalid(sh_cl_pcim_bvalid_FIRESIM),      // output wire s_axi_bvalid
+  //        .s_axi_bready(cl_sh_pcim_bready_FIRESIM),      // input wire s_axi_bready
 
-         .s_axi_arid(cl_sh_pcim_arid_FIRESIM),          // input wire [5 : 0] s_axi_arid
-         .s_axi_araddr(cl_sh_pcim_araddr_FIRESIM),      // input wire [63 : 0] s_axi_araddr
-         .s_axi_arlen(cl_sh_pcim_arlen_FIRESIM),        // input wire [7 : 0] s_axi_arlen
-         .s_axi_arsize(cl_sh_pcim_arsize_FIRESIM),      // input wire [2 : 0] s_axi_arsize
-         .s_axi_arburst(2'b1),    // input wire [1 : 0] s_axi_arburst
-         .s_axi_arlock(1'b0),      // input wire [0 : 0] s_axi_arlock
-         // CACHE = xx1x indicates the transcation is modifiable and
-         // that the converter should pack narrow reads into wider ones
-         .s_axi_arcache(4'h2),    // input wire [3 : 0] s_axi_arcache
-            .s_axi_arprot(3'b0),      // input wire [2 : 0] s_axi_arprot
-            .s_axi_arregion(4'b0),  // input wire [3 : 0] s_axi_arregion
-            .s_axi_arqos(4'b0),        // input wire [3 : 0] s_axi_arqos
-            .s_axi_arvalid(cl_sh_pcim_arvalid_FIRESIM),    // input wire s_axi_arvalid
-            .s_axi_arready(sh_cl_pcim_arready_FIRESIM),    // output wire s_axi_arready
+  //        .s_axi_arid(cl_sh_pcim_arid_FIRESIM),          // input wire [5 : 0] s_axi_arid
+  //        .s_axi_araddr(cl_sh_pcim_araddr_FIRESIM),      // input wire [63 : 0] s_axi_araddr
+  //        .s_axi_arlen(cl_sh_pcim_arlen_FIRESIM),        // input wire [7 : 0] s_axi_arlen
+  //        .s_axi_arsize(cl_sh_pcim_arsize_FIRESIM),      // input wire [2 : 0] s_axi_arsize
+  //        .s_axi_arburst(2'b1),    // input wire [1 : 0] s_axi_arburst
+  //        .s_axi_arlock(1'b0),      // input wire [0 : 0] s_axi_arlock
+  //        // CACHE = xx1x indicates the transcation is modifiable and
+  //        // that the converter should pack narrow reads into wider ones
+  //        .s_axi_arcache(4'h2),    // input wire [3 : 0] s_axi_arcache
+  //           .s_axi_arprot(3'b0),      // input wire [2 : 0] s_axi_arprot
+  //           .s_axi_arregion(4'b0),  // input wire [3 : 0] s_axi_arregion
+  //           .s_axi_arqos(4'b0),        // input wire [3 : 0] s_axi_arqos
+  //           .s_axi_arvalid(cl_sh_pcim_arvalid_FIRESIM),    // input wire s_axi_arvalid
+  //           .s_axi_arready(sh_cl_pcim_arready_FIRESIM),    // output wire s_axi_arready
 
-            .s_axi_rid(sh_cl_pcim_rid_FIRESIM),            // output wire [5 : 0] s_axi_rid
-            .s_axi_rdata(sh_cl_pcim_rdata_FIRESIM),        // output wire [511 : 0] s_axi_rdata
-            .s_axi_rresp(sh_cl_pcim_rresp_FIRESIM),        // output wire [1 : 0] s_axi_rresp
-            .s_axi_rlast(sh_cl_pcim_rlast_FIRESIM),        // output wire s_axi_rlast
-            .s_axi_rvalid(sh_cl_pcim_rvalid_FIRESIM),      // output wire s_axi_rvalid
-            .s_axi_rready(cl_sh_pcim_rready_FIRESIM),      // input wire s_axi_rready
+  //           .s_axi_rid(sh_cl_pcim_rid_FIRESIM),            // output wire [5 : 0] s_axi_rid
+  //           .s_axi_rdata(sh_cl_pcim_rdata_FIRESIM),        // output wire [511 : 0] s_axi_rdata
+  //           .s_axi_rresp(sh_cl_pcim_rresp_FIRESIM),        // output wire [1 : 0] s_axi_rresp
+  //           .s_axi_rlast(sh_cl_pcim_rlast_FIRESIM),        // output wire s_axi_rlast
+  //           .s_axi_rvalid(sh_cl_pcim_rvalid_FIRESIM),      // output wire s_axi_rvalid
+  //           .s_axi_rready(cl_sh_pcim_rready_FIRESIM),      // input wire s_axi_rready
 
 
-            .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
-            .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
+  //           .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
+  //           .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
 
-            .m_axi_awid(),          // output wire [5 : 0] m_axi_awid
-            .m_axi_awaddr(),      // output wire [63 : 0] m_axi_awaddr
-            .m_axi_awlen(),        // output wire [7 : 0] m_axi_awlen
-            .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize
-            .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
-            .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
-            .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
-            .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
-            .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
-            .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-            .m_axi_awvalid(),    // output wire m_axi_awvalid
-            .m_axi_awready(sh_cl_pcim_awready),    // input wire m_axi_awready
+  //           .m_axi_awid(),          // output wire [5 : 0] m_axi_awid
+  //           .m_axi_awaddr(),      // output wire [63 : 0] m_axi_awaddr
+  //           .m_axi_awlen(),        // output wire [7 : 0] m_axi_awlen
+  //           .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize
+  //           .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst
+  //           .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
+  //           .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
+  //           .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
+  //           .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
+  //           .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
+  //           .m_axi_awvalid(),    // output wire m_axi_awvalid
+  //           .m_axi_awready(sh_cl_pcim_awready),    // input wire m_axi_awready
 
-            .m_axi_wdata(),        // output wire [511 : 0] m_axi_wdata
-            .m_axi_wstrb(),        // output wire [63 : 0] m_axi_wstrb
-            .m_axi_wlast(),        // output wire m_axi_wlast
-            .m_axi_wvalid(),      // output wire m_axi_wvalid
-            .m_axi_wready(sh_cl_pcim_wready),      // input wire m_axi_wready
+  //           .m_axi_wdata(),        // output wire [511 : 0] m_axi_wdata
+  //           .m_axi_wstrb(),        // output wire [63 : 0] m_axi_wstrb
+  //           .m_axi_wlast(),        // output wire m_axi_wlast
+  //           .m_axi_wvalid(),      // output wire m_axi_wvalid
+  //           .m_axi_wready(sh_cl_pcim_wready),      // input wire m_axi_wready
 
-            .m_axi_bid(sh_cl_pcim_bid),            // input wire [5 : 0] m_axi_bid
-            .m_axi_bresp(sh_cl_pcim_bresp),        // input wire [1 : 0] m_axi_bresp
-            .m_axi_bvalid(sh_cl_pcim_bvalid),      // input wire m_axi_bvalid
-            .m_axi_bready(),      // output wire m_axi_bready
+  //           .m_axi_bid(sh_cl_pcim_bid),            // input wire [5 : 0] m_axi_bid
+  //           .m_axi_bresp(sh_cl_pcim_bresp),        // input wire [1 : 0] m_axi_bresp
+  //           .m_axi_bvalid(sh_cl_pcim_bvalid),      // input wire m_axi_bvalid
+  //           .m_axi_bready(),      // output wire m_axi_bready
 
-            .m_axi_arid(),          // output wire [5 : 0] m_axi_arid
-            .m_axi_araddr(),      // output wire [63 : 0] m_axi_araddr
-            .m_axi_arlen(),        // output wire [7 : 0] m_axi_arlen
-            .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize
-            .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
-            .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
-            .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
-            .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
-            .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
-            .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-            .m_axi_arvalid(),    // output wire m_axi_arvalid
-            .m_axi_arready(sh_cl_pcim_arready),    // input wire m_axi_arready
+  //           .m_axi_arid(),          // output wire [5 : 0] m_axi_arid
+  //           .m_axi_araddr(),      // output wire [63 : 0] m_axi_araddr
+  //           .m_axi_arlen(),        // output wire [7 : 0] m_axi_arlen
+  //           .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize
+  //           .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst
+  //           .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
+  //           .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
+  //           .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
+  //           .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
+  //           .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
+  //           .m_axi_arvalid(),    // output wire m_axi_arvalid
+  //           .m_axi_arready(sh_cl_pcim_arready),    // input wire m_axi_arready
 
             .m_axi_rid(sh_cl_pcim_rid),            // input wire [5 : 0] m_axi_rid
             .m_axi_rdata(sh_cl_pcim_rdata),        // input wire [511 : 0] m_axi_rdata
@@ -953,17 +1042,67 @@ logic ddr_sh_stat_ack_q;
 logic[31:0] ddr_sh_stat_rdata_q;
 logic[7:0] ddr_sh_stat_int_q;
 
+// !!NOTE!!: Tie SH_DDR resets to rst_main_n ONLY!!
+// ============ COPIED FROM CL_MEM_PERF ============
+  logic         ddr_sync_rst_n;
+
+  xpm_cdc_async_rst CDC_ASYNC_RST_N_DDR
+  (
+    .src_arst               (rst_main_n               ),
+    .dest_clk               (gen_clk_main_a0          ),
+    .dest_arst              (ddr_sync_rst_n           )
+  );
+
 
 // lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
 //                                                .in_bus({sh_ddr_stat_wr0, sh_ddr_stat_rd0, sh_ddr_stat_addr0, sh_ddr_stat_wdata0}),
 //                                                .out_bus({sh_ddr_stat_wr_q[0], sh_ddr_stat_rd_q[0], sh_ddr_stat_addr_q[0], sh_ddr_stat_wdata_q[0]})
 //                                                );
 
+// ============= COPIED FROM CL_MEM_PERF ============
+
+lib_pipe
+  #(
+    .WIDTH                  (1+1+8+32                 ),
+    .STAGES                 (NUM_CFG_STGS_CL_DDR_ATG  )
+  )
+  PIPE_DDR_STAT0
+  (
+    .clk                    (gen_clk_main_a0          ),
+    .rst_n                  (ddr_sync_rst_n           ),
+    .in_bus                 ({sh_cl_ddr_stat_wr,
+                              sh_cl_ddr_stat_rd,
+                              sh_cl_ddr_stat_addr,
+                              sh_cl_ddr_stat_wdata}   ),
+    .out_bus                ({sh_ddr_stat_wr_q,
+                              sh_ddr_stat_rd_q,
+                              sh_ddr_stat_addr_q,
+                              sh_ddr_stat_wdata_q}    )
+  );
+
 
 // lib_pipe #(.WIDTH(1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT_ACK0 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
 //                                                .in_bus({ddr_sh_stat_ack_q[0], ddr_sh_stat_int_q[0], ddr_sh_stat_rdata_q[0]}),
 //                                                .out_bus({ddr_sh_stat_ack0, ddr_sh_stat_int0, ddr_sh_stat_rdata0})
 //                                                );
+
+lib_pipe
+  #(
+    .WIDTH                  (1+8+32                   ),
+    .STAGES                 (NUM_CFG_STGS_CL_DDR_ATG  )
+  )
+  PIPE_DDR_STAT_ACK0
+  (
+    .clk                    (gen_clk_main_a0          ),
+    .rst_n                  (ddr_sync_rst_n           ),
+    .in_bus                 ({ddr_sh_stat_ack_q,
+                              ddr_sh_stat_int_q,
+                              ddr_sh_stat_rdata_q}    ),
+    .out_bus                ({cl_sh_ddr_stat_ack,
+                              cl_sh_ddr_stat_int,
+                              cl_sh_ddr_stat_rdata}   )
+  );
+
 
 
 // lib_pipe #(.WIDTH(1+1+8+32), .STAGES(NUM_CFG_STGS_CL_DDR_ATG)) PIPE_DDR_STAT1 (.clk(clk_main_a0), .rst_n(rst_main_n_sync),
@@ -1068,7 +1207,7 @@ assign mc_ddr_s_1_axi_awready = sh_cl_ddr_awready;
 // assign cl_sh_ddr_wlast_2d = {mc_ddr_s_3_axi_wlast, mc_ddr_s_2_axi_wlast, mc_ddr_s_1_axi_wlast};
 // assign cl_sh_ddr_wvalid_2d = {mc_ddr_s_3_axi_wvalid, mc_ddr_s_2_axi_wvalid, mc_ddr_s_1_axi_wvalid};
 // assign {mc_ddr_s_3_axi_wready, mc_ddr_s_2_axi_wready, mc_ddr_s_1_axi_wready} = sh_cl_ddr_wready_2d;
-assign cl_sh_ddr_wid = 16'b0;
+// assign cl_sh_ddr_wid = 16'b0;
 assign cl_sh_ddr_wdata = mc_ddr_s_1_axi_wdata;
 assign cl_sh_ddr_wstrb = mc_ddr_s_1_axi_wstrb;
 assign cl_sh_ddr_wlast = mc_ddr_s_1_axi_wlast;
@@ -1112,114 +1251,79 @@ assign mc_ddr_s_1_axi_rlast = sh_cl_ddr_rlast;
 assign mc_ddr_s_1_axi_rvalid = sh_cl_ddr_rvalid;
 assign cl_sh_ddr_rready = mc_ddr_s_1_axi_rready;
 
-(* dont_touch = "true" *) logic sh_ddr_sync_rst_n;
-lib_pipe #(.WIDTH(1), .STAGES(4)) SH_DDR_SLC_RST_N (.clk(clk_main_a0), .rst_n(1'b1), .in_bus(rst_main_n_sync), .out_bus(sh_ddr_sync_rst_n));
-sh_ddr #(
-         .DDR_PRESENT (EN_DDR)
-         // .DDR_A_PRESENT(DDR_A_PRESENT),
-         // .DDR_A_IO(DDR_A_PRESENT),
-         // .DDR_B_PRESENT(DDR_B_PRESENT),
-         // .DDR_D_PRESENT(DDR_D_PRESENT)
+// (* dont_touch = "true" *) logic sh_ddr_sync_rst_n;
+// lib_pipe #(.WIDTH(1), .STAGES(4)) SH_DDR_SLC_RST_N (.clk(clk_main_a0), .rst_n(1'b1), .in_bus(rst_main_n_sync), .out_bus(sh_ddr_sync_rst_n));
+sh_ddr
+  #(
+    .DDR_PRESENT            (EN_DDR                   )
+  )
+  SH_DDR
+  (
+    .clk                    (gen_clk_main_a0          ),
+    .rst_n                  (ddr_sync_rst_n           ),
+    .stat_clk               (gen_clk_main_a0          ),
+    .stat_rst_n             (ddr_sync_rst_n           ),
 
-   ) SH_DDR
-   (
-   .clk(clk_main_a0),
-   .rst_n(sh_ddr_sync_rst_n),
+    .CLK_DIMM_DP            (CLK_DIMM_DP              ),
+    .CLK_DIMM_DN            (CLK_DIMM_DN              ),
+    .M_ACT_N                (M_ACT_N                  ),
+    .M_MA                   (M_MA                     ),
+    .M_BA                   (M_BA                     ),
+    .M_BG                   (M_BG                     ),
+    .M_CKE                  (M_CKE                    ),
+    .M_ODT                  (M_ODT                    ),
+    .M_CS_N                 (M_CS_N                   ),
+    .M_CLK_DN               (M_CLK_DN                 ),
+    .M_CLK_DP               (M_CLK_DP                 ),
+    .M_PAR                  (M_PAR                    ),
+    .M_DQ                   (M_DQ                     ),
+    .M_ECC                  (M_ECC                    ),
+    .M_DQS_DP               (M_DQS_DP                 ),
+    .M_DQS_DN               (M_DQS_DN                 ),
+    .cl_RST_DIMM_N          (RST_DIMM_N               ),
 
-   .stat_clk(clk_main_a0),
-   .stat_rst_n(sh_ddr_sync_rst_n),
+    .cl_sh_ddr_axi_awid     (lcl_cl_sh_ddra.awid      ),
+    .cl_sh_ddr_axi_awaddr   (lcl_cl_sh_ddra.awaddr    ),
+    .cl_sh_ddr_axi_awlen    (lcl_cl_sh_ddra.awlen     ),
+    .cl_sh_ddr_axi_awsize   (lcl_cl_sh_ddra.awsize    ),
+    .cl_sh_ddr_axi_awvalid  (lcl_cl_sh_ddra.awvalid   ),
+    .cl_sh_ddr_axi_awburst  (lcl_cl_sh_ddra.awburst   ),
+    .cl_sh_ddr_axi_awuser   (1'd0                     ),
+    .cl_sh_ddr_axi_awready  (lcl_cl_sh_ddra.awready   ),
+    .cl_sh_ddr_axi_wdata    (lcl_cl_sh_ddra.wdata     ),
+    .cl_sh_ddr_axi_wstrb    (lcl_cl_sh_ddra.wstrb     ),
+    .cl_sh_ddr_axi_wlast    (lcl_cl_sh_ddra.wlast     ),
+    .cl_sh_ddr_axi_wvalid   (lcl_cl_sh_ddra.wvalid    ),
+    .cl_sh_ddr_axi_wready   (lcl_cl_sh_ddra.wready    ),
+    .cl_sh_ddr_axi_bid      (lcl_cl_sh_ddra.bid       ),
+    .cl_sh_ddr_axi_bresp    (lcl_cl_sh_ddra.bresp     ),
+    .cl_sh_ddr_axi_bvalid   (lcl_cl_sh_ddra.bvalid    ),
+    .cl_sh_ddr_axi_bready   (lcl_cl_sh_ddra.bready    ),
+    .cl_sh_ddr_axi_arid     (lcl_cl_sh_ddra.arid      ),
+    .cl_sh_ddr_axi_araddr   (lcl_cl_sh_ddra.araddr    ),
+    .cl_sh_ddr_axi_arlen    (lcl_cl_sh_ddra.arlen     ),
+    .cl_sh_ddr_axi_arsize   (lcl_cl_sh_ddra.arsize    ),
+    .cl_sh_ddr_axi_arvalid  (lcl_cl_sh_ddra.arvalid   ),
+    .cl_sh_ddr_axi_arburst  (lcl_cl_sh_ddra.arburst   ),
+    .cl_sh_ddr_axi_aruser   (1'd0                     ),
+    .cl_sh_ddr_axi_arready  (lcl_cl_sh_ddra.arready   ),
+    .cl_sh_ddr_axi_rid      (lcl_cl_sh_ddra.rid       ),
+    .cl_sh_ddr_axi_rdata    (lcl_cl_sh_ddra.rdata     ),
+    .cl_sh_ddr_axi_rresp    (lcl_cl_sh_ddra.rresp     ),
+    .cl_sh_ddr_axi_rlast    (lcl_cl_sh_ddra.rlast     ),
+    .cl_sh_ddr_axi_rvalid   (lcl_cl_sh_ddra.rvalid    ),
+    .cl_sh_ddr_axi_rready   (lcl_cl_sh_ddra.rready    ),
 
-   // F2 SH_DDR does not distinguish A/B/D interfaces
-   .CLK_DIMM_DP(CLK_DIMM_DP),
-   .CLK_DIMM_DN(CLK_DIMM_DN),
-   .M_ACT_N(M_ACT_N),
-   .M_MA(M_MA),
-   .M_BA(M_BA),
-   .M_BG(M_BG),
-   .M_CKE(M_CKE),
-   .M_ODT(M_ODT),
-   .M_CS_N(M_CS_N),
-   .M_CLK_DN(M_CLK_DN),
-   .M_CLK_DP(M_CLK_DP),
-   .M_PAR(M_PAR),
-   .M_DQ(M_DQ),
-   .M_ECC(M_ECC),
-   .M_DQS_DP(M_DQS_DP),
-   .M_DQS_DN(M_DQS_DN),
-   .cl_RST_DIMM_N(RST_DIMM_N),
+    .sh_ddr_stat_bus_addr   (sh_ddr_stat_addr_q       ),
+    .sh_ddr_stat_bus_wdata  (sh_ddr_stat_wdata_q      ),
+    .sh_ddr_stat_bus_wr     (sh_ddr_stat_wr_q         ),
+    .sh_ddr_stat_bus_rd     (sh_ddr_stat_rd_q         ),
+    .sh_ddr_stat_bus_ack    (ddr_sh_stat_ack_q        ),
+    .sh_ddr_stat_bus_rdata  (ddr_sh_stat_rdata_q      ),
 
-   //------------------------------------------------------
-   // DDR-4 Interface from CL (AXI-4)
-   //------------------------------------------------------
-   .cl_sh_ddr_axi_awid(cl_sh_ddr_awid),
-   .cl_sh_ddr_axi_awaddr(cl_sh_ddr_awaddr),
-   .cl_sh_ddr_axi_awlen(cl_sh_ddr_awlen),
-   .cl_sh_ddr_axi_awsize(cl_sh_ddr_awsize),
-   .cl_sh_ddr_axi_awvalid(cl_sh_ddr_awvalid),
-   .cl_sh_ddr_axi_awburst(cl_sh_ddr_awburst),
-   .cl_sh_ddr_axi_awready(sh_cl_ddr_awready),
-
-   // .cl_sh_ddr_wid(cl_sh_ddr_wid_2d),
-   .cl_sh_ddr_axi_wdata(cl_sh_ddr_wdata),
-   .cl_sh_ddr_axi_wstrb(cl_sh_ddr_wstrb),
-   .cl_sh_ddr_axi_wlast(cl_sh_ddr_wlast),
-   .cl_sh_ddr_axi_wvalid(cl_sh_ddr_wvalid),
-   .cl_sh_ddr_axi_wready(sh_cl_ddr_wready),
-
-   .cl_sh_ddr_axi_bid(sh_cl_ddr_bid),
-   .cl_sh_ddr_axi_bresp(sh_cl_ddr_bresp),
-   .cl_sh_ddr_axi_bvalid(sh_cl_ddr_bvalid),
-   .cl_sh_ddr_axi_bready(cl_sh_ddr_bready),
-
-   .cl_sh_ddr_axi_arid(cl_sh_ddr_arid),
-   .cl_sh_ddr_axi_araddr(cl_sh_ddr_araddr),
-   .cl_sh_ddr_axi_arlen(cl_sh_ddr_arlen),
-   .cl_sh_ddr_axi_arsize(cl_sh_ddr_arsize),
-   .cl_sh_ddr_axi_arvalid(cl_sh_ddr_arvalid),
-   .cl_sh_ddr_axi_arburst(cl_sh_ddr_arburst),
-   .cl_sh_ddr_axi_arready(sh_cl_ddr_arready),
-
-   .cl_sh_ddr_axi_rid(sh_cl_ddr_rid),
-   .cl_sh_ddr_axi_rdata(sh_cl_ddr_rdata),
-   .cl_sh_ddr_axi_rresp(sh_cl_ddr_rresp),
-   .cl_sh_ddr_axi_rlast(sh_cl_ddr_rlast),
-   .cl_sh_ddr_axi_rvalid(sh_cl_ddr_rvalid),
-   .cl_sh_ddr_axi_rready(cl_sh_ddr_rready),
-
-   .sh_cl_ddr_is_ready(lcl_sh_cl_ddr_is_ready),
-
-   .sh_ddr_stat_bus_addr  (sh_ddr_stat_addr_q) ,
-   .sh_ddr_stat_bus_wr    (sh_ddr_stat_wr_q     ) , 
-   .sh_ddr_stat_bus_rd    (sh_ddr_stat_rd_q     ) , 
-   .sh_ddr_stat_bus_wdata (sh_ddr_stat_wdata_q  ) , 
-   .sh_ddr_stat_bus_ack   (ddr_sh_stat_ack_q    ) ,
-   .sh_ddr_stat_bus_rdata (ddr_sh_stat_rdata_q  ),
-   .ddr_sh_stat_int   (ddr_sh_stat_int_q    )
-
-   // .sh_ddr_stat_addr0  (sh_ddr_stat_addr_q[0]) ,
-   // .sh_ddr_stat_wr0    (sh_ddr_stat_wr_q[0]     ) , 
-   // .sh_ddr_stat_rd0    (sh_ddr_stat_rd_q[0]     ) , 
-   // .sh_ddr_stat_wdata0 (sh_ddr_stat_wdata_q[0]  ) , 
-   // .ddr_sh_stat_ack0   (ddr_sh_stat_ack_q[0]    ) ,
-   // .ddr_sh_stat_rdata0 (ddr_sh_stat_rdata_q[0]  ),
-   // .ddr_sh_stat_int0   (ddr_sh_stat_int_q[0]    ),
-
-   // .sh_ddr_stat_addr1  (sh_ddr_stat_addr_q[1]) ,
-   // .sh_ddr_stat_wr1    (sh_ddr_stat_wr_q[1]     ) , 
-   // .sh_ddr_stat_rd1    (sh_ddr_stat_rd_q[1]     ) , 
-   // .sh_ddr_stat_wdata1 (sh_ddr_stat_wdata_q[1]  ) , 
-   // .ddr_sh_stat_ack1   (ddr_sh_stat_ack_q[1]    ) ,
-   // .ddr_sh_stat_rdata1 (ddr_sh_stat_rdata_q[1]  ),
-   // .ddr_sh_stat_int1   (ddr_sh_stat_int_q[1]    ),
-
-   // .sh_ddr_stat_addr2  (sh_ddr_stat_addr_q[2]) ,
-   // .sh_ddr_stat_wr2    (sh_ddr_stat_wr_q[2]     ) , 
-   // .sh_ddr_stat_rd2    (sh_ddr_stat_rd_q[2]     ) , 
-   // .sh_ddr_stat_wdata2 (sh_ddr_stat_wdata_q[2]  ) , 
-   // .ddr_sh_stat_ack2   (ddr_sh_stat_ack_q[2]    ) ,
-   // .ddr_sh_stat_rdata2 (ddr_sh_stat_rdata_q[2]  ),
-   // .ddr_sh_stat_int2   (ddr_sh_stat_int_q[2]    ) 
-   );
+    .ddr_sh_stat_int        (ddr_sh_stat_int_q        ),
+    .sh_cl_ddr_is_ready     (ddr_ready                )
+  );
 
 
 
@@ -1463,7 +1567,9 @@ wire fsimtop_s_3_axi_rready;
    .io_master_w_bits_user(1'h0),
    .io_master_b_ready(sh_ocl_bready_q),
    .io_master_b_valid(ocl_sh_bvalid_q),
+  //  .io_master_b_valid(),
    .io_master_b_bits_resp(ocl_sh_bresp_q),
+  //  .io_master_b_bits_resp(),
    .io_master_b_bits_id(),      // UNUSED at top level
    .io_master_b_bits_user(),    // UNUSED at top level
    .io_master_ar_ready(ocl_sh_arready_q),
@@ -1481,7 +1587,9 @@ wire fsimtop_s_3_axi_rready;
    .io_master_ar_bits_user(1'h0),
    .io_master_r_ready(sh_ocl_rready_q),
    .io_master_r_valid(ocl_sh_rvalid_q),
+  //  .io_master_r_valid(),
    .io_master_r_bits_resp(ocl_sh_rresp_q),
+  //  .io_master_r_bits_resp(),
    .io_master_r_bits_data(ocl_sh_rdata_q),
    .io_master_r_bits_last(), //UNUSED at top level
    .io_master_r_bits_id(),      // UNUSED at top level
@@ -1660,7 +1768,7 @@ wire fsimtop_s_3_axi_rready;
    .io_slave_1_r_ready(fsimtop_s_1_axi_rready),
    .io_slave_1_r_valid(fsimtop_s_1_axi_rvalid),
    .io_slave_1_r_bits_resp(fsimtop_s_1_axi_rresp),
-   .io_slave_1_r_bits_data(fsimtop_s_1_axi_rdata),
+   // .io_slave_1_r_bits_data(fsimtop_s_1_axi_rdata),
    .io_slave_1_r_bits_last(fsimtop_s_1_axi_rlast),
    .io_slave_1_r_bits_id(fsimtop_s_1_axi_rid),
 
@@ -1702,7 +1810,7 @@ wire fsimtop_s_3_axi_rready;
    .io_slave_2_r_ready(fsimtop_s_2_axi_rready),
    .io_slave_2_r_valid(fsimtop_s_2_axi_rvalid),
    .io_slave_2_r_bits_resp(fsimtop_s_2_axi_rresp),
-   .io_slave_2_r_bits_data(fsimtop_s_2_axi_rdata),
+   // .io_slave_2_r_bits_data(fsimtop_s_2_axi_rdata),
    .io_slave_2_r_bits_last(fsimtop_s_2_axi_rlast),
    .io_slave_2_r_bits_id(fsimtop_s_2_axi_rid),
 
@@ -1744,7 +1852,7 @@ wire fsimtop_s_3_axi_rready;
    .io_slave_3_r_ready(fsimtop_s_3_axi_rready),
    .io_slave_3_r_valid(fsimtop_s_3_axi_rvalid),
    .io_slave_3_r_bits_resp(fsimtop_s_3_axi_rresp),
-   .io_slave_3_r_bits_data(fsimtop_s_3_axi_rdata),
+   // .io_slave_3_r_bits_data(fsimtop_s_3_axi_rdata),
    .io_slave_3_r_bits_last(fsimtop_s_3_axi_rlast),
    .io_slave_3_r_bits_id(fsimtop_s_3_axi_rid)
 );
@@ -1762,49 +1870,49 @@ wire fsimtop_s_3_axi_rready;
 
 //****************DDR CHANNEL C****************************
 
-wire [15 : 0] clock_converted_axi_0_awid;
-wire [63 : 0] clock_converted_axi_0_awaddr;
-wire [7 : 0]  clock_converted_axi_0_awlen;
-wire [2 : 0]  clock_converted_axi_0_awsize;
-wire [1 : 0]  clock_converted_axi_0_awburst;
-wire [0 : 0]  clock_converted_axi_0_awlock;
-wire [3 : 0]  clock_converted_axi_0_awcache;
-wire [2 : 0]  clock_converted_axi_0_awprot;
-wire [3 : 0]  clock_converted_axi_0_awregion;
-wire [3 : 0]  clock_converted_axi_0_awqos;
-wire          clock_converted_axi_0_awvalid;
-wire          clock_converted_axi_0_awready;
+// wire [15 : 0] clock_converted_axi_0_awid;
+// wire [63 : 0] clock_converted_axi_0_awaddr;
+// wire [7 : 0]  clock_converted_axi_0_awlen;
+// wire [2 : 0]  clock_converted_axi_0_awsize;
+// wire [1 : 0]  clock_converted_axi_0_awburst;
+// wire [0 : 0]  clock_converted_axi_0_awlock;
+// wire [3 : 0]  clock_converted_axi_0_awcache;
+// wire [2 : 0]  clock_converted_axi_0_awprot;
+// wire [3 : 0]  clock_converted_axi_0_awregion;
+// wire [3 : 0]  clock_converted_axi_0_awqos;
+// wire          clock_converted_axi_0_awvalid;
+// wire          clock_converted_axi_0_awready;
 
-wire [63 : 0] clock_converted_axi_0_wdata;
-wire [7 : 0]  clock_converted_axi_0_wstrb;
-wire          clock_converted_axi_0_wlast;
-wire          clock_converted_axi_0_wvalid;
-wire          clock_converted_axi_0_wready;
+// wire [63 : 0] clock_converted_axi_0_wdata;
+// wire [7 : 0]  clock_converted_axi_0_wstrb;
+// wire          clock_converted_axi_0_wlast;
+// wire          clock_converted_axi_0_wvalid;
+// wire          clock_converted_axi_0_wready;
 
-wire [15 : 0] clock_converted_axi_0_bid;
-wire [1 : 0]  clock_converted_axi_0_bresp;
-wire          clock_converted_axi_0_bvalid;
-wire          clock_converted_axi_0_bready;
+// wire [15 : 0] clock_converted_axi_0_bid;
+// wire [1 : 0]  clock_converted_axi_0_bresp;
+// wire          clock_converted_axi_0_bvalid;
+// wire          clock_converted_axi_0_bready;
 
-wire [15 : 0] clock_converted_axi_0_arid;
-wire [63 : 0] clock_converted_axi_0_araddr;
-wire [7 : 0]  clock_converted_axi_0_arlen;
-wire [2 : 0]  clock_converted_axi_0_arsize;
-wire [1 : 0]  clock_converted_axi_0_arburst;
-wire [0 : 0]  clock_converted_axi_0_arlock;
-wire [3 : 0]  clock_converted_axi_0_arcache;
-wire [2 : 0]  clock_converted_axi_0_arprot;
-wire [3 : 0]  clock_converted_axi_0_arregion;
-wire [3 : 0]  clock_converted_axi_0_arqos;
-wire          clock_converted_axi_0_arvalid;
-wire          clock_converted_axi_0_arready;
+// wire [15 : 0] clock_converted_axi_0_arid;
+// wire [63 : 0] clock_converted_axi_0_araddr;
+// wire [7 : 0]  clock_converted_axi_0_arlen;
+// wire [2 : 0]  clock_converted_axi_0_arsize;
+// wire [1 : 0]  clock_converted_axi_0_arburst;
+// wire [0 : 0]  clock_converted_axi_0_arlock;
+// wire [3 : 0]  clock_converted_axi_0_arcache;
+// wire [2 : 0]  clock_converted_axi_0_arprot;
+// wire [3 : 0]  clock_converted_axi_0_arregion;
+// wire [3 : 0]  clock_converted_axi_0_arqos;
+// wire          clock_converted_axi_0_arvalid;
+// wire          clock_converted_axi_0_arready;
 
-wire [15 : 0] clock_converted_axi_0_rid;
-wire [63 : 0] clock_converted_axi_0_rdata;
-wire [1 : 0]  clock_converted_axi_0_rresp;
-wire          clock_converted_axi_0_rlast;
-wire          clock_converted_axi_0_rvalid;
-wire          clock_converted_axi_0_rready;
+// wire [15 : 0] clock_converted_axi_0_rid;
+// wire [63 : 0] clock_converted_axi_0_rdata;
+// wire [1 : 0]  clock_converted_axi_0_rresp;
+// wire          clock_converted_axi_0_rlast;
+// wire          clock_converted_axi_0_rvalid;
+// wire          clock_converted_axi_0_rready;
 
 // FIX: Only instantiate dramslim_0 when EN_DDR==1
 generate
@@ -1814,101 +1922,101 @@ axi_clock_converter_dramslim clock_convert_dramslim_0 (
   .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_firesim_n_sync),    // input wire s_axi_aresetn
 
-  .s_axi_awid(fsimtop_s_0_axi_awid),          // input wire [15 : 0] s_axi_awid
-  .s_axi_awaddr(fsimtop_s_0_axi_awaddr),      // input wire [63 : 0] s_axi_awaddr
-  .s_axi_awlen(fsimtop_s_0_axi_awlen),        // input wire [7 : 0] s_axi_awlen
-  .s_axi_awsize(fsimtop_s_0_axi_awsize),      // input wire [2 : 0] s_axi_awsize
-  .s_axi_awburst(fsimtop_s_0_axi_awburst),    // input wire [1 : 0] s_axi_awburst
-  .s_axi_awlock(fsimtop_s_0_axi_awlock),      // input wire [0 : 0] s_axi_awlock
-  // CACHE = xx1x indicates the transcation is modifiable and
-  // that the converter should pack narrow writes into wider ones
-  .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
-  .s_axi_awprot(fsimtop_s_0_axi_awprot),      // input wire [2 : 0] s_axi_awprot
-  .s_axi_awregion(fsimtop_s_0_axi_awregion),  // input wire [3 : 0] s_axi_awregion
-  .s_axi_awqos(fsimtop_s_0_axi_awqos),        // input wire [3 : 0] s_axi_awqos
-  .s_axi_awvalid(fsimtop_s_0_axi_awvalid),    // input wire s_axi_awvalid
-  .s_axi_awready(fsimtop_s_0_axi_awready),    // output wire s_axi_awready
+//   .s_axi_awid(fsimtop_s_0_axi_awid),          // input wire [15 : 0] s_axi_awid
+//   .s_axi_awaddr(fsimtop_s_0_axi_awaddr),      // input wire [63 : 0] s_axi_awaddr
+//   .s_axi_awlen(fsimtop_s_0_axi_awlen),        // input wire [7 : 0] s_axi_awlen
+//   .s_axi_awsize(fsimtop_s_0_axi_awsize),      // input wire [2 : 0] s_axi_awsize
+//   .s_axi_awburst(fsimtop_s_0_axi_awburst),    // input wire [1 : 0] s_axi_awburst
+//   .s_axi_awlock(fsimtop_s_0_axi_awlock),      // input wire [0 : 0] s_axi_awlock
+//   // CACHE = xx1x indicates the transcation is modifiable and
+//   // that the converter should pack narrow writes into wider ones
+//   .s_axi_awcache(4'h2),    // input wire [3 : 0] s_axi_awcache
+//   .s_axi_awprot(fsimtop_s_0_axi_awprot),      // input wire [2 : 0] s_axi_awprot
+//   .s_axi_awregion(fsimtop_s_0_axi_awregion),  // input wire [3 : 0] s_axi_awregion
+//   .s_axi_awqos(fsimtop_s_0_axi_awqos),        // input wire [3 : 0] s_axi_awqos
+//   .s_axi_awvalid(fsimtop_s_0_axi_awvalid),    // input wire s_axi_awvalid
+//   .s_axi_awready(fsimtop_s_0_axi_awready),    // output wire s_axi_awready
 
-  .s_axi_wdata(fsimtop_s_0_axi_wdata),        // input wire [63 : 0] s_axi_wdata
-  .s_axi_wstrb(fsimtop_s_0_axi_wstrb),        // input wire [7 : 0] s_axi_wstrb
-  .s_axi_wlast(fsimtop_s_0_axi_wlast),        // input wire s_axi_wlast
-  .s_axi_wvalid(fsimtop_s_0_axi_wvalid),      // input wire s_axi_wvalid
-  .s_axi_wready(fsimtop_s_0_axi_wready),      // output wire s_axi_wready
+//   .s_axi_wdata(fsimtop_s_0_axi_wdata),        // input wire [63 : 0] s_axi_wdata
+//   .s_axi_wstrb(fsimtop_s_0_axi_wstrb),        // input wire [7 : 0] s_axi_wstrb
+//   .s_axi_wlast(fsimtop_s_0_axi_wlast),        // input wire s_axi_wlast
+//   .s_axi_wvalid(fsimtop_s_0_axi_wvalid),      // input wire s_axi_wvalid
+//   .s_axi_wready(fsimtop_s_0_axi_wready),      // output wire s_axi_wready
 
-  .s_axi_bid(fsimtop_s_0_axi_bid),            // output wire [15 : 0] s_axi_bid
-  .s_axi_bresp(fsimtop_s_0_axi_bresp),        // output wire [1 : 0] s_axi_bresp
-  .s_axi_bvalid(fsimtop_s_0_axi_bvalid),      // output wire s_axi_bvalid
-  .s_axi_bready(fsimtop_s_0_axi_bready),      // input wire s_axi_bready
+//   .s_axi_bid(fsimtop_s_0_axi_bid),            // output wire [15 : 0] s_axi_bid
+//   .s_axi_bresp(fsimtop_s_0_axi_bresp),        // output wire [1 : 0] s_axi_bresp
+//   .s_axi_bvalid(fsimtop_s_0_axi_bvalid),      // output wire s_axi_bvalid
+//   .s_axi_bready(fsimtop_s_0_axi_bready),      // input wire s_axi_bready
 
-  .s_axi_arid(fsimtop_s_0_axi_arid),          // input wire [15 : 0] s_axi_arid
-  .s_axi_araddr(fsimtop_s_0_axi_araddr),      // input wire [63 : 0] s_axi_araddr
-  .s_axi_arlen(fsimtop_s_0_axi_arlen),        // input wire [7 : 0] s_axi_arlen
-  .s_axi_arsize(fsimtop_s_0_axi_arsize),      // input wire [2 : 0] s_axi_arsize
-  .s_axi_arburst(fsimtop_s_0_axi_arburst),    // input wire [1 : 0] s_axi_arburst
-  .s_axi_arlock(fsimtop_s_0_axi_arlock),      // input wire [0 : 0] s_axi_arlock
-  // CACHE = xx1x indicates the transcation is modifiable and
-  // that the converter should pack narrow reads into wider ones
-  .s_axi_arcache(4'h2),                     // input wire [3 : 0] s_axi_arcache
-  .s_axi_arprot(fsimtop_s_0_axi_arprot),      // input wire [2 : 0] s_axi_arprot
-  .s_axi_arregion(fsimtop_s_0_axi_arregion),  // input wire [3 : 0] s_axi_arregion
-  .s_axi_arqos(fsimtop_s_0_axi_arqos),        // input wire [3 : 0] s_axi_arqos
-  .s_axi_arvalid(fsimtop_s_0_axi_arvalid),    // input wire s_axi_arvalid
-  .s_axi_arready(fsimtop_s_0_axi_arready),    // output wire s_axi_arready
+//   .s_axi_arid(fsimtop_s_0_axi_arid),          // input wire [15 : 0] s_axi_arid
+//   .s_axi_araddr(fsimtop_s_0_axi_araddr),      // input wire [63 : 0] s_axi_araddr
+//   .s_axi_arlen(fsimtop_s_0_axi_arlen),        // input wire [7 : 0] s_axi_arlen
+//   .s_axi_arsize(fsimtop_s_0_axi_arsize),      // input wire [2 : 0] s_axi_arsize
+//   .s_axi_arburst(fsimtop_s_0_axi_arburst),    // input wire [1 : 0] s_axi_arburst
+//   .s_axi_arlock(fsimtop_s_0_axi_arlock),      // input wire [0 : 0] s_axi_arlock
+//   // CACHE = xx1x indicates the transcation is modifiable and
+//   // that the converter should pack narrow reads into wider ones
+//   .s_axi_arcache(4'h2),                     // input wire [3 : 0] s_axi_arcache
+//   .s_axi_arprot(fsimtop_s_0_axi_arprot),      // input wire [2 : 0] s_axi_arprot
+//   .s_axi_arregion(fsimtop_s_0_axi_arregion),  // input wire [3 : 0] s_axi_arregion
+//   .s_axi_arqos(fsimtop_s_0_axi_arqos),        // input wire [3 : 0] s_axi_arqos
+//   .s_axi_arvalid(fsimtop_s_0_axi_arvalid),    // input wire s_axi_arvalid
+//   .s_axi_arready(fsimtop_s_0_axi_arready),    // output wire s_axi_arready
 
-  .s_axi_rid(fsimtop_s_0_axi_rid),            // output wire [15 : 0] s_axi_rid
-  .s_axi_rdata(fsimtop_s_0_axi_rdata),        // output wire [63 : 0] s_axi_rdata
-  .s_axi_rresp(fsimtop_s_0_axi_rresp),        // output wire [1 : 0] s_axi_rresp
-  .s_axi_rlast(fsimtop_s_0_axi_rlast),        // output wire s_axi_rlast
-  .s_axi_rvalid(fsimtop_s_0_axi_rvalid),      // output wire s_axi_rvalid
-  .s_axi_rready(fsimtop_s_0_axi_rready),      // input wire s_axi_rready
+//   .s_axi_rid(fsimtop_s_0_axi_rid),            // output wire [15 : 0] s_axi_rid
+//   .s_axi_rdata(fsimtop_s_0_axi_rdata),        // output wire [63 : 0] s_axi_rdata
+//   .s_axi_rresp(fsimtop_s_0_axi_rresp),        // output wire [1 : 0] s_axi_rresp
+//   .s_axi_rlast(fsimtop_s_0_axi_rlast),        // output wire s_axi_rlast
+//   .s_axi_rvalid(fsimtop_s_0_axi_rvalid),      // output wire s_axi_rvalid
+//   .s_axi_rready(fsimtop_s_0_axi_rready),      // input wire s_axi_rready
 
-  .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
-  .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
+//   .m_axi_aclk(clk_main_a0),          // input wire m_axi_aclk
+//   .m_axi_aresetn(rst_main_n_sync),    // input wire m_axi_aresetn
 
-  .m_axi_awid(clock_converted_axi_0_awid),          // output wire [15 : 0] m_axi_awid
-  .m_axi_awaddr(clock_converted_axi_0_awaddr),      // output wire [63 : 0] m_axi_awaddr
-  .m_axi_awlen(clock_converted_axi_0_awlen),        // output wire [7 : 0] m_axi_awlen
-  .m_axi_awsize(clock_converted_axi_0_awsize),      // output wire [2 : 0] m_axi_awsize
-  .m_axi_awburst(clock_converted_axi_0_awburst),    // output wire [1 : 0] m_axi_awburst
-  .m_axi_awlock(clock_converted_axi_0_awlock),      // output wire [0 : 0] m_axi_awlock
-  .m_axi_awcache(clock_converted_axi_0_awcache),    // output wire [3 : 0] m_axi_awcache
-  .m_axi_awprot(clock_converted_axi_0_awprot),      // output wire [2 : 0] m_axi_awprot
-  .m_axi_awregion(clock_converted_axi_0_awregion),  // output wire [3 : 0] m_axi_awregion
-  .m_axi_awqos(clock_converted_axi_0_awqos),        // output wire [3 : 0] m_axi_awqos
-  .m_axi_awvalid(clock_converted_axi_0_awvalid),    // output wire m_axi_awvalid
-  .m_axi_awready(clock_converted_axi_0_awready),    // input wire m_axi_awready
+//   .m_axi_awid(clock_converted_axi_0_awid),          // output wire [15 : 0] m_axi_awid
+//   .m_axi_awaddr(clock_converted_axi_0_awaddr),      // output wire [63 : 0] m_axi_awaddr
+//   .m_axi_awlen(clock_converted_axi_0_awlen),        // output wire [7 : 0] m_axi_awlen
+//   .m_axi_awsize(clock_converted_axi_0_awsize),      // output wire [2 : 0] m_axi_awsize
+//   .m_axi_awburst(clock_converted_axi_0_awburst),    // output wire [1 : 0] m_axi_awburst
+//   .m_axi_awlock(clock_converted_axi_0_awlock),      // output wire [0 : 0] m_axi_awlock
+//   .m_axi_awcache(clock_converted_axi_0_awcache),    // output wire [3 : 0] m_axi_awcache
+//   .m_axi_awprot(clock_converted_axi_0_awprot),      // output wire [2 : 0] m_axi_awprot
+//   .m_axi_awregion(clock_converted_axi_0_awregion),  // output wire [3 : 0] m_axi_awregion
+//   .m_axi_awqos(clock_converted_axi_0_awqos),        // output wire [3 : 0] m_axi_awqos
+//   .m_axi_awvalid(clock_converted_axi_0_awvalid),    // output wire m_axi_awvalid
+//   .m_axi_awready(clock_converted_axi_0_awready),    // input wire m_axi_awready
 
-  .m_axi_wdata(clock_converted_axi_0_wdata),        // output wire [511 : 0] m_axi_wdata
-  .m_axi_wstrb(clock_converted_axi_0_wstrb),        // output wire [63 : 0] m_axi_wstrb
-  .m_axi_wlast(clock_converted_axi_0_wlast),        // output wire m_axi_wlast
-  .m_axi_wvalid(clock_converted_axi_0_wvalid),      // output wire m_axi_wvalid
-  .m_axi_wready(clock_converted_axi_0_wready),      // input wire m_axi_wready
+//   .m_axi_wdata(clock_converted_axi_0_wdata),        // output wire [511 : 0] m_axi_wdata
+//   .m_axi_wstrb(clock_converted_axi_0_wstrb),        // output wire [63 : 0] m_axi_wstrb
+//   .m_axi_wlast(clock_converted_axi_0_wlast),        // output wire m_axi_wlast
+//   .m_axi_wvalid(clock_converted_axi_0_wvalid),      // output wire m_axi_wvalid
+//   .m_axi_wready(clock_converted_axi_0_wready),      // input wire m_axi_wready
 
-  .m_axi_bid(clock_converted_axi_0_bid),            // input wire [15 : 0] m_axi_bid
-  .m_axi_bresp(clock_converted_axi_0_bresp),        // input wire [1 : 0] m_axi_bresp
-  .m_axi_bvalid(clock_converted_axi_0_bvalid),      // input wire m_axi_bvalid
-  .m_axi_bready(clock_converted_axi_0_bready),      // output wire m_axi_bready
+//   .m_axi_bid(clock_converted_axi_0_bid),            // input wire [15 : 0] m_axi_bid
+//   .m_axi_bresp(clock_converted_axi_0_bresp),        // input wire [1 : 0] m_axi_bresp
+//   .m_axi_bvalid(clock_converted_axi_0_bvalid),      // input wire m_axi_bvalid
+//   .m_axi_bready(clock_converted_axi_0_bready),      // output wire m_axi_bready
 
-  .m_axi_arid(clock_converted_axi_0_arid),          // output wire [15 : 0] m_axi_arid
-  .m_axi_araddr(clock_converted_axi_0_araddr),      // output wire [63 : 0] m_axi_araddr
-  .m_axi_arlen(clock_converted_axi_0_arlen),        // output wire [7 : 0] m_axi_arlen
-  .m_axi_arsize(clock_converted_axi_0_arsize),      // output wire [2 : 0] m_axi_arsize
-  .m_axi_arburst(clock_converted_axi_0_arburst),    // output wire [1 : 0] m_axi_arburst
-  .m_axi_arlock(clock_converted_axi_0_arlock),      // output wire [0 : 0] m_axi_arlock
-  .m_axi_arcache(clock_converted_axi_0_arcache),    // output wire [3 : 0] m_axi_arcache
-  .m_axi_arprot(clock_converted_axi_0_arprot),      // output wire [2 : 0] m_axi_arprot
-  .m_axi_arregion(clock_converted_axi_0_arregion),  // output wire [3 : 0] m_axi_arregion
-  .m_axi_arqos(clock_converted_axi_0_arqos),        // output wire [3 : 0] m_axi_arqos
-  .m_axi_arvalid(clock_converted_axi_0_arvalid),    // output wire m_axi_arvalid
-  .m_axi_arready(clock_converted_axi_0_arready),    // input wire m_axi_arready
+//   .m_axi_arid(clock_converted_axi_0_arid),          // output wire [15 : 0] m_axi_arid
+//   .m_axi_araddr(clock_converted_axi_0_araddr),      // output wire [63 : 0] m_axi_araddr
+//   .m_axi_arlen(clock_converted_axi_0_arlen),        // output wire [7 : 0] m_axi_arlen
+//   .m_axi_arsize(clock_converted_axi_0_arsize),      // output wire [2 : 0] m_axi_arsize
+//   .m_axi_arburst(clock_converted_axi_0_arburst),    // output wire [1 : 0] m_axi_arburst
+//   .m_axi_arlock(clock_converted_axi_0_arlock),      // output wire [0 : 0] m_axi_arlock
+//   .m_axi_arcache(clock_converted_axi_0_arcache),    // output wire [3 : 0] m_axi_arcache
+//   .m_axi_arprot(clock_converted_axi_0_arprot),      // output wire [2 : 0] m_axi_arprot
+//   .m_axi_arregion(clock_converted_axi_0_arregion),  // output wire [3 : 0] m_axi_arregion
+//   .m_axi_arqos(clock_converted_axi_0_arqos),        // output wire [3 : 0] m_axi_arqos
+//   .m_axi_arvalid(clock_converted_axi_0_arvalid),    // output wire m_axi_arvalid
+//   .m_axi_arready(clock_converted_axi_0_arready),    // input wire m_axi_arready
 
-  .m_axi_rid(clock_converted_axi_0_rid),            // input wire [15 : 0] m_axi_rid
-  .m_axi_rdata(clock_converted_axi_0_rdata),        // input wire [511 : 0] m_axi_rdata
-  .m_axi_rresp(clock_converted_axi_0_rresp),        // input wire [1 : 0] m_axi_rresp
-  .m_axi_rlast(clock_converted_axi_0_rlast),        // input wire m_axi_rlast
-  .m_axi_rvalid(clock_converted_axi_0_rvalid),      // input wire m_axi_rvalid
-  .m_axi_rready(clock_converted_axi_0_rready)      // output wire m_axi_rready
-);
+//   .m_axi_rid(clock_converted_axi_0_rid),            // input wire [15 : 0] m_axi_rid
+//   .m_axi_rdata(clock_converted_axi_0_rdata),        // input wire [511 : 0] m_axi_rdata
+//   .m_axi_rresp(clock_converted_axi_0_rresp),        // input wire [1 : 0] m_axi_rresp
+//   .m_axi_rlast(clock_converted_axi_0_rlast),        // input wire m_axi_rlast
+//   .m_axi_rvalid(clock_converted_axi_0_rvalid),      // input wire m_axi_rvalid
+//   .m_axi_rready(clock_converted_axi_0_rready)      // output wire m_axi_rready
+// );
 
   end // gen_main_ddr_dramslim
 endgenerate
@@ -1919,11 +2027,11 @@ endgenerate
  * 3) add asserts on arsize and awsize to confirm that they're always b110
 */
 
-// assign cl_sh_ddr_awid = 16'b0; // dwidth convert has no awid for some reason...
-// assign cl_sh_ddr_arid = 16'b0; // dwidth convert has no arid for some reason...
-// F2: cl_sh_ddr_awid & arid deleted
-// unused: sh_cl_ddr_bid
-// unused: sh_cl_ddr_rid
+// // assign cl_sh_ddr_awid = 16'b0; // dwidth convert has no awid for some reason...
+// // assign cl_sh_ddr_arid = 16'b0; // dwidth convert has no arid for some reason...
+// // F2: cl_sh_ddr_awid & arid deleted
+// // unused: sh_cl_ddr_bid
+// // unused: sh_cl_ddr_rid
 
 // FIX: Only instantiate dwidth converter when DDR is enabled
 generate
@@ -1933,49 +2041,49 @@ axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
   .s_axi_aclk(clk_main_a0),          // input wire s_axi_aclk
   .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
 
-  .s_axi_awid(clock_converted_axi_0_awid),          // input wire [15 : 0] s_axi_awid
-  .s_axi_awaddr(clock_converted_axi_0_awaddr),      // input wire [63 : 0] s_axi_awaddr
-  .s_axi_awlen(clock_converted_axi_0_awlen),        // input wire [7 : 0] s_axi_awlen
-  .s_axi_awsize(clock_converted_axi_0_awsize),      // input wire [2 : 0] s_axi_awsize
-  .s_axi_awburst(clock_converted_axi_0_awburst),    // input wire [1 : 0] s_axi_awburst
-  .s_axi_awlock(clock_converted_axi_0_awlock),      // input wire [0 : 0] s_axi_awlock
-  .s_axi_awcache(clock_converted_axi_0_awcache),    // input wire [3 : 0] s_axi_awcache
-  .s_axi_awprot(clock_converted_axi_0_awprot),      // input wire [2 : 0] s_axi_awprot
-  .s_axi_awregion(clock_converted_axi_0_awregion),  // input wire [3 : 0] s_axi_awregion
-  .s_axi_awqos(clock_converted_axi_0_awqos),        // input wire [3 : 0] s_axi_awqos
-  .s_axi_awvalid(clock_converted_axi_0_awvalid),    // input wire s_axi_awvalid
-  .s_axi_awready(clock_converted_axi_0_awready),    // output wire s_axi_awready
+//   .s_axi_awid(clock_converted_axi_0_awid),          // input wire [15 : 0] s_axi_awid
+//   .s_axi_awaddr(clock_converted_axi_0_awaddr),      // input wire [63 : 0] s_axi_awaddr
+//   .s_axi_awlen(clock_converted_axi_0_awlen),        // input wire [7 : 0] s_axi_awlen
+//   .s_axi_awsize(clock_converted_axi_0_awsize),      // input wire [2 : 0] s_axi_awsize
+//   .s_axi_awburst(clock_converted_axi_0_awburst),    // input wire [1 : 0] s_axi_awburst
+//   .s_axi_awlock(clock_converted_axi_0_awlock),      // input wire [0 : 0] s_axi_awlock
+//   .s_axi_awcache(clock_converted_axi_0_awcache),    // input wire [3 : 0] s_axi_awcache
+//   .s_axi_awprot(clock_converted_axi_0_awprot),      // input wire [2 : 0] s_axi_awprot
+//   .s_axi_awregion(clock_converted_axi_0_awregion),  // input wire [3 : 0] s_axi_awregion
+//   .s_axi_awqos(clock_converted_axi_0_awqos),        // input wire [3 : 0] s_axi_awqos
+//   .s_axi_awvalid(clock_converted_axi_0_awvalid),    // input wire s_axi_awvalid
+//   .s_axi_awready(clock_converted_axi_0_awready),    // output wire s_axi_awready
 
-  .s_axi_wdata(clock_converted_axi_0_wdata),        // input wire [63 : 0] s_axi_wdata
-  .s_axi_wstrb(clock_converted_axi_0_wstrb),        // input wire [7 : 0] s_axi_wstrb
-  .s_axi_wlast(clock_converted_axi_0_wlast),        // input wire s_axi_wlast
-  .s_axi_wvalid(clock_converted_axi_0_wvalid),      // input wire s_axi_wvalid
-  .s_axi_wready(clock_converted_axi_0_wready),      // output wire s_axi_wready
+//   .s_axi_wdata(clock_converted_axi_0_wdata),        // input wire [63 : 0] s_axi_wdata
+//   .s_axi_wstrb(clock_converted_axi_0_wstrb),        // input wire [7 : 0] s_axi_wstrb
+//   .s_axi_wlast(clock_converted_axi_0_wlast),        // input wire s_axi_wlast
+//   .s_axi_wvalid(clock_converted_axi_0_wvalid),      // input wire s_axi_wvalid
+//   .s_axi_wready(clock_converted_axi_0_wready),      // output wire s_axi_wready
 
-  .s_axi_bid(clock_converted_axi_0_bid),            // output wire [15 : 0] s_axi_bid
-  .s_axi_bresp(clock_converted_axi_0_bresp),        // output wire [1 : 0] s_axi_bresp
-  .s_axi_bvalid(clock_converted_axi_0_bvalid),      // output wire s_axi_bvalid
-  .s_axi_bready(clock_converted_axi_0_bready),      // input wire s_axi_bready
+//   .s_axi_bid(clock_converted_axi_0_bid),            // output wire [15 : 0] s_axi_bid
+//   .s_axi_bresp(clock_converted_axi_0_bresp),        // output wire [1 : 0] s_axi_bresp
+//   .s_axi_bvalid(clock_converted_axi_0_bvalid),      // output wire s_axi_bvalid
+//   .s_axi_bready(clock_converted_axi_0_bready),      // input wire s_axi_bready
 
-  .s_axi_arid(clock_converted_axi_0_arid),          // input wire [15 : 0] s_axi_arid
-  .s_axi_araddr(clock_converted_axi_0_araddr),      // input wire [63 : 0] s_axi_araddr
-  .s_axi_arlen(clock_converted_axi_0_arlen),        // input wire [7 : 0] s_axi_arlen
-  .s_axi_arsize(clock_converted_axi_0_arsize),      // input wire [2 : 0] s_axi_arsize
-  .s_axi_arburst(clock_converted_axi_0_arburst),    // input wire [1 : 0] s_axi_arburst
-  .s_axi_arlock(clock_converted_axi_0_arlock),      // input wire [0 : 0] s_axi_arlock
-  .s_axi_arcache(clock_converted_axi_0_arcache),    // input wire [3 : 0] s_axi_arcache
-  .s_axi_arprot(clock_converted_axi_0_arprot),      // input wire [2 : 0] s_axi_arprot
-  .s_axi_arregion(clock_converted_axi_0_arregion),  // input wire [3 : 0] s_axi_arregion
-  .s_axi_arqos(clock_converted_axi_0_arqos),        // input wire [3 : 0] s_axi_arqos
-  .s_axi_arvalid(clock_converted_axi_0_arvalid),    // input wire s_axi_arvalid
-  .s_axi_arready(clock_converted_axi_0_arready),    // output wire s_axi_arready
+//   .s_axi_arid(clock_converted_axi_0_arid),          // input wire [15 : 0] s_axi_arid
+//   .s_axi_araddr(clock_converted_axi_0_araddr),      // input wire [63 : 0] s_axi_araddr
+//   .s_axi_arlen(clock_converted_axi_0_arlen),        // input wire [7 : 0] s_axi_arlen
+//   .s_axi_arsize(clock_converted_axi_0_arsize),      // input wire [2 : 0] s_axi_arsize
+//   .s_axi_arburst(clock_converted_axi_0_arburst),    // input wire [1 : 0] s_axi_arburst
+//   .s_axi_arlock(clock_converted_axi_0_arlock),      // input wire [0 : 0] s_axi_arlock
+//   .s_axi_arcache(clock_converted_axi_0_arcache),    // input wire [3 : 0] s_axi_arcache
+//   .s_axi_arprot(clock_converted_axi_0_arprot),      // input wire [2 : 0] s_axi_arprot
+//   .s_axi_arregion(clock_converted_axi_0_arregion),  // input wire [3 : 0] s_axi_arregion
+//   .s_axi_arqos(clock_converted_axi_0_arqos),        // input wire [3 : 0] s_axi_arqos
+//   .s_axi_arvalid(clock_converted_axi_0_arvalid),    // input wire s_axi_arvalid
+//   .s_axi_arready(clock_converted_axi_0_arready),    // output wire s_axi_arready
 
-  .s_axi_rid(clock_converted_axi_0_rid),            // output wire [15 : 0] s_axi_rid
-  .s_axi_rdata(clock_converted_axi_0_rdata),        // output wire [63 : 0] s_axi_rdata
-  .s_axi_rresp(clock_converted_axi_0_rresp),        // output wire [1 : 0] s_axi_rresp
-  .s_axi_rlast(clock_converted_axi_0_rlast),        // output wire s_axi_rlast
-  .s_axi_rvalid(clock_converted_axi_0_rvalid),      // output wire s_axi_rvalid
-  .s_axi_rready(clock_converted_axi_0_rready),      // input wire s_axi_rready
+//   .s_axi_rid(clock_converted_axi_0_rid),            // output wire [15 : 0] s_axi_rid
+//   .s_axi_rdata(clock_converted_axi_0_rdata),        // output wire [63 : 0] s_axi_rdata
+//   .s_axi_rresp(clock_converted_axi_0_rresp),        // output wire [1 : 0] s_axi_rresp
+//   .s_axi_rlast(clock_converted_axi_0_rlast),        // output wire s_axi_rlast
+//   .s_axi_rvalid(clock_converted_axi_0_rvalid),      // output wire s_axi_rvalid
+//   .s_axi_rready(clock_converted_axi_0_rready),      // input wire s_axi_rready
 
   // FIX: Connect to intermediate wires mc_ddr_s_1_axi_* instead of cl_sh_ddr_*
   // The assign statements at lines 1052-1113 will then drive cl_sh_ddr_* to the Shell
