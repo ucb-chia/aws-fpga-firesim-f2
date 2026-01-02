@@ -198,6 +198,18 @@ read_xdc [ list \
 set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files generated_cl_clocks_aws.xdc]
 set_property PROCESSING_ORDER EARLY  [get_files generated_cl_clocks_aws.xdc]
 
+###############################################################################
+print "Reading user constraints"
+###############################################################################
+
+read_xdc [ list \
+  ${constraints_dir}/cl_synth_user.xdc \
+  ${constraints_dir}/cl_timing_user.xdc
+]
+
+set_property PROCESSING_ORDER LATE [get_files cl_synth_user.xdc]
+set_property PROCESSING_ORDER LATE [get_files cl_timing_user.xdc]
+
 ########################
 # CL Synthesis
 ########################

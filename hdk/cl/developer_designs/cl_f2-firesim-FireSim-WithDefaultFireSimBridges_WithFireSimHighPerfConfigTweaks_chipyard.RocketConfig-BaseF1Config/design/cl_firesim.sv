@@ -409,7 +409,6 @@ always_ff @(negedge gen_rst_main_n or posedge gen_clk_main_a0)
       rst_main_n_sync <= pre_sync_rst_n;
    end
 
-// ====== F2: no extra clocks ======
 logic pre_sync_rst_n_extra1;
 always_ff @(negedge gen_rst_main_n or posedge gen_clk_extra_a1)
    if (!gen_rst_main_n)
