@@ -217,7 +217,7 @@ def main():
                       dest="route_direct",
                       metavar="DIRECT",
                       default="AggressiveExplore",
-                      help="Routing directive, refer to Vivado manual for supported values. Default to <Explore>.")
+                      help="Routing directive, refer to Vivado manual for supported values. Default to <AggressiveExplore>.")
 
     parser.add_option("-t", "--tag", dest="build_tag",
                       help="Build tag. Default to <mm_DD_yy-HHMMSS>. \

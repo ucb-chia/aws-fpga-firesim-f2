@@ -1915,12 +1915,14 @@ wire fsimtop_s_3_axi_rready;
 // wire          clock_converted_axi_0_rready;
 
 // FIX: Only instantiate dramslim_0 when EN_DDR==1
-generate
-  if (EN_DDR == 1) begin : gen_main_ddr_dramslim
+// generate
+//   if (EN_DDR == 1) begin : gen_main_ddr_dramslim
 
-axi_clock_converter_dramslim clock_convert_dramslim_0 (
-  .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
-  .s_axi_aresetn(rst_firesim_n_sync),    // input wire s_axi_aresetn
+// axi_clock_converter_dramslim clock_convert_dramslim_0 (
+//   .s_axi_aclk(firesim_internal_clock),          // input wire s_axi_aclk
+//   .s_axi_aresetn(rst_firesim_n_sync)    // input wire s_axi_aresetn
+
+// LEAVE COMMENTED BEGIN
 
 //   .s_axi_awid(fsimtop_s_0_axi_awid),          // input wire [15 : 0] s_axi_awid
 //   .s_axi_awaddr(fsimtop_s_0_axi_awaddr),      // input wire [63 : 0] s_axi_awaddr
@@ -2016,10 +2018,11 @@ axi_clock_converter_dramslim clock_convert_dramslim_0 (
 //   .m_axi_rlast(clock_converted_axi_0_rlast),        // input wire m_axi_rlast
 //   .m_axi_rvalid(clock_converted_axi_0_rvalid),      // input wire m_axi_rvalid
 //   .m_axi_rready(clock_converted_axi_0_rready)      // output wire m_axi_rready
-// );
+// LEAVE COMMENTED END
+//   );
 
-  end // gen_main_ddr_dramslim
-endgenerate
+//   end // gen_main_ddr_dramslim
+// endgenerate
 
 /* steps to move:
  * 1) copy clock converter's M interfaces to dwidth converter's M interfaces: DONE
@@ -2034,12 +2037,14 @@ endgenerate
 // // unused: sh_cl_ddr_rid
 
 // FIX: Only instantiate dwidth converter when DDR is enabled
-generate
-  if (EN_DDR == 1) begin : gen_main_ddr_dwidth
+// generate
+//   if (EN_DDR == 1) begin : gen_main_ddr_dwidth
 
-axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
-  .s_axi_aclk(clk_main_a0),          // input wire s_axi_aclk
-  .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
+// axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
+//   .s_axi_aclk(clk_main_a0),          // input wire s_axi_aclk
+//   .s_axi_aresetn(rst_main_n_sync),    // input wire s_axi_aresetn
+
+// LEAVE COMMENTED BEGIN
 
 //   .s_axi_awid(clock_converted_axi_0_awid),          // input wire [15 : 0] s_axi_awid
 //   .s_axi_awaddr(clock_converted_axi_0_awaddr),      // input wire [63 : 0] s_axi_awaddr
@@ -2085,51 +2090,53 @@ axi_dwidth_converter_0 dwidth_adapt_64bits_512bits_0 (
 //   .s_axi_rvalid(clock_converted_axi_0_rvalid),      // output wire s_axi_rvalid
 //   .s_axi_rready(clock_converted_axi_0_rready),      // input wire s_axi_rready
 
+// LEAVE COMMENTED END
+
   // FIX: Connect to intermediate wires mc_ddr_s_1_axi_* instead of cl_sh_ddr_*
   // The assign statements at lines 1052-1113 will then drive cl_sh_ddr_* to the Shell
-  .m_axi_awaddr(mc_ddr_s_1_axi_awaddr),      // output wire [63 : 0] m_axi_awaddr
-  .m_axi_awlen(mc_ddr_s_1_axi_awlen),        // output wire [7 : 0] m_axi_awlen
-  .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize - unused, using constant 3'b110 from line 1060
-  .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst - unused, using constant 2'b01 from line 1062
-  .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
-  .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
-  .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
-  .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
-  .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
-  .m_axi_awvalid(mc_ddr_s_1_axi_awvalid),    // output wire m_axi_awvalid
-  .m_axi_awready(mc_ddr_s_1_axi_awready),    // input wire m_axi_awready
+//   .m_axi_awaddr(mc_ddr_s_1_axi_awaddr),      // output wire [63 : 0] m_axi_awaddr
+//   .m_axi_awlen(mc_ddr_s_1_axi_awlen),        // output wire [7 : 0] m_axi_awlen
+//   .m_axi_awsize(),      // output wire [2 : 0] m_axi_awsize - unused, using constant 3'b110 from line 1060
+//   .m_axi_awburst(),    // output wire [1 : 0] m_axi_awburst - unused, using constant 2'b01 from line 1062
+//   .m_axi_awlock(),      // output wire [0 : 0] m_axi_awlock
+//   .m_axi_awcache(),    // output wire [3 : 0] m_axi_awcache
+//   .m_axi_awprot(),      // output wire [2 : 0] m_axi_awprot
+//   .m_axi_awregion(),  // output wire [3 : 0] m_axi_awregion
+//   .m_axi_awqos(),        // output wire [3 : 0] m_axi_awqos
+//   .m_axi_awvalid(mc_ddr_s_1_axi_awvalid),    // output wire m_axi_awvalid
+//   .m_axi_awready(mc_ddr_s_1_axi_awready),    // input wire m_axi_awready
 
-  .m_axi_wdata(mc_ddr_s_1_axi_wdata),        // output wire [511 : 0] m_axi_wdata
-  .m_axi_wstrb(mc_ddr_s_1_axi_wstrb),        // output wire [63 : 0] m_axi_wstrb
-  .m_axi_wlast(mc_ddr_s_1_axi_wlast),        // output wire m_axi_wlast
-  .m_axi_wvalid(mc_ddr_s_1_axi_wvalid),      // output wire m_axi_wvalid
-  .m_axi_wready(mc_ddr_s_1_axi_wready),      // input wire m_axi_wready
+//   .m_axi_wdata(mc_ddr_s_1_axi_wdata),        // output wire [511 : 0] m_axi_wdata
+//   .m_axi_wstrb(mc_ddr_s_1_axi_wstrb),        // output wire [63 : 0] m_axi_wstrb
+//   .m_axi_wlast(mc_ddr_s_1_axi_wlast),        // output wire m_axi_wlast
+//   .m_axi_wvalid(mc_ddr_s_1_axi_wvalid),      // output wire m_axi_wvalid
+//   .m_axi_wready(mc_ddr_s_1_axi_wready),      // input wire m_axi_wready
 
-  .m_axi_bresp(mc_ddr_s_1_axi_bresp),        // input wire [1 : 0] m_axi_bresp
-  .m_axi_bvalid(mc_ddr_s_1_axi_bvalid),      // input wire m_axi_bvalid
-  .m_axi_bready(mc_ddr_s_1_axi_bready),      // output wire m_axi_bready
+//   .m_axi_bresp(mc_ddr_s_1_axi_bresp),        // input wire [1 : 0] m_axi_bresp
+//   .m_axi_bvalid(mc_ddr_s_1_axi_bvalid),      // input wire m_axi_bvalid
+//   .m_axi_bready(mc_ddr_s_1_axi_bready),      // output wire m_axi_bready
 
-  .m_axi_araddr(mc_ddr_s_1_axi_araddr),      // output wire [63 : 0] m_axi_araddr
-  .m_axi_arlen(mc_ddr_s_1_axi_arlen),        // output wire [7 : 0] m_axi_arlen
-  .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize - unused, using constant 3'b110 from line 1097
-  .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst - unused, using constant 2'b01 from line 1099
-  .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
-  .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
-  .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
-  .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
-  .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
-  .m_axi_arvalid(mc_ddr_s_1_axi_arvalid),    // output wire m_axi_arvalid
-  .m_axi_arready(mc_ddr_s_1_axi_arready),    // input wire m_axi_arready
+//   .m_axi_araddr(mc_ddr_s_1_axi_araddr),      // output wire [63 : 0] m_axi_araddr
+//   .m_axi_arlen(mc_ddr_s_1_axi_arlen),        // output wire [7 : 0] m_axi_arlen
+//   .m_axi_arsize(),      // output wire [2 : 0] m_axi_arsize - unused, using constant 3'b110 from line 1097
+//   .m_axi_arburst(),    // output wire [1 : 0] m_axi_arburst - unused, using constant 2'b01 from line 1099
+//   .m_axi_arlock(),      // output wire [0 : 0] m_axi_arlock
+//   .m_axi_arcache(),    // output wire [3 : 0] m_axi_arcache
+//   .m_axi_arprot(),      // output wire [2 : 0] m_axi_arprot
+//   .m_axi_arregion(),  // output wire [3 : 0] m_axi_arregion
+//   .m_axi_arqos(),        // output wire [3 : 0] m_axi_arqos
+//   .m_axi_arvalid(mc_ddr_s_1_axi_arvalid),    // output wire m_axi_arvalid
+//   .m_axi_arready(mc_ddr_s_1_axi_arready),    // input wire m_axi_arready
 
-  .m_axi_rdata(mc_ddr_s_1_axi_rdata),        // input wire [511 : 0] m_axi_rdata
-  .m_axi_rresp(mc_ddr_s_1_axi_rresp),        // input wire [1 : 0] m_axi_rresp
-  .m_axi_rlast(mc_ddr_s_1_axi_rlast),        // input wire m_axi_rlast
-  .m_axi_rvalid(mc_ddr_s_1_axi_rvalid),      // input wire m_axi_rvalid
-  .m_axi_rready(mc_ddr_s_1_axi_rready)      // output wire m_axi_rready
-);
+//   .m_axi_rdata(mc_ddr_s_1_axi_rdata),        // input wire [511 : 0] m_axi_rdata
+//   .m_axi_rresp(mc_ddr_s_1_axi_rresp),        // input wire [1 : 0] m_axi_rresp
+//   .m_axi_rlast(mc_ddr_s_1_axi_rlast),        // input wire m_axi_rlast
+//   .m_axi_rvalid(mc_ddr_s_1_axi_rvalid),      // input wire m_axi_rvalid
+//   .m_axi_rready(mc_ddr_s_1_axi_rready)      // output wire m_axi_rready
+// );
 
-  end // gen_main_ddr_dwidth
-endgenerate
+//   end // gen_main_ddr_dwidth
+// endgenerate
 
 //****************DDR CHANNEL A****************************
 generate

@@ -1,50 +1,38 @@
-`pragma protect begin_protected
-`pragma protect version = 2
-`pragma protect encrypt_agent = "XILINX"
-`pragma protect encrypt_agent_info = "Xilinx Encryption Tool 2024.2"
-`pragma protect begin_commonblock
-`pragma protect control error_handling="delegated"
-`pragma protect end_commonblock
-`pragma protect begin_toolblock
-`pragma protect rights_digest_method="sha256"
-`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2023_11", key_method = "rsa", key_block
-hYQP2KN6FPT2p1ebp/0I7Gj2NY2PmcaxLaszC5jqm09Qq9RYWqy8DH7zd+rUY+9nNNHhFfQEyEUd
-CxNij734So5mUgTldojFI6IOVxzC0++v2PeG0607mnyIUFTATvWMnWOB18MwYv8myO/mbwpqacq0
-/XGHN5dEXvhaPLgaeVXd9MnKjHiiCPW1HMHXYvJIqSdSB2WUaiaayIVi4tRIR1ZjQGoGg+FWi1Jr
-3hr30RiPUDm9KK/pde0XZITlm/ZZyB2D6AT3giiQGnvuag8AdvP0Ds3kskiJFaBgFLzLveJfVgWy
-Mc73JXJPPE3DZwoxC4LUCynSasYjwH7UYtquTw==
+// Amazon FPGA Hardware Development Kit
+//
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License"). You may not use
+// this file except in compliance with the License. A copy of the License is
+// located at
+//
+//    http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
+// implied. See the License for the specific language governing permissions and
+// limitations under the License.
 
-`pragma protect control xilinx_configuration_visible = "false"
-`pragma protect control xilinx_enable_modification = "false"
-`pragma protect control xilinx_enable_probing = "false"
-`pragma protect end_toolblock="XlXm8hWj5iVMRL4k/xxS5oqFzNQnd08rzLFBjrnw2AA="
-`pragma protect data_method = "AES128-CBC"
-`pragma protect encoding = (enctype = "BASE64", line_length = 76, bytes = 1472)
-`pragma protect data_block
-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
-`pragma protect end_protected
+`ifndef CL_FIRESIM_DEFINES
+`define CL_FIRESIM_DEFINES
+
+//Put module name of the CL design here.  This is used to instantiate in top.sv
+`define CL_NAME cl_firesim
+
+//Highly recommeneded.  For lib FIFO block, uses less async reset (take advantage of
+// FPGA flop init capability).  This will help with routing resources.
+`define FPGA_LESS_RST
+
+// Uncomment to disable Virtual JTAG
+//`define DISABLE_VJTAG_DEBUG
+
+// Default AXI values
+`define DEF_AXSIZE    3'd6   // 64 Bytes per beat
+`define DEF_AXBURST   2'd1   // INCR burst
+`define DEF_AXCACHE   4'd1   // Bufferable, Non-Cacheable, No Read-Allocate, No Write-Allocate
+`define DEF_AXLOCK    1'd0   // Normal access
+`define DEF_AXPROT    3'd2   // Unprivileged access, Non-Secure Access
+`define DEF_AXQOS     4'd0   // Regular Identifier
+`define DEF_AXREGION  4'd0   // Single region
+
+`endif

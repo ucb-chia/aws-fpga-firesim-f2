@@ -1,41 +1,26 @@
-`pragma protect begin_protected
-`pragma protect version = 2
-`pragma protect encrypt_agent = "XILINX"
-`pragma protect encrypt_agent_info = "Xilinx Encryption Tool 2024.2"
-`pragma protect begin_commonblock
-`pragma protect control error_handling="delegated"
-`pragma protect end_commonblock
-`pragma protect begin_toolblock
-`pragma protect rights_digest_method="sha256"
-`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2023_11", key_method = "rsa", key_block
-hYQP2KN6FPT2p1ebp/0I7Gj2NY2PmcaxLaszC5jqm09Qq9RYWqy8DH7zd+rUY+9nNNHhFfQEyEUd
-CxNij734So5mUgTldojFI6IOVxzC0++v2PeG0607mnyIUFTATvWMnWOB18MwYv8myO/mbwpqacq0
-/XGHN5dEXvhaPLgaeVXd9MnKjHiiCPW1HMHXYvJIqSdSB2WUaiaayIVi4tRIR1ZjQGoGg+FWi1Jr
-3hr30RiPUDm9KK/pde0XZITlm/ZZyB2D6AT3giiQGnvuag8AdvP0Ds3kskiJFaBgFLzLveJfVgWy
-Mc73JXJPPE3DZwoxC4LUCynSasYjwH7UYtquTw==
+// Amazon FPGA Hardware Development Kit
+//
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License"). You may not use
+// this file except in compliance with the License. A copy of the License is
+// located at
+//
+//    http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
+// implied. See the License for the specific language governing permissions and
+// limitations under the License.
 
-`pragma protect control xilinx_configuration_visible = "false"
-`pragma protect control xilinx_enable_modification = "false"
-`pragma protect control xilinx_enable_probing = "false"
-`pragma protect end_toolblock="XlXm8hWj5iVMRL4k/xxS5oqFzNQnd08rzLFBjrnw2AA="
-`pragma protect data_method = "AES128-CBC"
-`pragma protect encoding = (enctype = "BASE64", line_length = 76, bytes = 928)
-`pragma protect data_block
-6c80rTeOFWi1gxbLjVoRWrdTeOibMGSmnIFH1+wu5I0xslHaJ4yLZXV80APjCFG5cekUKgGwGEzn
-dOWDl6fQkREwtaE9s5lBgnwZvOZ4A2NGQVr4ZwmEn2IcZXYsXOD5Y2VQqzDetv306F09AoTObzQ6
-lP83TGka+PXOrQlHPO1qXocNj+x2Uo5tABh9PoYlSsfFC91BtGJ/UoHRzzU24h4iJA+vRp9FrhmE
-HitwxtLlR+e6m6sN+WqxmTOWwVkOGQf58ZkmVsLaa89Ap7x5GdIgA4x/XVSFqBciOGb6XBDIgNQ3
-4j0bPvthDg73Usfjd/v8XqgeUNaWTlGY1Zy4UJzp7Iwgof9AV7BW8PTupi8cCt5tjEChM7NcgJi6
-+9o1dumPjkkc2kq/131ri2iXQ4CXV9GfNqgX1P8ho6qLx8TFvI2m54Lc8xApc0dZa+M+ltZOVK9A
-QX07qYGsEWnz2KCo8jJUPbilxP4DNkBp59+0rjSqrxF2yQckhBJA380p03UBOHLAOORn+lGdwWxS
-aiEHr+OnNdRtTJ1o5cpln9LC/Ft1AwiCAeKwhG/L455xd2gEC5PfnurYJkVh5+4460c7sKaKO38A
-JkStWe2kWrpAiZ5vO9mmEsCqCIcR9o3VSJd6EbvT7GPy2INfat1lOi8ywmK4WRaB+ZAHh9J40vfp
-cEPQMcjVnDaM7wXdG1kp6ZIQvNgOsLaf4n0gf0VnW8Vv2xOAMHyOlAKf+CXGADXOwkyaVFGd2ltK
-yEvj+C7wSlqAR2WDIKq6CiBQE5lYaRKtm0vLFjAFkTNTMAfWAl1EI2xXR8Rla1Es/Xdgq9N3dpZW
-8BEs7wmyvrAxS5AouI/rdzPQOhQdz9G3jH/7gwL64P9DhZNbsfWbOFEXYjy6JsNUHFsoKR2cQesW
-Q3ihnykNt8ZDgr0V6VpL4QqoE2Au95QnGYbkdj6IMmG9ImU6fgsPlVKcwshVDs/fcQMSxc0e42mz
-JKuaJE0aE1HrXMG85MAQgd3wOn1A4f4z8MCUaeL0zasTOwCxYtxXsD0wfJet2S/wTSHwDUFE7IKy
-ciy1PH/HwL+SXF4UvZu0NwY7fqvANd4/5TUd2Z2afxuFRwIe0LGKsmXcXF4aEqDN/bRyv0uZstAw
-b6EHZhE1wY5lX2DiIjoFRMOno7EvpDzLVKB9V6RgH+MbcjDCkXNSLyd4bfCalOnqJYSEFR5PzQrn
-Fjltv25YRfnctU8pUNHDWg==
-`pragma protect end_protected
+`ifndef CL_COMMON_DEFAULTS
+`define CL_COMMON_DEFAULTS
+
+// Value to return for PCIS access to unimplemented register address
+`define UNIMPLEMENTED_REG_VALUE 32'hdeaddead
+
+// CL Register Addresses
+`define HELLO_WORLD_REG_ADDR    32'h0000_0500
+`define VLED_REG_ADDR           32'h0000_0504
+
+`endif

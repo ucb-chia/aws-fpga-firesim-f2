@@ -1,54 +1,41 @@
-`pragma protect begin_protected
-`pragma protect version = 2
-`pragma protect encrypt_agent = "XILINX"
-`pragma protect encrypt_agent_info = "Xilinx Encryption Tool 2024.2"
-`pragma protect begin_commonblock
-`pragma protect control error_handling="delegated"
-`pragma protect end_commonblock
-`pragma protect begin_toolblock
-`pragma protect rights_digest_method="sha256"
-`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2023_11", key_method = "rsa", key_block
-hYQP2KN6FPT2p1ebp/0I7Gj2NY2PmcaxLaszC5jqm09Qq9RYWqy8DH7zd+rUY+9nNNHhFfQEyEUd
-CxNij734So5mUgTldojFI6IOVxzC0++v2PeG0607mnyIUFTATvWMnWOB18MwYv8myO/mbwpqacq0
-/XGHN5dEXvhaPLgaeVXd9MnKjHiiCPW1HMHXYvJIqSdSB2WUaiaayIVi4tRIR1ZjQGoGg+FWi1Jr
-3hr30RiPUDm9KK/pde0XZITlm/ZZyB2D6AT3giiQGnvuag8AdvP0Ds3kskiJFaBgFLzLveJfVgWy
-Mc73JXJPPE3DZwoxC4LUCynSasYjwH7UYtquTw==
+// ============================================================================
+// Amazon FPGA Hardware Development Kit
+//
+// Copyright 2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License"). You may not use
+// this file except in compliance with the License. A copy of the License is
+// located at
+//
+//    http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
+// implied. See the License for the specific language governing permissions and
+// limitations under the License.
+// ============================================================================
 
-`pragma protect control xilinx_configuration_visible = "false"
-`pragma protect control xilinx_enable_modification = "false"
-`pragma protect control xilinx_enable_probing = "false"
-`pragma protect end_toolblock="XlXm8hWj5iVMRL4k/xxS5oqFzNQnd08rzLFBjrnw2AA="
-`pragma protect data_method = "AES128-CBC"
-`pragma protect encoding = (enctype = "BASE64", line_length = 76, bytes = 1680)
-`pragma protect data_block
-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
-D1GmcwUoTqnbS60eJZewf4vETOnBalE2y5sM
-`pragma protect end_protected
+
+ // PCIe Master (pcim) Interface from CL to SH
+  assign cl_sh_pcim_awid             =  16'b0;
+  assign cl_sh_pcim_awaddr           =  64'b0;
+  assign cl_sh_pcim_awlen            =   8'b0;
+  assign cl_sh_pcim_awsize           =   3'h0;
+  assign cl_sh_pcim_awuser           =  19'b0;
+  assign cl_sh_pcim_awvalid          =   1'b0;
+
+  assign cl_sh_pcim_wdata            = 512'b0;
+  assign cl_sh_pcim_wstrb            =  64'b0;
+  assign cl_sh_pcim_wlast            =   1'b0;
+  assign cl_sh_pcim_wvalid           =   1'b0;
+
+  assign cl_sh_pcim_bready           =   1'b0;
+
+  assign cl_sh_pcim_arid             =  16'b0;
+  assign cl_sh_pcim_araddr           =  64'b0;
+  assign cl_sh_pcim_arlen            =   8'b0;
+  assign cl_sh_pcim_arsize           =   3'h0;
+  assign cl_sh_pcim_aruser           =  19'b0;
+  assign cl_sh_pcim_arvalid          =   1'b0;
+
+  assign cl_sh_pcim_rready           =   1'b0;

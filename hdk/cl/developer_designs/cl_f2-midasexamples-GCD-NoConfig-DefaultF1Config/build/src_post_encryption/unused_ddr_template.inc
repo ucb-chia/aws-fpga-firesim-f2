@@ -1,115 +1,103 @@
-`pragma protect begin_protected
-`pragma protect version = 2
-`pragma protect encrypt_agent = "XILINX"
-`pragma protect encrypt_agent_info = "Xilinx Encryption Tool 2024.2"
-`pragma protect begin_commonblock
-`pragma protect control error_handling="delegated"
-`pragma protect end_commonblock
-`pragma protect begin_toolblock
-`pragma protect rights_digest_method="sha256"
-`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2023_11", key_method = "rsa", key_block
-hYQP2KN6FPT2p1ebp/0I7Gj2NY2PmcaxLaszC5jqm09Qq9RYWqy8DH7zd+rUY+9nNNHhFfQEyEUd
-CxNij734So5mUgTldojFI6IOVxzC0++v2PeG0607mnyIUFTATvWMnWOB18MwYv8myO/mbwpqacq0
-/XGHN5dEXvhaPLgaeVXd9MnKjHiiCPW1HMHXYvJIqSdSB2WUaiaayIVi4tRIR1ZjQGoGg+FWi1Jr
-3hr30RiPUDm9KK/pde0XZITlm/ZZyB2D6AT3giiQGnvuag8AdvP0Ds3kskiJFaBgFLzLveJfVgWy
-Mc73JXJPPE3DZwoxC4LUCynSasYjwH7UYtquTw==
+// ============================================================================
+// Amazon FPGA Hardware Development Kit
+//
+// Copyright 2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License"). You may not use
+// this file except in compliance with the License. A copy of the License is
+// located at
+//
+//    http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
+// implied. See the License for the specific language governing permissions and
+// limitations under the License.
+// ============================================================================
 
-`pragma protect control xilinx_configuration_visible = "false"
-`pragma protect control xilinx_enable_modification = "false"
-`pragma protect control xilinx_enable_probing = "false"
-`pragma protect end_toolblock="XlXm8hWj5iVMRL4k/xxS5oqFzNQnd08rzLFBjrnw2AA="
-`pragma protect data_method = "AES128-CBC"
-`pragma protect encoding = (enctype = "BASE64", line_length = 76, bytes = 5136)
-`pragma protect data_block
-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
-sG0HurEg
-`pragma protect end_protected
+
+// Only the DDR pins are connected. The AXI and stats interfaces are tied-off.
+
+//-------------------------------------------------
+// Tie-off AXI interfaces to sh_ddr module
+//-------------------------------------------------
+logic         tie_zero      = '0;
+logic [ 15:0] tie_zero_id   = '0;
+logic [ 63:0] tie_zero_addr = '0;
+logic [  7:0] tie_zero_len  = '0;
+logic [511:0] tie_zero_data = '0;
+logic [ 63:0] tie_zero_strb = '0;
+
+sh_ddr
+  #(
+    .DDR_PRESENT (0)
+    )
+SH_DDR
+  (
+   .clk                       (clk_main_a0                  ),
+   .rst_n                     (rst_main_n_sync              ),
+   .stat_clk                  (clk_main_a0                  ),
+   .stat_rst_n                (rst_main_n_sync              ),
+   .CLK_DIMM_DP               (CLK_DIMM_DP                  ),
+   .CLK_DIMM_DN               (CLK_DIMM_DN                  ),
+   .M_ACT_N                   (M_ACT_N                      ),
+   .M_MA                      (M_MA                         ),
+   .M_BA                      (M_BA                         ),
+   .M_BG                      (M_BG                         ),
+   .M_CKE                     (M_CKE                        ),
+   .M_ODT                     (M_ODT                        ),
+   .M_CS_N                    (M_CS_N                       ),
+   .M_CLK_DN                  (M_CLK_DN                     ),
+   .M_CLK_DP                  (M_CLK_DP                     ),
+   .M_PAR                     (M_PAR                        ),
+   .M_DQ                      (M_DQ                         ),
+   .M_ECC                     (M_ECC                        ),
+   .M_DQS_DP                  (M_DQS_DP                     ),
+   .M_DQS_DN                  (M_DQS_DN                     ),
+   .cl_RST_DIMM_N             (RST_DIMM_N                   ),
+   .cl_sh_ddr_axi_awid        (tie_zero_id                  ),
+   .cl_sh_ddr_axi_awaddr      (tie_zero_addr                ),
+   .cl_sh_ddr_axi_awlen       (tie_zero_len                 ),
+   .cl_sh_ddr_axi_awsize      (3'd6                         ),
+   .cl_sh_ddr_axi_awvalid     (tie_zero                     ),
+   .cl_sh_ddr_axi_awburst     (2'b01                        ),
+   .cl_sh_ddr_axi_awready     (                             ),
+   .cl_sh_ddr_axi_wdata       (tie_zero_data                ),
+   .cl_sh_ddr_axi_wstrb       (tie_zero_strb                ),
+   .cl_sh_ddr_axi_wlast       (tie_zero                     ),
+   .cl_sh_ddr_axi_wvalid      (tie_zero                     ),
+   .cl_sh_ddr_axi_wready      (                             ),
+   .cl_sh_ddr_axi_bid         (                             ),
+   .cl_sh_ddr_axi_bresp       (                             ),
+   .cl_sh_ddr_axi_bvalid      (                             ),
+   .cl_sh_ddr_axi_bready      (tie_zero                     ),
+   .cl_sh_ddr_axi_arid        (tie_zero_id                  ),
+   .cl_sh_ddr_axi_araddr      (tie_zero_addr                ),
+   .cl_sh_ddr_axi_arlen       (tie_zero_len                 ),
+   .cl_sh_ddr_axi_arsize      (3'd6                         ),
+   .cl_sh_ddr_axi_arvalid     (tie_zero                     ),
+   .cl_sh_ddr_axi_arburst     (2'b01                        ),
+   .cl_sh_ddr_axi_arready     (                             ),
+   .cl_sh_ddr_axi_rid         (                             ),
+   .cl_sh_ddr_axi_rdata       (                             ),
+   .cl_sh_ddr_axi_rresp       (                             ),
+   .cl_sh_ddr_axi_rlast       (                             ),
+   .cl_sh_ddr_axi_rvalid      (                             ),
+   .cl_sh_ddr_axi_rready      (tie_zero                     ),
+   .sh_ddr_stat_bus_addr      (8'd0                         ),
+   .sh_ddr_stat_bus_wdata     (32'd0                        ),
+   .sh_ddr_stat_bus_wr        (1'd0                         ),
+   .sh_ddr_stat_bus_rd        (1'd0                         ),
+   .sh_ddr_stat_bus_ack       (                             ),
+   .sh_ddr_stat_bus_rdata     (                             ),
+   .ddr_sh_stat_int           (                             ),
+   .sh_cl_ddr_is_ready        (                             )
+   );
+
+// sh_ddr stats bus tie off to cl_ports.vh
+// Needed in order not to hang the interface
+always_comb begin
+   cl_sh_ddr_stat_ack   = 1'd1;
+   cl_sh_ddr_stat_rdata = '0;
+   cl_sh_ddr_stat_int   = '0;
+end

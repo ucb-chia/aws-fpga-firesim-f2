@@ -192,7 +192,7 @@ read_xdc [ list \
 #    $HDK_SHELL_DIR/build/constraints/cl_synth_aws.xdc \
 
 # FireSim custom clocking
-source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
+# source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
 
 #Do not propagate local clock constraints for clocks generated in the SH
 set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files generated_cl_clocks_aws.xdc]

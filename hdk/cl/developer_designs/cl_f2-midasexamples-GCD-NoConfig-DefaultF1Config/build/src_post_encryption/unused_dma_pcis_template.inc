@@ -1,50 +1,38 @@
-`pragma protect begin_protected
-`pragma protect version = 2
-`pragma protect encrypt_agent = "XILINX"
-`pragma protect encrypt_agent_info = "Xilinx Encryption Tool 2024.2"
-`pragma protect begin_commonblock
-`pragma protect control error_handling="delegated"
-`pragma protect end_commonblock
-`pragma protect begin_toolblock
-`pragma protect rights_digest_method="sha256"
-`pragma protect key_keyowner = "Xilinx", key_keyname= "xilinxt_2023_11", key_method = "rsa", key_block
-hYQP2KN6FPT2p1ebp/0I7Gj2NY2PmcaxLaszC5jqm09Qq9RYWqy8DH7zd+rUY+9nNNHhFfQEyEUd
-CxNij734So5mUgTldojFI6IOVxzC0++v2PeG0607mnyIUFTATvWMnWOB18MwYv8myO/mbwpqacq0
-/XGHN5dEXvhaPLgaeVXd9MnKjHiiCPW1HMHXYvJIqSdSB2WUaiaayIVi4tRIR1ZjQGoGg+FWi1Jr
-3hr30RiPUDm9KK/pde0XZITlm/ZZyB2D6AT3giiQGnvuag8AdvP0Ds3kskiJFaBgFLzLveJfVgWy
-Mc73JXJPPE3DZwoxC4LUCynSasYjwH7UYtquTw==
+// ============================================================================
+// Amazon FPGA Hardware Development Kit
+//
+// Copyright 2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License"). You may not use
+// this file except in compliance with the License. A copy of the License is
+// located at
+//
+//    http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
+// implied. See the License for the specific language governing permissions and
+// limitations under the License.
+// ============================================================================
 
-`pragma protect control xilinx_configuration_visible = "false"
-`pragma protect control xilinx_enable_modification = "false"
-`pragma protect control xilinx_enable_probing = "false"
-`pragma protect end_toolblock="XlXm8hWj5iVMRL4k/xxS5oqFzNQnd08rzLFBjrnw2AA="
-`pragma protect data_method = "AES128-CBC"
-`pragma protect encoding = (enctype = "BASE64", line_length = 76, bytes = 1472)
-`pragma protect data_block
-6c80rTeOFWi1gxbLjVoRWgK6iaXSySy9qhJlbNZ89TGLdS8kDjvuLFeGX8i7q16bLC8ohsB2Nvnf
-VSwZFWx9vJ8aBrE6YgavrXorvJcSBYCX3GBopc1zVvNnJ5pOQVHDPyJdfXXhxqv36jzorlYbwhad
-E+MFOfdF3Z5M7raZ374UUCRGc4npwYqi3xioxg5iyjn4Sm0z1+VYli/HqlNmRpKQiUTtwQLKPgL0
-E4RW3buiEcdyyecoR0aBWtWqwd/cP1rQ8aMtiNdg0Si/puQPe2xoauM9T8vPZOasMTtPEXRms0pM
-3QexvxOI7wrPDrVI9vu2SpNrmtf+Ghzx9ymeLbXboMNiJmC8wp8f30bhvAswmGUkMy9q69yW82Kj
-bxJAQWWyaQOb0Utou1llQnJdyYpM4OjpRQY3oua/KPCYwtSe5hDJ41VrvjvUWjV3dAm2jMVrScay
-t2b1wDFUxhMfwgxqfYVzMaijkwu6M4kC7a3lHJoJEbKnDO3CcSryB4pxNadD39WYLEe54csIc9lr
-Es337A2rdKKe14L1xIVKWLsoAO2OZG2GSO1oJjgO26omJRh3lkbLX6p1c2SZ6JOiGp+lPbSGAA9Z
-FzgqX1WfdHKay+ByCnZBTl3NBP/gTttkWRYacs9H9yVrY1DSGWotJ97dUhLOpcAhdmmYGFXE6lWe
-vmOZ0pHHndnHNL2OSkapfjFjqBB8c+RfNsjTdq/V7pXG/a6pAfskzcegpy6MOaDLFIdJOaCEKA/y
-HZZGjq+nGInZw3a+sKzp+D6k325/w5jhXyjqhlgS0datL7di1o3RG6Q+woJuWZlf1eUxocd/rgk3
-ptc1dUnmihEHsr4jTd9rPbTTyBXoOCQ3ZeGDfWVKbhKW5zWaXG71n2vWLc1wsTJotkHpc6imAxn6
-yQ34unWHiZnmcP63ZVbCoXWzeTFjvgwYHgNdtn17QynS8Ybg9h4FR+Ek3GVjD+qDn9PxJGhYycos
-3OYZYZlm7Nc6jsmFFfzcS7RNCgIC9xT1r8qtg7azfDyVjXQ7DoUhWdlCke95TGci/atkWChIyM69
-5RmNGDMkWXHemHsclfi8hUhLe2eah2mdKuitSHhbYNMd8+XIsesOl4pu8I2p5Zy0PHJ2KEn/957D
-uJOyJ9KdIbsxcVl40cJ/rBOWgfCVvG9tz3cNJkvt8nEs+IHZJ5BIU/Mpedmk6YiPOG3EscqH88Ug
-xiB5NJt1wRJ9Gd+B6uSupwmH90sButdA8Y7owJBQgxGlCw6TmQISX/RdGADXPb7eHxauYZ9l1cUM
-C1EQ6TqEil9BUiAqA2KRmqt/AkXGNwiP3PH/R39pOPLqSofvN76zCOCgqXbhfhiJpDP2nAJuVZUl
-kDDoFceveUeeHDxTzlj/mUV8TPmIzmi2amjvunw6J3j0QlpmPbFfIa5MjzEhUGGb8v7na8Mge8Hl
-0Xhl6lBnN2uW4j4aFEzc2RJ8xFYQ/Ly+zg90PvsHMyTc6wzBkU5B7PkZcBIzL5+Gst6iXwRFV8xo
-lrDZkFhJyKBVUmlARhtxUWQDr0JKH+UIj75ObZI+sszsb+0hJMRUXPnRYlhGUIGqEL8MWQ4UVcgK
-0YmTn9lyaETr7lfXcHP2mVl4Ku0F9/FApk89AEZJA/hqcsxepKH3sSb6aReizx5uI2TTDQ+KmI+7
-3ksZOLCdTUuf/Nduk5ZhfzBnksJeixQwHR+S5hJXdt7+tRtbZHeu35oUjSP1oepIC2Sz9+lUasE2
-YYz6BEMDmjH5pBxLowEJLZIN9FFJAdbVWe0HbK2tOJZLXIyazavQyzAYMoxYK4TpLAM34pVXEhdP
-178LW9J3DN30C56PNOOwMPpAO7mqEPCv+B2vI/kin8pnMHuyEgSjLp7iY4YQT5cUlboqqUp59i3n
-LOGSY1UVhamoGhEc4Wcn4BracRyu8RzUqQNYYr0N/RPgojOSQN/SXOYM4noPanU=
-`pragma protect end_protected
+
+  // PCIe Slave (pcis) Interface from SH to CL
+  assign cl_sh_dma_pcis_awready      =   1'b0;
+
+  assign cl_sh_dma_pcis_wready       =   1'b0;
+
+  assign cl_sh_dma_pcis_bid[5:0]     =   6'b0;
+  assign cl_sh_dma_pcis_bresp[1:0]   =   2'b0;
+  assign cl_sh_dma_pcis_bvalid       =   1'b0;
+
+  assign cl_sh_dma_pcis_arready      =   1'b0;
+
+  assign cl_sh_dma_pcis_rid[5:0]     =   6'b0;
+  assign cl_sh_dma_pcis_rdata[511:0] = 512'b0;
+  assign cl_sh_dma_pcis_rresp[1:0]   =   2'b0;
+  assign cl_sh_dma_pcis_rlast        =   1'b0;
+  assign cl_sh_dma_pcis_rvalid       =   1'b0;
+
+  // CL DMA Full Signals
+  assign cl_sh_dma_wr_full           =   1'b0;
+  assign cl_sh_dma_rd_full           =   1'b0;
