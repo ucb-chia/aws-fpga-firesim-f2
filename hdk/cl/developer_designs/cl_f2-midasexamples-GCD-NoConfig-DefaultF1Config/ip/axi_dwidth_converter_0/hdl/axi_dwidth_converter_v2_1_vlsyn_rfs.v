@@ -1,48 +1,49 @@
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Address Down-Sizer
 //
@@ -60,7 +61,7 @@
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_a_downsizer #
+module axi_dwidth_converter_v2_1_12_a_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -1022,7 +1023,7 @@ module axi_dwidth_converter_v2_1_33_a_downsizer #
   /////////////////////////////////////////////////////////////////////////////
   
   // Instantiated queue.
-  axi_data_fifo_v2_1_32_axic_fifo #
+  axi_data_fifo_v2_1_11_axic_fifo #
   (
    .C_FAMILY(C_FAMILY),
    .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -1103,7 +1104,7 @@ module axi_dwidth_converter_v2_1_33_a_downsizer #
       wire                                cmd_b_valid_i;
       wire                                s_b_ready;
       
-      axi_data_fifo_v2_1_32_axic_fifo #
+      axi_data_fifo_v2_1_11_axic_fifo #
       (
        .C_FAMILY(C_FAMILY),
        .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -1183,51 +1184,52 @@ module axi_dwidth_converter_v2_1_33_a_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Response Down-Sizer
 // Collect MI-side responses and set the SI-side response to the most critical
@@ -1246,7 +1248,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_b_downsizer #
+module axi_dwidth_converter_v2_1_12_b_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -1468,51 +1470,52 @@ module axi_dwidth_converter_v2_1_33_b_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Read Data Response Down-Sizer
 // 
@@ -1527,7 +1530,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_r_downsizer #
+module axi_dwidth_converter_v2_1_12_r_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -1948,51 +1951,52 @@ module axi_dwidth_converter_v2_1_33_r_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Down-Sizer
 // Mirror data for simple accesses.
@@ -2009,7 +2013,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_w_downsizer #
+module axi_dwidth_converter_v2_1_12_w_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -2303,51 +2307,52 @@ module axi_dwidth_converter_v2_1_33_w_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Down-Sizer
 // Down-Sizer for generic SI- and MI-side data widths. This module instantiates
@@ -2372,7 +2377,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_axi_downsizer #
+module axi_dwidth_converter_v2_1_12_axi_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family.
@@ -2577,7 +2582,7 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
       assign s_axi_awlock_i = (C_AXI_PROTOCOL == P_AXI3) ? s_axi_awlock : {1'b0, s_axi_awlock[0]};
       
       // Write Address Channel.
-      axi_dwidth_converter_v2_1_33_a_downsizer #
+      axi_dwidth_converter_v2_1_12_a_downsizer #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_AXI_PROTOCOL              (C_AXI_PROTOCOL),
@@ -2647,7 +2652,7 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
        );
        
       // Write Data channel.
-      axi_dwidth_converter_v2_1_33_w_downsizer #
+      axi_dwidth_converter_v2_1_12_w_downsizer #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_S_AXI_DATA_WIDTH          (C_S_AXI_DATA_WIDTH),
@@ -2690,7 +2695,7 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
       
       // Write Response channel.
       if ( P_MAX_SPLIT_BEATS > 0 ) begin : USE_SPLIT
-        axi_dwidth_converter_v2_1_33_b_downsizer #
+        axi_dwidth_converter_v2_1_12_b_downsizer #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_AXI_ID_WIDTH              (C_S_AXI_ID_WIDTH)
@@ -2786,7 +2791,7 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
       assign s_axi_arlock_i = (C_AXI_PROTOCOL == P_AXI3) ? s_axi_arlock : {1'b0, s_axi_arlock[0]};
       
       // Write Address Channel.
-      axi_dwidth_converter_v2_1_33_a_downsizer #
+      axi_dwidth_converter_v2_1_12_a_downsizer #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_AXI_PROTOCOL              (C_AXI_PROTOCOL),
@@ -2856,7 +2861,7 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
        );
        
       // Read Data channel.
-      axi_dwidth_converter_v2_1_33_r_downsizer #
+      axi_dwidth_converter_v2_1_12_r_downsizer #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_AXI_ID_WIDTH              (C_S_AXI_ID_WIDTH),
@@ -2932,51 +2937,52 @@ module axi_dwidth_converter_v2_1_33_axi_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Down-Sizer
 // Down-Sizer for generic SI- and MI-side data widths. This module instantiates
@@ -2994,7 +3000,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_axi4lite_downsizer #
+module axi_dwidth_converter_v2_1_12_axi4lite_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family.
@@ -3265,51 +3271,52 @@ module axi_dwidth_converter_v2_1_33_axi4lite_downsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: AXI4Lite Upizer
 // Converts 32-bit AXI4Lite on Slave Interface to 64-bit AXI4Lite on Master Interface.
@@ -3324,7 +3331,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_axi4lite_upsizer #
+module axi_dwidth_converter_v2_1_12_axi4lite_upsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family.
@@ -3531,51 +3538,52 @@ module axi_dwidth_converter_v2_1_33_axi4lite_upsizer #
 endmodule
 
 
-// (c) Copyright 2010-2012, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2012 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Address Up-Sizer
 //
@@ -3592,7 +3600,7 @@ endmodule
 
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_a_upsizer #
+module axi_dwidth_converter_v2_1_12_a_upsizer #
   (
    parameter         C_FAMILY                         = "rtl", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -4172,7 +4180,7 @@ module axi_dwidth_converter_v2_1_33_a_upsizer #
          .LI(last_word_for_mask_sel[bit_cnt])
         );
         
-        generic_baseblocks_v2_1_2_carry_latch_and #
+        generic_baseblocks_v2_1_0_carry_latch_and #
           (
            .C_FAMILY(C_FAMILY)
            ) last_mask_inst
@@ -4207,7 +4215,7 @@ module axi_dwidth_converter_v2_1_33_a_upsizer #
       
       assign sel_access_need_extra_word = access_is_incr & cmd_modified_i;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) access_need_extra_word_inst
@@ -4303,7 +4311,7 @@ module axi_dwidth_converter_v2_1_33_a_upsizer #
       
       assign sel_s_axi_avalid = S_AXI_AVALID & ~ARESET;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) avalid_inst
@@ -4357,7 +4365,7 @@ module axi_dwidth_converter_v2_1_33_a_upsizer #
   
   generate
     if ( C_ID_QUEUE != 0 ) begin : gen_id_queue
-      generic_baseblocks_v2_1_2_command_fifo #
+      generic_baseblocks_v2_1_0_command_fifo #
       (
        .C_FAMILY                    ("rtl"),
        .C_ENABLE_S_VALID_CARRY      (0),
@@ -4443,7 +4451,7 @@ module axi_dwidth_converter_v2_1_33_a_upsizer #
   generate
   if (C_FIFO_MODE == 0) begin : GEN_CMD_QUEUE
   // Instantiated queue.
-      generic_baseblocks_v2_1_2_command_fifo #
+      generic_baseblocks_v2_1_0_command_fifo #
       (
        .C_FAMILY                    ("rtl"),
        .C_ENABLE_S_VALID_CARRY      (1),
@@ -4581,51 +4589,52 @@ endmodule
 
 
 
-// (c) Copyright 2010-2012, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2012 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Read Data Response Up-Sizer
 // Extract SI-side Data from packed and unpacked MI-side data.
@@ -4641,7 +4650,7 @@ endmodule
 
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_r_upsizer #
+module axi_dwidth_converter_v2_1_12_r_upsizer #
   (
    parameter         C_FAMILY                         = "rtl", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -4858,7 +4867,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
       
       // Optimize next word address wrap branch of expression.
       //
-      generic_baseblocks_v2_1_2_comparator_sel_static #
+      generic_baseblocks_v2_1_0_comparator_sel_static #
         (
          .C_FAMILY(C_FAMILY),
          .C_VALUE({C_M_AXI_BYTES_LOG{1'b0}}),
@@ -4874,7 +4883,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
          
       assign sel_word_complete_next_wrap = ~cmd_fix & ~cmd_complete_wrap;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_inst
@@ -4886,7 +4895,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
          
       assign sel_m_axi_rready = cmd_valid & S_AXI_RREADY_I;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_ready_inst
@@ -4896,7 +4905,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
          .COUT(word_complete_next_wrap_ready)
          );
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_pop_inst
@@ -4910,7 +4919,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
       //
       assign sel_word_complete_last_word = ~cmd_fix & ~use_wrap_buffer;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_last_word_inst
@@ -4922,7 +4931,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
       
       assign sel_word_complete_rest = cmd_fix | ( ~cmd_modified & ( C_PACKING_LEVEL == C_DEFAULT_PACK ) );
       
-      generic_baseblocks_v2_1_2_carry_or #
+      generic_baseblocks_v2_1_0_carry_or #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_inst
@@ -4932,7 +4941,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
          .COUT(word_complete_rest)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_ready_inst
@@ -4942,7 +4951,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
          .COUT(word_complete_rest_ready)
          );
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_pop_inst
@@ -4981,7 +4990,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
       
       assign sel_cmd_ready  = cmd_valid & pop_si_data;
     
-      generic_baseblocks_v2_1_2_carry_latch_and #
+      generic_baseblocks_v2_1_0_carry_latch_and #
         (
          .C_FAMILY(C_FAMILY)
          ) cmd_ready_inst
@@ -5488,51 +5497,52 @@ module axi_dwidth_converter_v2_1_33_r_upsizer #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Up-Sizer
 // Mirror data for simple accesses.
@@ -5550,7 +5560,7 @@ endmodule
 
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_w_upsizer #
+module axi_dwidth_converter_v2_1_12_w_upsizer #
   (
    parameter         C_FAMILY                         = "rtl", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -5810,7 +5820,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
       
       // Optimize next word address wrap branch of expression.
       //
-      generic_baseblocks_v2_1_2_comparator_sel_static #
+      generic_baseblocks_v2_1_0_comparator_sel_static #
         (
          .C_FAMILY(C_FAMILY),
          .C_VALUE({C_M_AXI_BYTES_LOG{1'b0}}),
@@ -5826,7 +5836,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          
       assign sel_word_complete_next_wrap = ~cmd_fix & ~cmd_complete_wrap;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_inst
@@ -5838,7 +5848,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          
       assign sel_word_complete_next_wrap_qual = cmd_valid & ~store_in_wrap_buffer_enabled;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_valid_inst
@@ -5848,7 +5858,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(word_complete_next_wrap_qual)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_qual_inst
@@ -5858,7 +5868,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(word_complete_next_wrap_valid)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_pop_inst
@@ -5870,7 +5880,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          
       assign sel_word_complete_next_wrap_stall = ~M_AXI_WREADY_I;
       
-      generic_baseblocks_v2_1_2_carry_latch_and #
+      generic_baseblocks_v2_1_0_carry_latch_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_stall_inst
@@ -5880,7 +5890,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .O(word_complete_next_wrap_stall)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_next_wrap_last_inst
@@ -5894,7 +5904,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
       //
       assign sel_last_word = ~cmd_fix;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) last_word_inst_2
@@ -5906,7 +5916,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
       
       assign sel_word_complete_rest = cmd_fix | ~cmd_modified;
       
-      generic_baseblocks_v2_1_2_carry_or #
+      generic_baseblocks_v2_1_0_carry_or #
         (
          .C_FAMILY(C_FAMILY)
          ) pop_si_data_inst
@@ -5918,7 +5928,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
       
       assign sel_word_complete_rest_qual = cmd_valid & ~store_in_wrap_buffer_enabled;
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_valid_inst
@@ -5928,7 +5938,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(word_complete_rest_qual)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_qual_inst
@@ -5938,7 +5948,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(word_complete_rest_valid)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_pop_inst
@@ -5950,7 +5960,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          
       assign sel_word_complete_rest_stall = ~M_AXI_WREADY_I;
       
-      generic_baseblocks_v2_1_2_carry_latch_and #
+      generic_baseblocks_v2_1_0_carry_latch_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_stall_inst
@@ -5960,7 +5970,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .O(word_complete_rest_stall)
          );
          
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) word_complete_rest_last_inst
@@ -6375,7 +6385,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
     end else begin : USE_FPGA_LAST_WORD
       wire last_beat_curr_word;
       
-      generic_baseblocks_v2_1_2_comparator_sel_static #
+      generic_baseblocks_v2_1_0_comparator_sel_static #
         (
          .C_FAMILY(C_FAMILY),
          .C_VALUE(8'b0),
@@ -6389,7 +6399,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(last_beat)
          );
       
-      generic_baseblocks_v2_1_2_comparator_sel #
+      generic_baseblocks_v2_1_0_comparator_sel #
         (
          .C_FAMILY(C_FAMILY),
          .C_DATA_WIDTH(C_M_AXI_BYTES_LOG)
@@ -6403,7 +6413,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
          .COUT(last_beat_curr_word)
          );
       
-      generic_baseblocks_v2_1_2_carry_and #
+      generic_baseblocks_v2_1_0_carry_and #
         (
          .C_FAMILY(C_FAMILY)
          ) last_word_inst
@@ -6954,51 +6964,53 @@ module axi_dwidth_converter_v2_1_33_w_upsizer #
 endmodule
 
 
-// (c) Copyright 2010, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//-- (c) Copyright 2010 Xilinx, Inc. All rights reserved.
+//--
+//-- This file contains confidential and proprietary information
+//-- of Xilinx, Inc. and is protected under U.S. and
+//-- international copyright and other intellectual property
+//-- laws.
+//--
+//-- DISCLAIMER
+//-- This disclaimer is not a license and does not grant any
+//-- rights to the materials distributed herewith. Except as
+//-- otherwise provided in a valid license issued to you by
+//-- Xilinx, and to the maximum extent permitted by applicable
+//-- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+//-- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+//-- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+//-- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+//-- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+//-- (2) Xilinx shall not be liable (whether in contract or tort,
+//-- including negligence, or under any other theory of
+//-- liability) for any loss or damage of any kind or nature
+//-- related to, arising under or in connection with these
+//-- materials, including for any direct, or any indirect,
+//-- special, incidental, or consequential loss or damage
+//-- (including loss of data, profits, goodwill, or any type of
+//-- loss or damage suffered as a result of any action brought
+//-- by a third party) even if such damage or loss was
+//-- reasonably foreseeable or Xilinx had been advised of the
+//-- possibility of the same.
+//--
+//-- CRITICAL APPLICATIONS
+//-- Xilinx products are not designed or intended to be fail-
+//-- safe, or for use in any application requiring fail-safe
+//-- performance, such as life-support or safety devices or
+//-- systems, Class III medical devices, nuclear facilities,
+//-- applications related to the deployment of airbags, or any
+//-- other applications that could lead to death, personal
+//-- injury, or severe property or environmental damage
+//-- (individually and collectively, "Critical
+//-- Applications"). Customer assumes the sole risk and
+//-- liability of any use of Xilinx products in Critical
+//-- Applications, subject only to applicable laws and
+//-- regulations governing limitations on product liability.
+//--
+//-- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+//-- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Up-Sizer
 // Up-Sizer for generic SI- and MI-side data widths. This module instantiates
@@ -7023,7 +7035,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_axi_upsizer #
+module axi_dwidth_converter_v2_1_12_axi_upsizer #
   (
    parameter         C_FAMILY                         = "virtex7", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -7332,7 +7344,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
         
         // Sample cycle used to determine when to assert a signal on a fast clock
         // to be flopped onto a slow clock.
-        axi_clock_converter_v2_1_32_axic_sample_cycle_ratio #(
+        axi_clock_converter_v2_1_11_axic_sample_cycle_ratio #(
           .C_RATIO ( P_ACLK_RATIO )
         )
         axic_sample_cycle_inst (
@@ -7353,7 +7365,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
       
     end  // gen_clock_conv
 
-    axi_register_slice_v2_1_33_axi_register_slice #
+    axi_register_slice_v2_1_12_axi_register_slice #
       (
         .C_FAMILY                         (C_FAMILY),
         .C_AXI_PROTOCOL                   (C_AXI_PROTOCOL),
@@ -7503,7 +7515,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
       wire [C_S_AXI_ID_WIDTH-1:0]       wr_cmd_id;
 
       // Write Address Channel.
-      axi_dwidth_converter_v2_1_33_a_upsizer #
+      axi_dwidth_converter_v2_1_12_a_upsizer #
       (
        .C_FAMILY                    ("rtl"),
        .C_AXI_PROTOCOL              (C_AXI_PROTOCOL),
@@ -7577,7 +7589,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
        
       if ((C_FIFO_MODE == P_PKTFIFO) || (C_FIFO_MODE == P_PKTFIFO_CLK)) begin : gen_pktfifo_w_upsizer
         // Packet FIFO Write Data channel.
-        axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
+        axi_dwidth_converter_v2_1_12_w_upsizer_pktfifo #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_S_AXI_DATA_WIDTH          (C_S_AXI_DATA_WIDTH),
@@ -7652,7 +7664,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
         
       end else begin : gen_non_fifo_w_upsizer
         // Write Data channel.
-        axi_dwidth_converter_v2_1_33_w_upsizer #
+        axi_dwidth_converter_v2_1_12_w_upsizer #
         (
          .C_FAMILY                    ("rtl"),
          .C_S_AXI_DATA_WIDTH          (C_S_AXI_DATA_WIDTH),
@@ -7722,7 +7734,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
       if (P_CLK_CONV) begin : gen_b_clk_conv
         if (C_AXI_IS_ACLK_ASYNC == 0) begin : gen_b_sync_conv
 
-          axi_clock_converter_v2_1_32_axic_sync_clock_converter #(
+          axi_clock_converter_v2_1_11_axic_sync_clock_converter #(
             .C_FAMILY         ( C_FAMILY ) ,
             .C_PAYLOAD_WIDTH ( 2 ) ,
             .C_M_ACLK_RATIO   ( P_SI_LT_MI ? 1 : P_ACLK_RATIO ) ,
@@ -7746,7 +7758,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
         
         end else begin : gen_b_async_conv
           
-          fifo_generator_v13_2_11 #(
+          fifo_generator_v13_1_4 #(
             .C_COMMON_CLOCK(0),
             .C_SYNCHRONIZER_STAGE(C_SYNCHRONIZER_STAGE),
             .C_INTERFACE_TYPE(2),
@@ -8247,7 +8259,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
       wire [2-1:0]                      rd_cmd_si_burst;
       
       // Read Address Channel.
-      axi_dwidth_converter_v2_1_33_a_upsizer #
+      axi_dwidth_converter_v2_1_12_a_upsizer #
       (
        .C_FAMILY                    ("rtl"),
        .C_AXI_PROTOCOL              (C_AXI_PROTOCOL),
@@ -8322,7 +8334,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
        
       if ((C_FIFO_MODE == P_PKTFIFO) || (C_FIFO_MODE == P_PKTFIFO_CLK)) begin : gen_pktfifo_r_upsizer
         // Packet FIFO Read Data channel.
-        axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
+        axi_dwidth_converter_v2_1_12_r_upsizer_pktfifo #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_S_AXI_DATA_WIDTH          (C_S_AXI_DATA_WIDTH),
@@ -8400,7 +8412,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
         
       end else begin : gen_non_fifo_r_upsizer
         // Read Data channel.
-        axi_dwidth_converter_v2_1_33_r_upsizer #
+        axi_dwidth_converter_v2_1_12_r_upsizer #
         (
          .C_FAMILY                    ("rtl"),
          .C_AXI_ID_WIDTH              (C_S_AXI_ID_WIDTH),
@@ -8450,7 +8462,7 @@ module axi_dwidth_converter_v2_1_33_axi_upsizer #
           .M_AXI_RREADY               (mr_rready)
          );
          
-        axi_register_slice_v2_1_33_axi_register_slice #
+        axi_register_slice_v2_1_12_axi_register_slice #
           (
             .C_FAMILY                         (C_FAMILY),
             .C_AXI_PROTOCOL                   (0),
@@ -8599,51 +8611,52 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2012, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2012 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Up-Sizer with Packet FIFO
 //
@@ -8651,7 +8664,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
+module axi_dwidth_converter_v2_1_12_w_upsizer_pktfifo #
   (
    parameter         C_FAMILY                         = "virtex7", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -8927,7 +8940,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h5: f_si_be_init[i] = addr_i[ 5 :  5] == i[ 5 :  5];
             default: f_si_be_init[i] = 1'b1;
           endcase
-        default:    ;
         endcase
       end
     end
@@ -8985,7 +8997,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h6: f_mi_be_init[i] = addr_i[ 6 :  6] == i[ 6 :  6];
             default: f_mi_be_init[i] = 1'b1;
           endcase
-        default:    ;
         endcase
       end
     end
@@ -9020,14 +9031,12 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h0:    begin bytes =  len       ; mask =    1'b0  ; end
           3'h1:    begin bytes = {len, 1'b0}; mask = {1{1'b1}}; end
           3'h2:    begin bytes = {len, 2'b0}; mask = {2{1'b1}}; end
-       default:    ;
         endcase
         3: case (size)
           3'h0:    begin bytes =  len       ; mask =    1'b0  ; end
           3'h1:    begin bytes = {len, 1'b0}; mask = {1{1'b1}}; end
           3'h2:    begin bytes = {len, 2'b0}; mask = {2{1'b1}}; end
           3'h3:    begin bytes = {len, 3'b0}; mask = {3{1'b1}}; end
-       default:    ;
         endcase
         4: case (size)
           3'h0:    begin bytes =  len       ; mask =    1'b0  ; end
@@ -9035,7 +9044,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h2:    begin bytes = {len, 2'b0}; mask = {2{1'b1}}; end
           3'h3:    begin bytes = {len, 3'b0}; mask = {3{1'b1}}; end
           3'h4:    begin bytes = {len, 4'b0}; mask = {4{1'b1}}; end
-       default:    ;
         endcase
         5: case (size)
           3'h0:    begin bytes =  len       ; mask =    1'b0  ; end
@@ -9044,7 +9052,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h3:    begin bytes = {len, 3'b0}; mask = {3{1'b1}}; end
           3'h4:    begin bytes = {len, 4'b0}; mask = {4{1'b1}}; end
           3'h5:    begin bytes = {len, 5'b0}; mask = {5{1'b1}}; end
-       default:    ;
         endcase
         6: case (size)
           3'h0:    begin bytes =  len       ; mask =    1'b0  ; end
@@ -9054,9 +9061,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h4:    begin bytes = {len, 4'b0}; mask = {4{1'b1}}; end
           3'h5:    begin bytes = {len, 5'b0}; mask = {5{1'b1}}; end
           3'h6:    begin bytes = {len, 6'b0}; mask = {6{1'b1}}; end
-       default:    ;
         endcase
-       default:    ;
       endcase
 
       case (burst)
@@ -9066,7 +9071,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           f_mi_be_last_index = addr | bytes | mask;
         P_FIXED:
           f_mi_be_last_index = {P_MI_SIZE{1'b1}};
-        default:    ;
       endcase
     end
   endfunction
@@ -9132,7 +9136,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h5:    f_si_wrap_be[i] =                                                                                                                            (            1'b0  == i[5:5]);
             default: f_si_wrap_be[i] = 1'b1;
           endcase
-        default:    ;
         endcase
       end
     end
@@ -9191,7 +9194,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h6:    f_mi_wrap_be[i] =                                                                                                                            (            1'b0  == i[6:6]);
             default: f_mi_wrap_be[i] = 1'b1;
           endcase
-        default:    ;
         endcase
       end
     end
@@ -9244,7 +9246,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h5:    start = addr_i[ 5 +: 4];
           default: start = addr_i[ 6 +: 4];
         endcase
-      default:    ;
       endcase
       f_si_wrap_cnt = {len[3:1], 1'b1} & ~start;
     end
@@ -9302,7 +9303,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h6:    start = addr_i[ 6 +: 4];
           default: start = addr_i[ 7 +: 4];
         endcase
-        default:    ;
       endcase
       f_mi_wrap_cnt = {len[3:1], 1'b1} & ~start;
     end
@@ -9346,7 +9346,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             2'h1:    f_si_wrap_mask = len[3:2];
             default: f_si_wrap_mask = len[3:3];
           endcase
-        default:    ;
         endcase
         2: case (P_SI_SIZE)
           5: case (size)
@@ -9369,7 +9368,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             2'h1:    f_si_wrap_mask = len[3:3];
             default: f_si_wrap_mask = 0    ;
           endcase
-        default:    ;
         endcase
         3: case (P_SI_SIZE)
           4: case (size)
@@ -9384,7 +9382,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             2'h2:    f_si_wrap_mask = len[3:3];
             default: f_si_wrap_mask = 0    ;
           endcase
-        default:    ;
         endcase
         default: f_si_wrap_mask = 0    ;
       endcase
@@ -9434,7 +9431,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             2'h1:    f_mi_wrap_mask = len[3:2];
             default: f_mi_wrap_mask = len[3:3];
           endcase
-        default:    ;
         endcase
         2: case (P_MI_SIZE)
           7: case (size)
@@ -9461,7 +9457,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h1:    f_mi_wrap_mask = len[3:3];
             default: f_mi_wrap_mask = 0    ;
           endcase
-        default:    ;
         endcase
         3: case (P_MI_SIZE)
           7: case (size)
@@ -9479,7 +9474,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
             3'h2:    f_mi_wrap_mask = len[3:3];
             default: f_mi_wrap_mask = 0    ;
           endcase
-        default:    ;
         endcase
         default: f_mi_wrap_mask = 0    ;
       endcase
@@ -9528,7 +9522,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h3:    mask =  len[3:3];
           default: mask =  0;
         endcase
-       default:    ;
       endcase
       f_si_wrap_word = addr[P_MI_SIZE-1 : P_SI_SIZE] & ~mask;
     end
@@ -9593,7 +9586,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h5:    f_si_be_rot = {be_i[0 +: (64 - 32)], be_i[63 -: 32]};
           default: f_si_be_rot =  {64{1'b1}};
         endcase
-       default:    ;
       endcase
     end
   endfunction
@@ -9648,7 +9640,6 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
           3'h6:    f_mi_be_rot = {be_i[0 +: (128 - 64)], be_i[127 -: 64]};
           default: f_mi_be_rot =  {128{1'b1}};
         endcase
-       default:    ;
       endcase
     end
   endfunction
@@ -10097,7 +10088,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
     assign mi_buf_addr = {mi_buf, mi_ptr};
     assign si_we = f_si_we(si_word, si_be);
     
-  blk_mem_gen_v8_4_9 #(
+  blk_mem_gen_v8_3_6 #(
     .C_FAMILY(C_FAMILY),
     .C_XDEVICEFAMILY(C_FAMILY),
     .C_INTERFACE_TYPE(0),
@@ -10220,9 +10211,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
     .eccpipece(1'b0)
   );
     
-  fifo_generator_v13_2_11 #(
-    .C_EN_SAFETY_CKT(0),
-    .C_SELECT_XPM(0),
+  fifo_generator_v13_1_4 #(
     .C_FAMILY(C_FAMILY),
     .C_COMMON_CLOCK(P_COMMON_CLOCK),
     .C_MEMORY_TYPE(1),
@@ -10649,7 +10638,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
     .sleep(1'b0)
   );
   
-  axi_register_slice_v2_1_33_axi_register_slice #(
+  axi_register_slice_v2_1_12_axi_register_slice #(
     .C_FAMILY(C_FAMILY),
     .C_AXI_PROTOCOL(0),
     .C_AXI_ID_WIDTH(1),
@@ -10763,9 +10752,7 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
   
   if (C_CLK_CONV && C_AXI_IS_ACLK_ASYNC) begin : gen_awpop_fifo
     
-    fifo_generator_v13_2_11 #(
-      .C_EN_SAFETY_CKT(0),
-      .C_SELECT_XPM(0),
+    fifo_generator_v13_1_4 #(
       .C_DIN_WIDTH(1),
       .C_DOUT_WIDTH(1),
       .C_RD_DEPTH(32),
@@ -11200,51 +11187,52 @@ module axi_dwidth_converter_v2_1_33_w_upsizer_pktfifo #
 endmodule
 
 
-// (c) Copyright 2012, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2012 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Up-Sizer with Packet FIFO
 //
@@ -11253,7 +11241,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
+module axi_dwidth_converter_v2_1_12_r_upsizer_pktfifo #
   (
    parameter         C_FAMILY                         = "virtex7", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -11557,7 +11545,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h4:    sparse_addr = {addr_i[P_MAX_RBUFFER_BYTES_LOG-1 : 7], addr_i[4:4], addr_i[6:0]};
             default: sparse_addr =  addr_i;
           endcase
-        default:    ;
         endcase
       end
       f_s_rbuf_addr = {s_buf, {14-P_NUM_BUF_LOG{1'b0}}};
@@ -11611,7 +11598,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h4:    sparse_addr = {addr_i[P_MAX_RBUFFER_BYTES_LOG-1 : P_MI_SIZE], addr_i[4:4]};
             default: sparse_addr =  addr_i[P_MAX_RBUFFER_BYTES_LOG-1 : P_MI_SIZE];
           endcase
-        default:    ;
         endcase
       end
       f_m_rbuf_addr = {m_buf, sparse_addr[0 +: 9-P_NUM_BUF_LOG], 5'b0};
@@ -11653,7 +11639,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h7:    f_m_rbuf_we = 4'b1111;
           default: f_m_rbuf_we = 4'b0001 << addr_i[6:5];
         endcase
-        default:    ;
       endcase
     end
   endfunction
@@ -11677,9 +11662,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             2'b01: result = 4'b0001;
             2'b10: result = 4'b0011;
             2'b11: result = 4'b0111;
-          default: ;
           endcase
-        default: ;
         endcase
         5: case (P_SI_SIZE)
           3'h4:    result = 4'b0011;
@@ -11687,9 +11670,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             2'b01: result = 4'b0001;
             2'b10: result = 4'b0011;
             2'b11: result = 4'b0111;
-          default: ;
           endcase
-        default: ;
         endcase
         6: case (P_SI_SIZE)
           3'h5:    result = 4'b0011;
@@ -11697,9 +11678,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             2'b01: result = 4'b0001;
             2'b10: result = 4'b0011;
             2'b11: result = 4'b0111;
-          default: ;
           endcase
-        default: ;
         endcase
         7: case (P_SI_SIZE)
           3'h6:    result = 4'b0011;
@@ -11707,11 +11686,8 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             2'b01: result = 4'b0001;
             2'b10: result = 4'b0011;
             2'b11: result = 4'b0111;
-          default: ;
           endcase
-        default: ;
         endcase
-      default: ;
       endcase
       f_large_incr_mask = result;
     end
@@ -11737,7 +11713,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             2'b01: f_m_rbuf_en = 32'h0000FF00;
             2'b10: f_m_rbuf_en = 32'h00FF0000;
             2'b11: f_m_rbuf_en = 32'hFF000000;
-          default: ;
           endcase
           3'h1:    f_m_rbuf_en = addr_i[1] ? 32'hFFFF0000 : 32'h0000FFFF;
           default: f_m_rbuf_en = 32'hFFFFFFFF;
@@ -11763,14 +11738,12 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h0:    f_s_eol = &(addr_i[2:0]);
             3'h1:    f_s_eol = &(addr_i[2:1]);
             3'h2:    f_s_eol = &(addr_i[2:2]);
-         default:    ;
           endcase
           4: case (s_size)
             3'h0:    f_s_eol = &(addr_i[3:0]);
             3'h1:    f_s_eol = &(addr_i[3:1]);
             3'h2:    f_s_eol = &(addr_i[3:2]);
             3'h3:    f_s_eol = &(addr_i[3:3]);
-         default:    ;
           endcase
           5: case (s_size)
             3'h0:    f_s_eol = &(addr_i[4:0]);
@@ -11778,7 +11751,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h2:    f_s_eol = &(addr_i[4:2]);
             3'h3:    f_s_eol = &(addr_i[4:3]);
             3'h4:    f_s_eol = &(addr_i[4:4]);
-         default:    ;
           endcase
           6: case (s_size)
             3'h0:    f_s_eol = &(addr_i[5:0]);
@@ -11787,7 +11759,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h3:    f_s_eol = &(addr_i[5:3]);
             3'h4:    f_s_eol = &(addr_i[5:4]);
             3'h5:    f_s_eol = &(addr_i[5:5]);
-         default:    ;
           endcase
           7: case (s_size)
             3'h0:    f_s_eol = &(addr_i[6:0]);
@@ -11797,9 +11768,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
             3'h4:    f_s_eol = &(addr_i[6:4]);
             3'h5:    f_s_eol = &(addr_i[6:5]);
             3'h6:    f_s_eol = &(addr_i[6:6]);
-         default:    ;
           endcase
-        default:    ;
         endcase
       end else begin
         // Assumes that AR transform is either fully-packed (m_size == P_MI_SIZE) or unpacked (m_size == s_size), no intermediate sizes.
@@ -11855,7 +11824,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    start = addr_i[ 5 +: 4];
           default: start = addr_i[ 6 +: 4];
         endcase
-        default:    ;
       endcase
       f_s_wrap_cnt = {len[3:1], 1'b1} & ~start;
     end
@@ -11913,7 +11881,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h6:    start = addr_i[ 6 +: 4];
           default: start = addr_i[ 7 +: 4];
         endcase
-        default:    ;
       endcase
       f_m_wrap_cnt = {len[3:1], 1'b1} & ~start;
     end
@@ -11931,14 +11898,12 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h0:    f_s_wrap_mask = {len[3:3], 3'b111    };
           3'h1:    f_s_wrap_mask = {len[3:2], 3'b110    };
           3'h2:    f_s_wrap_mask = {len[3:1], 3'b100    };
-       default:    ;
         endcase
         4: case (size)
           3'h0:    f_s_wrap_mask =            4'b1111    ;
           3'h1:    f_s_wrap_mask = {len[3:3], 4'b1110   };
           3'h2:    f_s_wrap_mask = {len[3:2], 4'b1100   };
           3'h3:    f_s_wrap_mask = {len[3:1], 4'b1000   };
-       default:    ;
         endcase
         5: case (size)
           3'h0:    f_s_wrap_mask =            5'b11111   ;
@@ -11946,7 +11911,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_s_wrap_mask = {len[3:3], 5'b11100  };
           3'h3:    f_s_wrap_mask = {len[3:2], 5'b11000  };
           3'h4:    f_s_wrap_mask = {len[3:1], 5'b10000  };
-       default:    ;
         endcase
         6: case (size)
           3'h0:    f_s_wrap_mask =            6'b111111  ;
@@ -11955,7 +11919,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_s_wrap_mask = {len[3:3], 6'b111000 };
           3'h4:    f_s_wrap_mask = {len[3:2], 6'b110000 };
           3'h5:    f_s_wrap_mask = {len[3:1], 6'b100000 };
-       default:    ;
         endcase
         7: case (size)
           3'h0:    f_s_wrap_mask =            7'b1111111 ;
@@ -11965,9 +11928,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_s_wrap_mask = {len[3:3], 7'b1110000};
           3'h5:    f_s_wrap_mask = {len[3:2], 7'b1100000};
           3'h6:    f_s_wrap_mask = {len[3:1], 7'b1000000};
-       default:    ;
         endcase
-      default:    ;
       endcase
     end
   endfunction
@@ -11985,7 +11946,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h1:    f_m_wrap_mask = {len[3:2], 3'b110    };
           3'h2:    f_m_wrap_mask = {len[3:1], 3'b100    };
           3'h3:    f_m_wrap_mask = {len[3:1], 4'b1000    };
-       default:    ;
         endcase
         4: case (size)                                   
           3'h0:    f_m_wrap_mask =            4'b1111     ;
@@ -11993,7 +11953,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_m_wrap_mask = {len[3:2], 4'b1100    };
           3'h3:    f_m_wrap_mask = {len[3:1], 4'b1000    };
           3'h4:    f_m_wrap_mask = {len[3:1], 5'b10000   };
-       default:    ;
         endcase                                          
         5: case (size)                                   
           3'h0:    f_m_wrap_mask =            5'b11111    ;
@@ -12002,7 +11961,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_m_wrap_mask = {len[3:2], 5'b11000   };
           3'h4:    f_m_wrap_mask = {len[3:1], 5'b10000   };
           3'h5:    f_m_wrap_mask = {len[3:1], 6'b100000  };
-       default:    ;
         endcase                                          
         6: case (size)                                   
           3'h0:    f_m_wrap_mask =            6'b111111   ;
@@ -12012,7 +11970,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_m_wrap_mask = {len[3:2], 6'b110000  };
           3'h5:    f_m_wrap_mask = {len[3:1], 6'b100000  };
           3'h6:    f_m_wrap_mask = {len[3:1], 7'b1000000 };
-       default:    ;
         endcase                                          
         7: case (size)                                   
           3'h0:    f_m_wrap_mask =            7'b1111111  ;
@@ -12023,9 +11980,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    f_m_wrap_mask = {len[3:2], 7'b1100000 };
           3'h6:    f_m_wrap_mask = {len[3:1], 7'b1000000 };
           3'h7:    f_m_wrap_mask = {len[3:1], 8'b10000000};
-       default:    ;
         endcase                                          
-      default:    ;
       endcase
     end
   endfunction
@@ -12075,7 +12030,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    mask = {        ~len[1:1], 6'b0};
           default: mask =                     7'b0 ;
         endcase
-        default:    ;
       endcase
       f_s_wrap_addr = addr & mask;
     end
@@ -12126,7 +12080,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    mask = {        ~len[1:1], 6'b0};
           default: mask =                     7'b0 ;
         endcase
-        default:    ;
       endcase
       f_m_wrap_addr = addr & mask;
     end
@@ -12143,14 +12096,12 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h0:    f_s_size_mask = 3'b111;
           3'h1:    f_s_size_mask = 3'b110;
           3'h2:    f_s_size_mask = 3'b100;
-       default:    ;
         endcase
         4: case (size)
           3'h0:    f_s_size_mask = 4'b1111;
           3'h1:    f_s_size_mask = 4'b1110;
           3'h2:    f_s_size_mask = 4'b1100;
           3'h3:    f_s_size_mask = 4'b1000;
-       default:    ;
         endcase
         5: case (size)
           3'h0:    f_s_size_mask = 5'b11111;
@@ -12158,7 +12109,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_s_size_mask = 5'b11100;
           3'h3:    f_s_size_mask = 5'b11000;
           3'h4:    f_s_size_mask = 5'b10000;
-       default:    ;
         endcase
         6: case (size)
           3'h0:    f_s_size_mask = 6'b111111;
@@ -12167,7 +12117,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_s_size_mask = 6'b111000;
           3'h4:    f_s_size_mask = 6'b110000;
           3'h5:    f_s_size_mask = 6'b100000;
-       default:    ;
         endcase
         7: case (size)
           3'h0:    f_s_size_mask = 7'b1111111;
@@ -12177,9 +12126,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_s_size_mask = 7'b1110000;
           3'h5:    f_s_size_mask = 7'b1100000;
           3'h6:    f_s_size_mask = 7'b1000000;
-       default:    ;
         endcase
-     default:    ;
       endcase
     end
   endfunction
@@ -12196,7 +12143,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h1:    f_m_size_mask = 3'b110;
           3'h2:    f_m_size_mask = 3'b100;
           3'h3:    f_m_size_mask = 3'b000;
-       default:    ;
         endcase
         4: case (size)
           3'h0:    f_m_size_mask = 4'b1111;
@@ -12204,7 +12150,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_m_size_mask = 4'b1100;
           3'h3:    f_m_size_mask = 4'b1000;
           3'h4:    f_m_size_mask = 4'b0000;
-       default:    ;
         endcase
         5: case (size)
           3'h0:    f_m_size_mask = 5'b11111;
@@ -12213,7 +12158,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_m_size_mask = 5'b11000;
           3'h4:    f_m_size_mask = 5'b10000;
           3'h5:    f_m_size_mask = 5'b00000;
-       default:    ;
         endcase
         6: case (size)
           3'h0:    f_m_size_mask = 6'b111111;
@@ -12223,7 +12167,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_m_size_mask = 6'b110000;
           3'h5:    f_m_size_mask = 6'b100000;
           3'h6:    f_m_size_mask = 6'b000000;
-       default:    ;
         endcase
         7: case (size)
           3'h0:    f_m_size_mask = 7'b1111111;
@@ -12234,9 +12177,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    f_m_size_mask = 7'b1100000;
           3'h6:    f_m_size_mask = 7'b1000000;
           3'h7:    f_m_size_mask = 7'b0000000;
-       default:    ;
         endcase
-     default:    ;
       endcase
     end
   endfunction
@@ -12252,14 +12193,12 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           2'h0:    f_s_size_incr = 4'b001;
           2'h1:    f_s_size_incr = 4'b010;
           2'h2:    f_s_size_incr = 4'b100;
-       default:    ;
         endcase
         3: case (size[1:0])
           2'h0:    f_s_size_incr = 4'b0001;
           2'h1:    f_s_size_incr = 4'b0010;
           2'h2:    f_s_size_incr = 4'b0100;
           2'h3:    f_s_size_incr = 4'b1000;
-       default:    ;
         endcase
         4: case (size)
           3'h0:    f_s_size_incr = 5'b00001;
@@ -12267,7 +12206,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_s_size_incr = 5'b00100;
           3'h3:    f_s_size_incr = 5'b01000;
           3'h4:    f_s_size_incr = 5'b10000;
-       default:    ;
         endcase
         5: case (size)
           3'h0:    f_s_size_incr = 6'b000001;
@@ -12276,7 +12214,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_s_size_incr = 6'b001000;
           3'h4:    f_s_size_incr = 6'b010000;
           3'h5:    f_s_size_incr = 6'b100000;
-       default:    ;
         endcase
         6: case (size)
           3'h0:    f_s_size_incr = 7'b0000001;
@@ -12286,9 +12223,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_s_size_incr = 7'b0010000;
           3'h5:    f_s_size_incr = 7'b0100000;
           3'h6:    f_s_size_incr = 7'b1000000;
-       default:    ;
         endcase
-     default:    ;
       endcase
     end
   endfunction
@@ -12305,7 +12240,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h1:    f_m_size_incr = 4'b0010;
           3'h2:    f_m_size_incr = 4'b0100;
           3'h3:    f_m_size_incr = 4'b1000;
-       default:    ;
         endcase
         4: case (size)
           3'h0:    f_m_size_incr = 5'b00001;
@@ -12313,7 +12247,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h2:    f_m_size_incr = 5'b00100;
           3'h3:    f_m_size_incr = 5'b01000;
           3'h4:    f_m_size_incr = 5'b10000;
-       default:    ;
         endcase
         5: case (size)
           3'h0:    f_m_size_incr = 6'b000001;
@@ -12322,7 +12255,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h3:    f_m_size_incr = 6'b001000;
           3'h4:    f_m_size_incr = 6'b010000;
           3'h5:    f_m_size_incr = 6'b100000;
-       default:    ;
         endcase
         6: case (size)
           3'h0:    f_m_size_incr = 7'b0000001;
@@ -12332,7 +12264,6 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h4:    f_m_size_incr = 7'b0010000;
           3'h5:    f_m_size_incr = 7'b0100000;
           3'h6:    f_m_size_incr = 7'b1000000;
-       default:    ;
         endcase
         7: case (size)
           3'h0:    f_m_size_incr = 8'b00000001;
@@ -12343,9 +12274,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
           3'h5:    f_m_size_incr = 8'b00100000;
           3'h6:    f_m_size_incr = 8'b01000000;
           3'h7:    f_m_size_incr = 8'b10000000;
-       default:    ;
         endcase
-     default:    ;
       endcase
     end
   endfunction
@@ -12730,9 +12659,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
     );   
   end 
     
-  fifo_generator_v13_2_11 #(
-    .C_EN_SAFETY_CKT(0),
-    .C_SELECT_XPM(0),
+  fifo_generator_v13_1_4 #(
     .C_FAMILY(C_FAMILY),
     .C_COMMON_CLOCK(P_COMMON_CLOCK),
     .C_MEMORY_TYPE(1),
@@ -13159,9 +13086,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
     .sleep(1'b0)
   );
   
-  fifo_generator_v13_2_11 #(
-    .C_EN_SAFETY_CKT(0),
-    .C_SELECT_XPM(0),
+  fifo_generator_v13_1_4 #(
     .C_DIN_WIDTH(P_S_CMD_WIDTH),
     .C_DOUT_WIDTH(P_S_CMD_WIDTH),
     .C_RD_DEPTH(32),
@@ -13587,9 +13512,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
     .sleep(1'b0)
   );
 
-  fifo_generator_v13_2_11 #(
-    .C_EN_SAFETY_CKT(0),
-    .C_SELECT_XPM(0),
+  fifo_generator_v13_1_4 #(
     .C_DIN_WIDTH(P_M_CMD_WIDTH),
     .C_DOUT_WIDTH(P_M_CMD_WIDTH),
     .C_RD_DEPTH(32),
@@ -14015,9 +13938,7 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
     .sleep(1'b0)
   );
 
-  fifo_generator_v13_2_11 #(
-    .C_EN_SAFETY_CKT(0),
-    .C_SELECT_XPM(0),
+  fifo_generator_v13_1_4 #(
     .C_DIN_WIDTH(4),
     .C_DOUT_WIDTH(4),
     .C_RD_DEPTH(512),
@@ -14448,51 +14369,52 @@ module axi_dwidth_converter_v2_1_33_r_upsizer_pktfifo #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: axi_dwidth_converter
 // AXI Memory-mapped data-width converter.
@@ -14525,7 +14447,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_dwidth_converter_v2_1_33_top #
+module axi_dwidth_converter_v2_1_12_top #
   (
    parameter         C_FAMILY                         = "virtex7", 
                        // FPGA Family.
@@ -14766,7 +14688,7 @@ module axi_dwidth_converter_v2_1_33_top #
     if (C_S_AXI_DATA_WIDTH > C_M_AXI_DATA_WIDTH) begin : gen_downsizer
       if (C_AXI_PROTOCOL == P_AXILITE) begin : gen_lite_downsizer
         
-        axi_dwidth_converter_v2_1_33_axi4lite_downsizer #(
+        axi_dwidth_converter_v2_1_12_axi4lite_downsizer #(
           .C_FAMILY                    ( C_FAMILY                    ) ,
           .C_AXI_ADDR_WIDTH            ( C_AXI_ADDR_WIDTH            ) ,
           .C_AXI_SUPPORTS_WRITE        ( C_AXI_SUPPORTS_WRITE        ) ,
@@ -14860,7 +14782,7 @@ module axi_dwidth_converter_v2_1_33_top #
         wire [1-1:0]                      awlock_ii;
         wire [1-1:0]                      arlock_ii;
         
-        axi_dwidth_converter_v2_1_33_axi_downsizer #(
+        axi_dwidth_converter_v2_1_12_axi_downsizer #(
           .C_FAMILY                    ( C_FAMILY                    ) ,
           .C_AXI_PROTOCOL              ( C_AXI_PROTOCOL              ) ,
           .C_S_AXI_ID_WIDTH            ( C_S_AXI_ID_WIDTH              ) ,
@@ -14954,7 +14876,7 @@ module axi_dwidth_converter_v2_1_33_top #
         
         if (C_RATIO > 16) begin : gen_second_downsizer
           
-          axi_dwidth_converter_v2_1_33_axi_downsizer #(
+          axi_dwidth_converter_v2_1_12_axi_downsizer #(
             .C_FAMILY                    ( C_FAMILY                    ) ,
             .C_AXI_PROTOCOL              ( C_AXI_PROTOCOL              ) ,
             .C_S_AXI_ID_WIDTH            ( 1              ) ,
@@ -15048,7 +14970,7 @@ module axi_dwidth_converter_v2_1_33_top #
           
         end else begin : gen_axi3_conv
           
-          axi_protocol_converter_v2_1_33_axi_protocol_converter #(
+          axi_protocol_converter_v2_1_12_axi_protocol_converter #(
             .C_FAMILY                    ( C_FAMILY                    ) ,
             .C_S_AXI_PROTOCOL            ( P_AXI4              ) ,
             .C_M_AXI_PROTOCOL            ( P_AXI3              ) ,
@@ -15164,7 +15086,7 @@ module axi_dwidth_converter_v2_1_33_top #
         
       end else begin : gen_simple_downsizer
         
-        axi_dwidth_converter_v2_1_33_axi_downsizer #(
+        axi_dwidth_converter_v2_1_12_axi_downsizer #(
           .C_FAMILY                    ( C_FAMILY                    ) ,
           .C_AXI_PROTOCOL              ( C_AXI_PROTOCOL              ) ,
           .C_S_AXI_ID_WIDTH            ( C_S_AXI_ID_WIDTH              ) ,
@@ -15261,7 +15183,7 @@ module axi_dwidth_converter_v2_1_33_top #
       
       if (C_AXI_PROTOCOL == P_AXILITE) begin : gen_lite_upsizer
         
-        axi_dwidth_converter_v2_1_33_axi4lite_upsizer #(
+        axi_dwidth_converter_v2_1_12_axi4lite_upsizer #(
           .C_FAMILY                    ( C_FAMILY                    ) ,
           .C_AXI_ADDR_WIDTH            ( C_AXI_ADDR_WIDTH            ) ,
           .C_AXI_SUPPORTS_WRITE        ( C_AXI_SUPPORTS_WRITE        ) ,
@@ -15313,7 +15235,7 @@ module axi_dwidth_converter_v2_1_33_top #
         
       end else begin : gen_full_upsizer
       
-        axi_dwidth_converter_v2_1_33_axi_upsizer #(
+        axi_dwidth_converter_v2_1_12_axi_upsizer #(
           .C_FAMILY                    ( C_FAMILY                    ) ,
           .C_AXI_PROTOCOL              ( C_AXI_PROTOCOL              ) ,
           .C_S_AXI_ID_WIDTH            ( C_S_AXI_ID_WIDTH              ) ,

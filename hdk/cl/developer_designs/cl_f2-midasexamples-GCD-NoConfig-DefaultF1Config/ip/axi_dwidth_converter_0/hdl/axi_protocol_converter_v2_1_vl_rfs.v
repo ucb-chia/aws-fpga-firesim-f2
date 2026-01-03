@@ -1,48 +1,49 @@
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Address AXI3 Slave Converter
 //
@@ -58,7 +59,7 @@
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_a_axi3_conv #
+module axi_protocol_converter_v2_1_12_a_axi3_conv #
   (
    parameter C_FAMILY                            = "none",
    parameter integer C_AXI_ID_WIDTH              = 1,
@@ -680,7 +681,7 @@ module axi_protocol_converter_v2_1_33_a_axi3_conv #
   // Instantiated queue.
   generate
     if ( C_AXI_CHANNEL == 1 && C_SUPPORT_SPLITTING == 1 && C_SUPPORT_BURSTS == 1 ) begin : USE_R_CHANNEL
-      axi_data_fifo_v2_1_32_axic_fifo #
+      axi_data_fifo_v2_1_11_axic_fifo #
       (
        .C_FAMILY(C_FAMILY),
        .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -703,7 +704,7 @@ module axi_protocol_converter_v2_1_33_a_axi3_conv #
        assign cmd_length        = 4'b0;
        
     end else if (C_SUPPORT_BURSTS == 1) begin : USE_BURSTS
-      axi_data_fifo_v2_1_32_axic_fifo #
+      axi_data_fifo_v2_1_11_axic_fifo #
       (
        .C_FAMILY(C_FAMILY),
        .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -725,7 +726,7 @@ module axi_protocol_converter_v2_1_33_a_axi3_conv #
        assign cmd_split         = 1'b0;
        
     end else begin : NO_BURSTS
-      axi_data_fifo_v2_1_32_axic_fifo #
+      axi_data_fifo_v2_1_11_axic_fifo #
       (
        .C_FAMILY(C_FAMILY),
        .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -791,7 +792,7 @@ module axi_protocol_converter_v2_1_33_a_axi3_conv #
       wire                                cmd_b_valid_i;
       wire                                s_b_ready;
       
-      axi_data_fifo_v2_1_32_axic_fifo #
+      axi_data_fifo_v2_1_11_axic_fifo #
       (
        .C_FAMILY(C_FAMILY),
        .C_FIFO_DEPTH_LOG(C_FIFO_DEPTH_LOG),
@@ -882,51 +883,52 @@ module axi_protocol_converter_v2_1_33_a_axi3_conv #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: AXI3 Slave Converter
 // This module instantiates Address, Write Data and Read Data AXI3 Converter 
@@ -949,7 +951,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_axi3_conv #
+module axi_protocol_converter_v2_1_12_axi3_conv #
   (
    parameter C_FAMILY                            = "none",
    parameter integer C_AXI_ID_WIDTH              = 1,
@@ -1129,7 +1131,7 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
       wire                              wr_cmd_b_ready;
       
       // Write Address Channel.
-      axi_protocol_converter_v2_1_33_a_axi3_conv #
+      axi_protocol_converter_v2_1_12_a_axi3_conv #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_AXI_ID_WIDTH              (C_AXI_ID_WIDTH),
@@ -1190,7 +1192,7 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
        );
        
       // Write Data Channel.
-      axi_protocol_converter_v2_1_33_w_axi3_conv #
+      axi_protocol_converter_v2_1_12_w_axi3_conv #
       (
        .C_FAMILY                    (C_FAMILY),
        .C_AXI_ID_WIDTH              (C_AXI_ID_WIDTH),
@@ -1232,7 +1234,7 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
       if ( C_SUPPORT_SPLITTING == 1 && C_SUPPORT_BURSTS == 1 ) begin : USE_SPLIT_W
       
         // Write Data Response Channel.
-        axi_protocol_converter_v2_1_33_b_downsizer #
+        axi_protocol_converter_v2_1_12_b_downsizer #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_AXI_ID_WIDTH              (C_AXI_ID_WIDTH),
@@ -1328,7 +1330,7 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
         wire                              rd_cmd_ready;
         
         // Write Address Channel.
-        axi_protocol_converter_v2_1_33_a_axi3_conv #
+        axi_protocol_converter_v2_1_12_a_axi3_conv #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_AXI_ID_WIDTH              (C_AXI_ID_WIDTH),
@@ -1389,7 +1391,7 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
          );
          
         // Read Data Channel.
-        axi_protocol_converter_v2_1_33_r_axi3_conv #
+        axi_protocol_converter_v2_1_12_r_axi3_conv #
         (
          .C_FAMILY                    (C_FAMILY),
          .C_AXI_ID_WIDTH              (C_AXI_ID_WIDTH),
@@ -1489,51 +1491,52 @@ module axi_protocol_converter_v2_1_33_axi3_conv #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: AxiLite Slave Conversion
 //
@@ -1547,7 +1550,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_axilite_conv #
+module axi_protocol_converter_v2_1_12_axilite_conv #
   (
    parameter         C_FAMILY                    = "virtex6",
    parameter integer C_AXI_ID_WIDTH              = 1,
@@ -1723,51 +1726,52 @@ module axi_protocol_converter_v2_1_33_axilite_conv #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Read Data Response AXI3 Slave Converter
 // Forwards and re-assembles split transactions.
@@ -1782,7 +1786,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_r_axi3_conv #
+module axi_protocol_converter_v2_1_12_r_axi3_conv #
   (
    parameter C_FAMILY                            = "none",
    parameter integer C_AXI_ID_WIDTH              = 1,
@@ -1937,51 +1941,52 @@ module axi_protocol_converter_v2_1_33_r_axi3_conv #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data AXI3 Slave Converter
 // Forward and split transactions as required.
@@ -1996,7 +2001,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_w_axi3_conv #
+module axi_protocol_converter_v2_1_12_w_axi3_conv #
   (
    parameter C_FAMILY                            = "none",
    parameter integer C_AXI_ID_WIDTH              = 1,
@@ -2204,51 +2209,52 @@ module axi_protocol_converter_v2_1_33_w_axi3_conv #
 endmodule
 
 
-// (c) Copyright 2010-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2010 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // Description: Write Data Response Down-Sizer
 // Collect MI-side responses and set the SI-side response to the most critical
@@ -2267,7 +2273,7 @@ endmodule
 `timescale 1ps/1ps
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b_downsizer #
+module axi_protocol_converter_v2_1_12_b_downsizer #
   (
    parameter         C_FAMILY                         = "none", 
                        // FPGA Family. Current version: virtex6 or spartan6.
@@ -2510,51 +2516,52 @@ module axi_protocol_converter_v2_1_33_b_downsizer #
 endmodule
 
 
-// (c) Copyright 2009-2011, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2009 - 2011 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // File name: decerr_slave.v
 //
@@ -2572,7 +2579,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_decerr_slave #
+module axi_protocol_converter_v2_1_12_decerr_slave #
   (
    parameter integer C_AXI_ID_WIDTH           = 1,
    parameter integer C_AXI_DATA_WIDTH         = 32,
@@ -2798,51 +2805,7 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+//-----------------------------------------------
 // This is the simplest form of inferring the
 // simple/SRL(16/32)CE in a Xilinx FPGA.
 //-----------------------------------------------
@@ -2850,7 +2813,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_simple_fifo #
+module axi_protocol_converter_v2_1_12_b2s_simple_fifo #
 (
   parameter C_WIDTH  = 8,
   parameter C_AWIDTH = 4,
@@ -2882,6 +2845,7 @@ localparam [C_AWIDTH-1:0] C_FULL_PRE  = (C_DEPTH < 8) ? C_FULL-1 : C_FULL-(C_DEP
 ///////////////////////////////////////
 reg [C_WIDTH-1:0]  memory [C_DEPTH-1:0];
 reg [C_AWIDTH-1:0] cnt_read = C_EMPTY;
+  // synthesis attribute MAX_FANOUT of cnt_read is 10; 
 
 ///////////////////////////////////////
 // Main simple FIFO Array
@@ -2921,58 +2885,14 @@ assign a_empty = (cnt_read == C_EMPTY_PRE);
 
 assign dout  = (C_DEPTH == 1) ? memory[0] : memory[cnt_read];
 
-endmodule // axi_protocol_converter_v2_1_33_b2s_simple_fifo
+endmodule // axi_protocol_converter_v2_1_12_b2s_simple_fifo
 
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_wrap_cmd.v
+// File name: axi_protocol_converter_v2_1_12_b2s_wrap_cmd.v
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -2980,7 +2900,7 @@ endmodule // axi_protocol_converter_v2_1_33_b2s_simple_fifo
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_wrap_cmd #
+module axi_protocol_converter_v2_1_12_b2s_wrap_cmd #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -3160,53 +3080,9 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_incr_cmd.v
+// File name: axi_protocol_converter_v2_1_12_b2s_incr_cmd.v
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -3214,7 +3090,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_incr_cmd #
+module axi_protocol_converter_v2_1_12_b2s_incr_cmd #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -3337,60 +3213,16 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_wr_cmd_fsm.v
+// File name: axi_protocol_converter_v2_1_12_b2s_wr_cmd_fsm.v
 //
 ///////////////////////////////////////////////////////////////////////////////
 `timescale 1ps/1ps
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_wr_cmd_fsm (
+module axi_protocol_converter_v2_1_12_b2s_wr_cmd_fsm (
 ///////////////////////////////////////////////////////////////////////////////
 // Port Declarations
 ///////////////////////////////////////////////////////////////////////////////
@@ -3424,6 +3256,7 @@ localparam SM_DONE_WAIT           = 2'b11;
 // Wires/Reg declarations
 ////////////////////////////////////////////////////////////////////////////////
 reg [1:0]       state = SM_IDLE;
+// synthesis attribute MAX_FANOUT of state is 20;
 reg [1:0]       next_state;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3491,60 +3324,16 @@ endmodule
 
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_rd_cmd_fsm.v
+// File name: axi_protocol_converter_v2_1_12_b2s_rd_cmd_fsm.v
 //
 ///////////////////////////////////////////////////////////////////////////////
 `timescale 1ps/1ps
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_rd_cmd_fsm (
+module axi_protocol_converter_v2_1_12_b2s_rd_cmd_fsm (
 ///////////////////////////////////////////////////////////////////////////////
 // Port Declarations
 ///////////////////////////////////////////////////////////////////////////////
@@ -3580,6 +3369,7 @@ localparam SM_DONE                = 2'b11;
 // Wires/Reg declarations
 ////////////////////////////////////////////////////////////////////////////////
 reg [1:0]       state = SM_IDLE;
+// synthesis attribute MAX_FANOUT of state is 20;
 reg [1:0]       state_r1 = SM_IDLE;
 reg [1:0]       next_state;
 reg [7:0]       s_arlen_r;
@@ -3658,53 +3448,9 @@ endmodule
 
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_cmd_translator.v
+// File name: axi_protocol_converter_v2_1_12_b2s_cmd_translator.v
 //
 // Description: 
 // INCR and WRAP burst modes are decoded in parallel and then the output is
@@ -3718,7 +3464,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_cmd_translator #
+module axi_protocol_converter_v2_1_12_b2s_cmd_translator #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -3815,7 +3561,7 @@ always @(posedge clk) begin
   end
 end
 
-axi_protocol_converter_v2_1_33_b2s_incr_cmd #(
+axi_protocol_converter_v2_1_12_b2s_incr_cmd #(
   .C_AXI_ADDR_WIDTH (C_AXI_ADDR_WIDTH)
 )
 incr_cmd_0
@@ -3831,7 +3577,7 @@ incr_cmd_0
   .next_pending  ( incr_next_pending  ) 
 );
 
-axi_protocol_converter_v2_1_33_b2s_wrap_cmd #(
+axi_protocol_converter_v2_1_12_b2s_wrap_cmd #(
   .C_AXI_ADDR_WIDTH (C_AXI_ADDR_WIDTH)
 )
 wrap_cmd_0
@@ -3851,60 +3597,16 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_b_channel.v
+// File name: axi_protocol_converter_v2_1_12_b2s_b_channel.v
 //
 ///////////////////////////////////////////////////////////////////////////////
 `timescale 1ps/1ps
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_b_channel #
+module axi_protocol_converter_v2_1_12_b2s_b_channel #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -3931,7 +3633,7 @@ module axi_protocol_converter_v2_1_33_b2s_b_channel #
   output wire                                 m_bready,
 
 
-  // Signals to/from the axi_protocol_converter_v2_1_33_b2s_aw_channel modules
+  // Signals to/from the axi_protocol_converter_v2_1_12_b2s_aw_channel modules
   input  wire                                 b_push,
   input  wire [C_ID_WIDTH-1:0]                b_awid,
   input  wire [7:0]                           b_awlen,
@@ -4010,7 +3712,7 @@ always @(posedge clk) begin
   end
 end
 
-axi_protocol_converter_v2_1_33_b2s_simple_fifo #(
+axi_protocol_converter_v2_1_12_b2s_simple_fifo #(
   .C_WIDTH                  (P_WIDTH),
   .C_AWIDTH                 (P_AWIDTH),
   .C_DEPTH                  (P_DEPTH)
@@ -4064,7 +3766,7 @@ always @ (posedge clk) begin
   end
 end
 
-axi_protocol_converter_v2_1_33_b2s_simple_fifo #(
+axi_protocol_converter_v2_1_12_b2s_simple_fifo #(
   .C_WIDTH                  (P_RWIDTH),
   .C_AWIDTH                 (P_RAWIDTH),
   .C_DEPTH                  (P_RDEPTH)
@@ -4089,59 +3791,15 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s_r_channel.v
+// File name: axi_protocol_converter_v2_1_12_b2s_r_channel.v
 //
 // Description:
 // Read data channel module to buffer read data from MC, ignore
 // extra data in case of BL8 and send the data to AXI.
 // The MC will send out the read data as it is ready and it has to be
-// accepted. The read data FIFO in the axi_protocol_converter_v2_1_33_b2s_r_channel module will buffer
+// accepted. The read data FIFO in the axi_protocol_converter_v2_1_12_b2s_r_channel module will buffer
 // the data before being sent to AXI. The address channel module will
 // send the transaction information for every command that is sent to the
 // MC. The transaction information will be buffered in a transaction FIFO.
@@ -4153,7 +3811,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_r_channel #
+module axi_protocol_converter_v2_1_12_b2s_r_channel #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -4184,7 +3842,7 @@ module axi_protocol_converter_v2_1_33_b2s_r_channel #
   input  wire                                 m_rvalid  ,
   output wire                                 m_rready  ,
 
-  // Connections to/from axi_protocol_converter_v2_1_33_b2s_ar_channel module
+  // Connections to/from axi_protocol_converter_v2_1_12_b2s_ar_channel module
   input  wire                                 r_push           ,
   output wire                                 r_full           ,
   // length not needed. Can be removed.
@@ -4261,7 +3919,7 @@ assign trans_in[1+:C_ID_WIDTH]  = r_arid_r;
 
 
 // rd data fifo
-axi_protocol_converter_v2_1_33_b2s_simple_fifo #(
+axi_protocol_converter_v2_1_12_b2s_simple_fifo #(
   .C_WIDTH                (P_D_WIDTH),
   .C_AWIDTH               (P_D_AWIDTH),
   .C_DEPTH                (P_D_DEPTH)
@@ -4282,7 +3940,7 @@ rd_data_fifo_0
 
 assign rd_data_fifo_in = {m_rresp, m_rdata};
 
-axi_protocol_converter_v2_1_33_b2s_simple_fifo #(
+axi_protocol_converter_v2_1_12_b2s_simple_fifo #(
   .C_WIDTH                  (P_WIDTH),
   .C_AWIDTH                 (P_AWIDTH),
   .C_DEPTH                  (P_DEPTH)
@@ -4309,56 +3967,11 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
 `timescale 1ps/1ps
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_aw_channel #
+module axi_protocol_converter_v2_1_12_b2s_aw_channel #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -4393,7 +4006,7 @@ module axi_protocol_converter_v2_1_33_b2s_aw_channel #
   output wire [C_AXI_ADDR_WIDTH-1:0]          m_awaddr          ,
   input  wire                                 m_awready         ,
 
-  // Connections to/from axi_protocol_converter_v2_1_33_b2s_b_channel module
+  // Connections to/from axi_protocol_converter_v2_1_12_b2s_b_channel module
   output wire                                 b_push           ,
   output wire [C_ID_WIDTH-1:0]                b_awid           ,
   output wire [7:0]                           b_awlen          ,
@@ -4417,7 +4030,7 @@ reg  [7:0]                  s_awlen_r;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Translate the AXI transaction to the MC transaction(s)
-axi_protocol_converter_v2_1_33_b2s_cmd_translator #
+axi_protocol_converter_v2_1_12_b2s_cmd_translator #
 (
   .C_AXI_ADDR_WIDTH ( C_AXI_ADDR_WIDTH )
 )
@@ -4437,7 +4050,7 @@ cmd_translator_0
 );
 
 
-axi_protocol_converter_v2_1_33_b2s_wr_cmd_fsm aw_cmd_fsm_0
+axi_protocol_converter_v2_1_12_b2s_wr_cmd_fsm aw_cmd_fsm_0
 (
   .clk          ( clk            ) ,
   .reset        ( reset          ) ,
@@ -4465,56 +4078,11 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
 `timescale 1ps/1ps
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s_ar_channel #
+module axi_protocol_converter_v2_1_12_b2s_ar_channel #
 (
 ///////////////////////////////////////////////////////////////////////////////
 // Parameter Definitions
@@ -4548,7 +4116,7 @@ module axi_protocol_converter_v2_1_33_b2s_ar_channel #
   output wire [C_AXI_ADDR_WIDTH-1:0]          m_araddr          ,
   input  wire                                 m_arready         ,
 
-  // Connections to/from axi_protocol_converter_v2_1_33_b2s_r_channel module
+  // Connections to/from axi_protocol_converter_v2_1_12_b2s_r_channel module
   output wire [C_ID_WIDTH-1:0]                r_arid            ,
   output wire                                 r_push            ,
   output wire                                 r_rlast           ,
@@ -4572,7 +4140,7 @@ reg [C_ID_WIDTH-1:0]        s_arid_r;
 
 
 // Translate the AXI transaction to the MC transaction(s)
-axi_protocol_converter_v2_1_33_b2s_cmd_translator #
+axi_protocol_converter_v2_1_12_b2s_cmd_translator #
 (
   .C_AXI_ADDR_WIDTH ( C_AXI_ADDR_WIDTH )
 )
@@ -4591,7 +4159,7 @@ cmd_translator_0
   .next_pending  ( next_pending          )
 );
 
-axi_protocol_converter_v2_1_33_b2s_rd_cmd_fsm ar_cmd_fsm_0
+axi_protocol_converter_v2_1_12_b2s_rd_cmd_fsm ar_cmd_fsm_0
 (
   .clk          ( clk            ) ,
   .reset        ( reset          ) ,
@@ -4620,53 +4188,9 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2023 Advanced Micro Devices, Inc. All rights reserved.
+///////////////////////////////////////////////////////////////////////////////
 //
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
-//
-// File name: axi_protocol_converter_v2_1_33_b2s.v
+// File name: axi_protocol_converter_v2_1_12_b2s.v
 //
 // Description:
 // To handle AXI4 transactions to external memory on Virtex-6 architectures
@@ -4684,7 +4208,7 @@ endmodule
 // Write acceptance depth is:
 //
 // Structure:
-// axi_protocol_converter_v2_1_33_b2s
+// axi_protocol_converter_v2_1_12_b2s
 //   WRITE_BUNDLE
 //     aw_channel_0
 //       cmd_translator_0
@@ -4702,7 +4226,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_b2s #(
+module axi_protocol_converter_v2_1_12_b2s #(
   parameter C_S_AXI_PROTOCOL                      = 0,
                     // Width of all master and slave ID signals.
                     // Range: >= 1.
@@ -4852,7 +4376,7 @@ wire                                        rs_mi_rvalid;
 wire                                        rs_mi_rready;
 
 
-axi_register_slice_v2_1_33_axi_register_slice #(
+axi_register_slice_v2_1_12_axi_register_slice #(
   .C_AXI_PROTOCOL              ( C_S_AXI_PROTOCOL            ) ,
   .C_AXI_ID_WIDTH              ( C_AXI_ID_WIDTH              ) ,
   .C_AXI_ADDR_WIDTH            ( C_AXI_ADDR_WIDTH            ) ,
@@ -4965,7 +4489,7 @@ axi_register_slice_v2_1_33_axi_register_slice #(
 
 generate
   if (C_AXI_SUPPORTS_WRITE == 1) begin : WR
-    axi_protocol_converter_v2_1_33_b2s_aw_channel #
+    axi_protocol_converter_v2_1_12_b2s_aw_channel #
     (
       .C_ID_WIDTH                       ( C_AXI_ID_WIDTH   ),
       .C_AXI_ADDR_WIDTH                 ( C_AXI_ADDR_WIDTH )
@@ -4990,7 +4514,7 @@ generate
       .b_full                           ( b_full            )
     );
 
-    axi_protocol_converter_v2_1_33_b2s_b_channel #
+    axi_protocol_converter_v2_1_12_b2s_b_channel #
     (
       .C_ID_WIDTH                       ( C_AXI_ID_WIDTH   )
     )
@@ -5043,7 +4567,7 @@ wire                                r_full        ;
 
 generate
   if (C_AXI_SUPPORTS_READ == 1) begin : RD
-    axi_protocol_converter_v2_1_33_b2s_ar_channel #
+    axi_protocol_converter_v2_1_12_b2s_ar_channel #
     (
       .C_ID_WIDTH                       ( C_AXI_ID_WIDTH   ),
       .C_AXI_ADDR_WIDTH                 ( C_AXI_ADDR_WIDTH )
@@ -5069,7 +4593,7 @@ generate
       .r_full                           ( r_full            )
     );
     
-    axi_protocol_converter_v2_1_33_b2s_r_channel #
+    axi_protocol_converter_v2_1_12_b2s_r_channel #
     (
       .C_ID_WIDTH                       ( C_AXI_ID_WIDTH   ),
       .C_DATA_WIDTH                     ( C_AXI_DATA_WIDTH )
@@ -5107,7 +4631,7 @@ generate
   end
 endgenerate
 
-axi_register_slice_v2_1_33_axi_register_slice #(
+axi_register_slice_v2_1_12_axi_register_slice #(
   .C_AXI_PROTOCOL              ( 2 ) ,
   .C_AXI_ID_WIDTH              ( 1 ) ,
   .C_AXI_ADDR_WIDTH            ( C_AXI_ADDR_WIDTH            ) ,
@@ -5223,51 +4747,52 @@ endmodule
 `default_nettype wire
 
 
-// (c) Copyright 2012-2013, 2023 Advanced Micro Devices, Inc. All rights reserved.
-//
-// This file contains confidential and proprietary information
-// of AMD and is protected under U.S. and international copyright
-// and other intellectual property laws.
-//
-// DISCLAIMER
-// This disclaimer is not a license and does not grant any
-// rights to the materials distributed herewith. Except as
-// otherwise provided in a valid license issued to you by
-// AMD, and to the maximum extent permitted by applicable
-// law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
-// WITH ALL FAULTS, AND AMD HEREBY DISCLAIMS ALL WARRANTIES
-// AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
-// BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
-// INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
-// (2) AMD shall not be liable (whether in contract or tort,
-// including negligence, or under any other theory of
-// liability) for any loss or damage of any kind or nature
-// related to, arising under or in connection with these
-// materials, including for any direct, or any indirect,
-// special, incidental, or consequential loss or damage
-// (including loss of data, profits, goodwill, or any type of
-// loss or damage suffered as a result of any action brought
-// by a third party) even if such damage or loss was
-// reasonably foreseeable or AMD had been advised of the
-// possibility of the same.
-//
-// CRITICAL APPLICATIONS
-// AMD products are not designed or intended to be fail-
-// safe, or for use in any application requiring fail-safe
-// performance, such as life-support or safety devices or
-// systems, Class III medical devices, nuclear facilities,
-// applications related to the deployment of airbags, or any
-// other applications that could lead to death, personal
-// injury, or severe property or environmental damage
-// (individually and collectively, "Critical
-// Applications"). Customer assumes the sole risk and
-// liability of any use of AMD products in Critical
-// Applications, subject only to applicable laws and
-// regulations governing limitations on product liability.
-//
-// THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
-// PART OF THIS FILE AT ALL TIMES.
-////////////////////////////////////////////////////////////
+// -- (c) Copyright 2012 -2013 Xilinx, Inc. All rights reserved.
+// --
+// -- This file contains confidential and proprietary information
+// -- of Xilinx, Inc. and is protected under U.S. and 
+// -- international copyright and other intellectual property
+// -- laws.
+// --
+// -- DISCLAIMER
+// -- This disclaimer is not a license and does not grant any
+// -- rights to the materials distributed herewith. Except as
+// -- otherwise provided in a valid license issued to you by
+// -- Xilinx, and to the maximum extent permitted by applicable
+// -- law: (1) THESE MATERIALS ARE MADE AVAILABLE "AS IS" AND
+// -- WITH ALL FAULTS, AND XILINX HEREBY DISCLAIMS ALL WARRANTIES
+// -- AND CONDITIONS, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+// -- BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, NON-
+// -- INFRINGEMENT, OR FITNESS FOR ANY PARTICULAR PURPOSE; and
+// -- (2) Xilinx shall not be liable (whether in contract or tort,
+// -- including negligence, or under any other theory of
+// -- liability) for any loss or damage of any kind or nature
+// -- related to, arising under or in connection with these
+// -- materials, including for any direct, or any indirect,
+// -- special, incidental, or consequential loss or damage
+// -- (including loss of data, profits, goodwill, or any type of
+// -- loss or damage suffered as a result of any action brought
+// -- by a third party) even if such damage or loss was
+// -- reasonably foreseeable or Xilinx had been advised of the
+// -- possibility of the same.
+// --
+// -- CRITICAL APPLICATIONS
+// -- Xilinx products are not designed or intended to be fail-
+// -- safe, or for use in any application requiring fail-safe
+// -- performance, such as life-support or safety devices or
+// -- systems, Class III medical devices, nuclear facilities,
+// -- applications related to the deployment of airbags, or any
+// -- other applications that could lead to death, personal
+// -- injury, or severe property or environmental damage
+// -- (individually and collectively, "Critical
+// -- Applications"). Customer assumes the sole risk and
+// -- liability of any use of Xilinx products in Critical
+// -- Applications, subject only to applicable laws and
+// -- regulations governing limitations on product liability.
+// --
+// -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
+// -- PART OF THIS FILE AT ALL TIMES.
+//-----------------------------------------------------------------------------
 //
 // File name: axi_protocol_converter.v
 //
@@ -5283,7 +4808,7 @@ endmodule
 `default_nettype none
 
 (* DowngradeIPIdentifiedWarnings="yes" *) 
-module axi_protocol_converter_v2_1_33_axi_protocol_converter #(
+module axi_protocol_converter_v2_1_12_axi_protocol_converter #(
   parameter         C_FAMILY                    = "virtex6",
   parameter integer C_M_AXI_PROTOCOL            = 0, 
   parameter integer C_S_AXI_PROTOCOL            = 0, 
@@ -5506,7 +5031,7 @@ generate
       assign s_buser_i = {C_AXI_BUSER_WIDTH{1'b0}};
       assign s_ruser_i = {C_AXI_RUSER_WIDTH{1'b0}};
 
-      axi_protocol_converter_v2_1_33_b2s #(
+      axi_protocol_converter_v2_1_12_b2s #(
         .C_S_AXI_PROTOCOL                 (C_S_AXI_PROTOCOL),
         .C_AXI_ID_WIDTH                   (C_AXI_ID_WIDTH),
         .C_AXI_ADDR_WIDTH                 (C_AXI_ADDR_WIDTH),
@@ -5568,7 +5093,7 @@ generate
         .m_axi_rready                     (m_axi_rready)
       );
     end else begin : gen_axilite_conv
-      axi_protocol_converter_v2_1_33_axilite_conv #(
+      axi_protocol_converter_v2_1_12_axilite_conv #(
         .C_FAMILY                         (C_FAMILY),
         .C_AXI_ID_WIDTH                   (C_AXI_ID_WIDTH),
         .C_AXI_ADDR_WIDTH                 (C_AXI_ADDR_WIDTH),
@@ -5628,7 +5153,7 @@ generate
       );
     end
   end else if ((C_M_AXI_PROTOCOL == P_AXI3) && (C_S_AXI_PROTOCOL == P_AXI4)) begin : gen_axi4_axi3
-    axi_protocol_converter_v2_1_33_axi3_conv #(
+    axi_protocol_converter_v2_1_12_axi3_conv #(
       .C_FAMILY                         (C_FAMILY),
       .C_AXI_ID_WIDTH                   (C_AXI_ID_WIDTH),
       .C_AXI_ADDR_WIDTH                 (C_AXI_ADDR_WIDTH),
@@ -6000,7 +5525,7 @@ generate
         end
       end
       
-      axi_protocol_converter_v2_1_33_decerr_slave #
+      axi_protocol_converter_v2_1_12_decerr_slave #
         (
          .C_AXI_ID_WIDTH                 (C_AXI_ID_WIDTH),
          .C_AXI_DATA_WIDTH               (C_AXI_DATA_WIDTH),

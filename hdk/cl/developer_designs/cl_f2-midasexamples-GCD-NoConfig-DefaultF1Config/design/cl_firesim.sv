@@ -435,8 +435,8 @@ assign firesim_internal_clock = gen_clk_extra_a1;
 // Reset Synchronization Inner
 //-------------------------------------------------
 logic pre_sync_rst_n_firesim;
-always_ff @(negedge gen_rst_main_n or posedge firesim_internal_clock)
-   if (!gen_rst_main_n)
+always_ff @(negedge rst_main_n or posedge firesim_internal_clock)
+   if (!rst_main_n)
    begin
       pre_sync_rst_n_firesim  <= 0;
       rst_firesim_n_sync <= 0;
