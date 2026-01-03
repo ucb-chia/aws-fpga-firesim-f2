@@ -30,13 +30,14 @@
 #endif
 
 #include "common_dma.h"
+// #include "cl_utils.h"
 
 /* this is the connector from the FireSim driver to the XSim simulation.
  * this gets built into an XSim simulator including everything that goes
  * on the FPGA. the FireSim driver is then built and communicates via pipes
  * to this xsim simulation. */
 
-void test_main(uint32_t *exit_code) {
+void main(uint32_t *exit_code) {
 
     //The statements within SCOPE ifdef below are needed for HW/SW co-simulation with VCS
     #ifdef SCOPE
@@ -83,11 +84,13 @@ void test_main(uint32_t *exit_code) {
             uint32_t addr = (cmd >> 32) & 0x7FFFFFFF;
             uint32_t data = cmd & 0xFFFFFFFF;
             fpga_pci_poke(pci_bar_handle, addr, data);
+            // cl_poke(addr, data);
         } else {
             // read
             uint32_t addr = cmd & 0xFFFFFFFF;
             uint32_t dat;
             fpga_pci_peek(pci_bar_handle, addr, &dat);
+            // cl_peek(addr, &dat);
             uint64_t ret = dat;
             write(xsim_to_driver_fd, (char*)&ret, 8);
         }

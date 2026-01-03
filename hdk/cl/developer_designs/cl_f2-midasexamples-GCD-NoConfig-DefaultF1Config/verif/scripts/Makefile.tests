@@ -17,9 +17,9 @@
 
 
 # Adds an easy make target that sets $TEST and runs the all (compile & run) target
-CL_TEMPLATE_base_test: TEST=CL_TEMPLATE_base_test
-CL_TEMPLATE_base_test: all
+# CL_TEMPLATE_base_test: TEST=CL_TEMPLATE_base_test
+# CL_TEMPLATE_base_test: all
 
 # Add additional tests here that are located in the $CL_DIR/verif/tests directory
-# module_name_of_new_test: TEST=module_name_of_new_test
-# module_name_of_new_test: all
+test_firesim: C_TEST=test_firesim
+test_firesim: all

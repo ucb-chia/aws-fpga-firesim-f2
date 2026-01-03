@@ -18,3 +18,4 @@
 
 # Add timing constraints here
 set_false_path -to [get_pins -hierarchical *pre_sync_rst_n_firesim_reg/CLR]
+set_false_path -to [get_pins -hierarchical *rst_firesim_n_sync_reg/CLR]

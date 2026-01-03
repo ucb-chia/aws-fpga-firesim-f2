@@ -24,7 +24,7 @@ CFLAGS = -DCONFIG_LOGLEVEL=4 -g -Wall $(INCLUDES)
 
 LDLIBS = -lfpga_mgmt -lrt -lpthread
 
-SRC = ${SDK_DIR}/userspace/utils/sh_dpi_tasks.c test_firesim.c
+SRC = ${SDK_DIR}/userspace/utils/sh_dpi_tasks.c test_firesim.c # cl_utils.c pcie_utils.c
 OBJ = $(SRC:.c=.o)
 BIN = test_firesim
 
