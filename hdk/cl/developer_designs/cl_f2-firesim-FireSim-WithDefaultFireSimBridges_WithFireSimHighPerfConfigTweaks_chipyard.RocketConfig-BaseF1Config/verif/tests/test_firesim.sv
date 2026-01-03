@@ -37,11 +37,11 @@ logic [15:0] vled_value;
 
       $display ("value of vdip:%0x", vdip_value);
 
-      $display ("Writing 0xDEAD_BEEF to address 0x%x", `HELLO_WORLD_REG_ADDR);
-      tb.poke(.addr(`HELLO_WORLD_REG_ADDR), .data(32'hDEAD_BEEF), .id(AXI_ID), .size(DataSize::UINT16), .intf(AxiPort::PORT_OCL)); // write register
+      $display ("Writing 0xDEAD_BEEF to address 0x%x", 552);
+      tb.poke(.addr(552), .data(32'hDEAD_BEEF), .id(AXI_ID), .size(DataSize::UINT16), .intf(AxiPort::PORT_OCL)); // write register
 
-      tb.peek(.addr(`HELLO_WORLD_REG_ADDR), .data(rdata), .id(AXI_ID), .size(DataSize::UINT16), .intf(AxiPort::PORT_OCL));         // start read & write
-      $display ("Reading 0x%x from address 0x%x", rdata, `HELLO_WORLD_REG_ADDR);
+      tb.peek(.addr(548), .data(rdata), .id(AXI_ID), .size(DataSize::UINT16), .intf(AxiPort::PORT_OCL));         // start read & write
+      $display ("Reading 0x%x from address 0x%x", rdata, 548);
 
       if (rdata == 32'hEFBE_ADDE) // Check for byte swap in register read
         $display ("Test PASSED");
