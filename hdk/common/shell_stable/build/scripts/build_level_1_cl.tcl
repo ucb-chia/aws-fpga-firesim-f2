@@ -132,7 +132,7 @@ report_timing -delay_type max \
 ###############################################################################
 print "Start routing customer design ${CL}"
 ###############################################################################
-route_design -directive $ROUTE_DIRECT -tns_cleanup
+route_design -directive $ROUTE_DIRECT -tns_cleanup -timing_summary
 
 print "Writing post-route design checkpoint and report"
 

@@ -1,5 +1,8 @@
 #Param needed to avoid clock name collisions
-set CL_MODULE $CL_MODULE
+# CL_MODULE: Set default if not already defined (used for clock name prefixing)
+if {![info exists CL_MODULE]} {
+    set CL_MODULE "cl_firesim"
+}
 # set VDEFINES $VDEFINES
 set VDEFINES ""
 
@@ -39,6 +42,13 @@ source $HDK_SHELL_DIR/build/scripts/aws_gen_clk_constraints.tcl
 
 #Convenience to set the root of the RTL directory
 set ENC_SRC_DIR $CL_DIR/build/src_post_encryption
+
+# Set include directories for Verilog `include directives
+# This is needed to find cl_common_defines.vh in the common/design directory
+set_property include_dirs [list \
+    ${CL_DIR}/design \
+    ${CL_DIR}/../common/design \
+] [current_fileset]
 
 puts "AWS FPGA: ([clock format [clock seconds] -format %T]) Reading developer's Custom Logic files post encryption.";
 
@@ -158,7 +168,49 @@ set_property PROCESSING_ORDER LATE [get_files cl_timing_user.xdc]
 
 
 # FireSim custom clocking
-# source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
+source $CL_DIR/build/scripts/synth_firesim_clk_wiz.tcl
+
+#===============================================================================
+# ALL IPs below were originally configured for F1 (xcvu9p) and must be
+# regenerated for F2. reset_target clears stale OOC synthesis outputs.
+#===============================================================================
+
+# Reconfigure PCIS clock converter for F2 16-bit IDs (vs F1's 6-bit)
+upgrade_ip [get_ips axi_clock_converter_512_wide]
+reset_target {all} [get_ips axi_clock_converter_512_wide]
+set_property CONFIG.ID_WIDTH 16 [get_ips axi_clock_converter_512_wide]
+generate_target {all} [get_ips axi_clock_converter_512_wide]
+synth_ip [get_ips axi_clock_converter_512_wide]
+
+# Regenerate axi_dwidth_converter_0 for F2 (64-bit to 512-bit width conversion)
+# CRITICAL: Disable FIFO_MODE to prevent MDRV-1 (Multiple Driver Nets) DRC errors
+# on xcvu47p. The packet FIFO mode creates BRAM instances that drive constant nets
+# with multiple drivers, which fails DRC on F2's device architecture.
+upgrade_ip [get_ips axi_dwidth_converter_0]
+reset_target {all} [get_ips axi_dwidth_converter_0]
+set_property CONFIG.FIFO_MODE {0} [get_ips axi_dwidth_converter_0]
+generate_target {all} [get_ips axi_dwidth_converter_0]
+synth_ip [get_ips axi_dwidth_converter_0]
+
+# Regenerate axi_clock_converter_dramslim for F2
+upgrade_ip [get_ips axi_clock_converter_dramslim]
+reset_target {all} [get_ips axi_clock_converter_dramslim]
+generate_target {all} [get_ips axi_clock_converter_dramslim]
+synth_ip [get_ips axi_clock_converter_dramslim]
+
+# Regenerate axi_clock_converter_oclnew for F2
+upgrade_ip [get_ips axi_clock_converter_oclnew]
+reset_target {all} [get_ips axi_clock_converter_oclnew]
+generate_target {all} [get_ips axi_clock_converter_oclnew]
+synth_ip [get_ips axi_clock_converter_oclnew]
+
+# Regenerate axi_clock_converter_512_pcim for F2
+upgrade_ip [get_ips axi_clock_converter_512_pcim]
+reset_target {all} [get_ips axi_clock_converter_512_pcim]
+generate_target {all} [get_ips axi_clock_converter_512_pcim]
+synth_ip [get_ips axi_clock_converter_512_pcim]
+
+#===============================================================================
 
 #Do not propagate local clock constraints for clocks generated in the SH
 set_property USED_IN {synthesis implementation OUT_OF_CONTEXT} [get_files generated_cl_clocks_aws.xdc]

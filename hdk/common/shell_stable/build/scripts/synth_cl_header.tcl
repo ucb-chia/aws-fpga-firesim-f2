@@ -26,14 +26,6 @@ print "Creating in-memory synthesis project"
 # NOTE: reset in synth_cl_footer.tcl
 set_param sta.enableAutoGenClkNamePersistence 0
 
-# Ensure HDK_IP_SRC_DIR is available to downstream synthesis scripts
-if { [info exists ::env(HDK_IP_SRC_DIR)] } {
-  set HDK_IP_SRC_DIR $::env(HDK_IP_SRC_DIR)
-} else {
-  print "ERROR: HDK_IP_SRC_DIR not set. Please run hdk_setup.sh to set required env variables."
-  exit 2
-}
-
 create_project -in_memory -part $DEVICE_TYPE -force
 
 # Parse in XPM libraries
