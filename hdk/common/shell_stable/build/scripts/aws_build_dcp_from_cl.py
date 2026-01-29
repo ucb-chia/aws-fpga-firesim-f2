@@ -224,6 +224,11 @@ def main():
                             NOTE: Certain build flows might require a existing " +
                            "build tag.")
 
+    parser.add_option("--frequency",
+                      dest="frequency",
+                      help="FireSim clk wizard (MHz)",
+                      default="75")
+
     (options, args) = parser.parse_args()
 
     print(f"==================================================")
@@ -276,6 +281,10 @@ def main():
     os.environ['CL'] = options.cl
     os.environ['SHELL_MODE'] = options.mode
     os.environ['BUILD_FLOW'] = options.flow
+
+    # Pass frequency to TCL via environment variable (FireSim clock wizard configuration)
+    os.environ['DESIRED_HOST_FREQUENCY'] = str(options.frequency)
+    print(f"Setting DESIRED_HOST_FREQUENCY={options.frequency} MHz for FireSim clock wizard")
 
     # Create a timestamp if no user tag is assgined
     if (options.build_tag):
