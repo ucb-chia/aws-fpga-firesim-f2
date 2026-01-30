@@ -85,10 +85,13 @@ logic firesim_internal_clock;
 logic firesim_clocking_locked;
 
 clk_wiz_0_firesim firesim_clocking (
-    .clk_in1(clk_main_a0),
+   // Clock in ports
+    .clk_in1(clk_main_a0), // input clk_in1, expects 250 mhz
+    // Clock out ports
     .clk_out1(firesim_internal_clock),
-    .reset(!rst_main_n),
-    .locked(firesim_clocking_locked)
+    // Status and control signals
+    .reset(!rst_main_n), // input reset
+    .locked(firesim_clocking_locked) // output locked
 );
 
 //-------------------------------------------------
@@ -400,9 +403,6 @@ assign cl_sh_pcim_rready = 0;
 //-----------------------------------------
 
 
-
-
-
 // Define the addition pipeline stag
 // needed to close timing for the various
 // place where ATG (Automatic Test Generator)
@@ -629,12 +629,6 @@ SH_DDR
   .ddr_sh_stat_int        (ddr_sh_stat_int_q        ),
   .sh_cl_ddr_is_ready     (ddr_ready                )
 );
-
-
-
-//--------------------------------------------------
-//==================================================
-//--------------------------------------------------
 
 
 //-------------------------------------------------------------------------------
@@ -892,6 +886,7 @@ F1Shim firesim_top (
    .io_master_r_bits_id(),      // UNUSED at top level
    .io_master_r_bits_user(),    // UNUSED at top level
 
+   // special NIC master interface
    .io_pcis_aw_ready(cl_sh_dma_pcis_awready_FIRESIM),
    .io_pcis_aw_valid(sh_cl_dma_pcis_awvalid_FIRESIM),
    .io_pcis_aw_bits_addr(sh_cl_dma_pcis_awaddr_FIRESIM),
@@ -900,7 +895,7 @@ F1Shim firesim_top (
    .io_pcis_aw_bits_burst(2'h1),
    .io_pcis_aw_bits_lock(1'h0),
    .io_pcis_aw_bits_cache(4'h0),
-   .io_pcis_aw_bits_prot(3'h0),
+   .io_pcis_aw_bits_prot(3'h0), //unused? (could connect?)
    .io_pcis_aw_bits_qos(4'h0),
    .io_pcis_aw_bits_region(4'h0),
    .io_pcis_aw_bits_id(sh_cl_dma_pcis_awid_FIRESIM),
@@ -1468,147 +1463,147 @@ assign cl_sh_status2[31:0] = 32'h0; // new in f2
 assign cl_sh_status_vled[15:0] = 16'h0; // virtual leds
 
 
-// //-----------------------------------------------
-// // Debug bridge, used if need Virtual JTAG
-// //-----------------------------------------------
-// `ifndef DISABLE_VJTAG_DEBUG
+//-----------------------------------------------
+// Debug bridge, used if need Virtual JTAG
+//-----------------------------------------------
+`ifndef DISABLE_VJTAG_DEBUG
 
-// // Flop for timing global clock counter
-// logic[63:0] sh_cl_glcount0_q;
+// Flop for timing global clock counter
+logic[63:0] sh_cl_glcount0_q;
 
-// always_ff @(posedge clk_main_a0)
-//    if (!rst_main_n_sync)
-//       sh_cl_glcount0_q <= 0;
-//    else
-//       sh_cl_glcount0_q <= sh_cl_glcount0;
+always_ff @(posedge clk_main_a0)
+   if (!rst_main_n_sync)
+      sh_cl_glcount0_q <= 0;
+   else
+      sh_cl_glcount0_q <= sh_cl_glcount0;
 
 
-// logic zeroila;
-// assign zeroila = 64'b0;
+logic zeroila;
+assign zeroila = 64'b0;
 
-// // Integrated Logic Analyzers (ILA)
-// ila_0 CL_ILA_0 (
-//                   .clk    (clk_main_a0),
-//                   .probe0 (zeroila),
-//                   .probe1 (zeroila),
-//                   .probe2 (zeroila),
-//                   .probe3 (zeroila),
-//                   .probe4 (zeroila),
-//                   .probe5 (zeroila)
-//                   );
+// Integrated Logic Analyzers (ILA)
+ila_0 CL_ILA_0 (
+                  .clk    (clk_main_a0),
+                  .probe0 (zeroila),
+                  .probe1 (zeroila),
+                  .probe2 (zeroila),
+                  .probe3 (zeroila),
+                  .probe4 (zeroila),
+                  .probe5 (zeroila)
+                  );
 
-// ila_0 CL_ILA_1 (
-//                   .clk    (clk_main_a0),
-//                   .probe0 (zeroila),
-//                   .probe1 (zeroila),
-//                   .probe2 (zeroila),
-//                   .probe3 (zeroila),
-//                   .probe4 (zeroila),
-//                   .probe5 (zeroila)
-//                   );
+ila_0 CL_ILA_1 (
+                  .clk    (clk_main_a0),
+                  .probe0 (zeroila),
+                  .probe1 (zeroila),
+                  .probe2 (zeroila),
+                  .probe3 (zeroila),
+                  .probe4 (zeroila),
+                  .probe5 (zeroila)
+                  );
 
-// // Debug Bridge 
-// cl_debug_bridge CL_DEBUG_BRIDGE (
-//    .clk(clk_main_a0),
-//    .S_BSCAN_drck(drck),
-//    .S_BSCAN_shift(shift),
-//    .S_BSCAN_tdi(tdi),
-//    .S_BSCAN_update(update),
-//    .S_BSCAN_sel(sel),
-//    .S_BSCAN_tdo(tdo),
-//    .S_BSCAN_tms(tms),
-//    .S_BSCAN_tck(tck),
-//    .S_BSCAN_runtest(runtest),
-//    .S_BSCAN_reset(reset),
-//    .S_BSCAN_capture(capture),
-//    .S_BSCAN_bscanid_en(bscanid_en)
-// );
+// Debug Bridge 
+cl_debug_bridge CL_DEBUG_BRIDGE (
+   .clk(clk_main_a0),
+   .S_BSCAN_drck(drck),
+   .S_BSCAN_shift(shift),
+   .S_BSCAN_tdi(tdi),
+   .S_BSCAN_update(update),
+   .S_BSCAN_sel(sel),
+   .S_BSCAN_tdo(tdo),
+   .S_BSCAN_tms(tms),
+   .S_BSCAN_tck(tck),
+   .S_BSCAN_runtest(runtest),
+   .S_BSCAN_reset(reset),
+   .S_BSCAN_capture(capture),
+   .S_BSCAN_bscanid_en(bscanid_en)
+);
 
-// //-----------------------------------------------
-// // VIO Example - Needs Virtual JTAG
-// //-----------------------------------------------
-// // Counter running at 125MHz
+//-----------------------------------------------
+// VIO Example - Needs Virtual JTAG
+//-----------------------------------------------
+// Counter running at 125MHz
 
-// logic      vo_cnt_enable;
-// logic      vo_cnt_load;
-// logic      vo_cnt_clear;
-// logic      vo_cnt_oneshot;
-// logic [7:0]  vo_tick_value;
-// logic [15:0] vo_cnt_load_value;
-// logic [15:0] vo_cnt_watermark;
+logic      vo_cnt_enable;
+logic      vo_cnt_load;
+logic      vo_cnt_clear;
+logic      vo_cnt_oneshot;
+logic [7:0]  vo_tick_value;
+logic [15:0] vo_cnt_load_value;
+logic [15:0] vo_cnt_watermark;
 
-// logic      vo_cnt_enable_q = 0;
-// logic      vo_cnt_load_q = 0;
-// logic      vo_cnt_clear_q = 0;
-// logic      vo_cnt_oneshot_q = 0;
-// logic [7:0]  vo_tick_value_q = 0;
-// logic [15:0] vo_cnt_load_value_q = 0;
-// logic [15:0] vo_cnt_watermark_q = 0;
+logic      vo_cnt_enable_q = 0;
+logic      vo_cnt_load_q = 0;
+logic      vo_cnt_clear_q = 0;
+logic      vo_cnt_oneshot_q = 0;
+logic [7:0]  vo_tick_value_q = 0;
+logic [15:0] vo_cnt_load_value_q = 0;
+logic [15:0] vo_cnt_watermark_q = 0;
 
-// logic        vi_tick;
-// logic        vi_cnt_ge_watermark;
-// logic [7:0]  vi_tick_cnt = 0;
-// logic [15:0] vi_cnt = 0;
+logic        vi_tick;
+logic        vi_cnt_ge_watermark;
+logic [7:0]  vi_tick_cnt = 0;
+logic [15:0] vi_cnt = 0;
 
-// // Tick counter and main counter
-// always @(posedge clk_main_a0) begin
+// Tick counter and main counter
+always @(posedge clk_main_a0) begin
 
-//    vo_cnt_enable_q     <= vo_cnt_enable    ;
-//    vo_cnt_load_q       <= vo_cnt_load      ;
-//    vo_cnt_clear_q      <= vo_cnt_clear     ;
-//    vo_cnt_oneshot_q    <= vo_cnt_oneshot   ;
-//    vo_tick_value_q     <= vo_tick_value    ;
-//    vo_cnt_load_value_q <= vo_cnt_load_value;
-//    vo_cnt_watermark_q  <= vo_cnt_watermark ;
+   vo_cnt_enable_q     <= vo_cnt_enable    ;
+   vo_cnt_load_q       <= vo_cnt_load      ;
+   vo_cnt_clear_q      <= vo_cnt_clear     ;
+   vo_cnt_oneshot_q    <= vo_cnt_oneshot   ;
+   vo_tick_value_q     <= vo_tick_value    ;
+   vo_cnt_load_value_q <= vo_cnt_load_value;
+   vo_cnt_watermark_q  <= vo_cnt_watermark ;
 
-//    vi_tick_cnt = vo_cnt_clear_q ? 0 :
-//                   ~vo_cnt_enable_q ? vi_tick_cnt :
-//                   (vi_tick_cnt >= vo_tick_value_q) ? 0 :
-//                   vi_tick_cnt + 1;
+   vi_tick_cnt = vo_cnt_clear_q ? 0 :
+                  ~vo_cnt_enable_q ? vi_tick_cnt :
+                  (vi_tick_cnt >= vo_tick_value_q) ? 0 :
+                  vi_tick_cnt + 1;
 
-//    vi_cnt = vo_cnt_clear_q ? 0 :
-//             vo_cnt_load_q ? vo_cnt_load_value_q :
-//             ~vo_cnt_enable_q ? vi_cnt :
-//             (vi_tick_cnt >= vo_tick_value_q) && (~vo_cnt_oneshot_q || (vi_cnt <= 16'hFFFF)) ? vi_cnt + 1 :
-//             vi_cnt;
+   vi_cnt = vo_cnt_clear_q ? 0 :
+            vo_cnt_load_q ? vo_cnt_load_value_q :
+            ~vo_cnt_enable_q ? vi_cnt :
+            (vi_tick_cnt >= vo_tick_value_q) && (~vo_cnt_oneshot_q || (vi_cnt <= 16'hFFFF)) ? vi_cnt + 1 :
+            vi_cnt;
 
-//    vi_tick = (vi_tick_cnt >= vo_tick_value_q);
+   vi_tick = (vi_tick_cnt >= vo_tick_value_q);
 
-//    vi_cnt_ge_watermark = (vi_cnt >= vo_cnt_watermark_q);
+   vi_cnt_ge_watermark = (vi_cnt >= vo_cnt_watermark_q);
    
-// end // always @ (posedge clk_main_a0)
+end // always @ (posedge clk_main_a0)
 
 
-// vio_0 CL_VIO_0 (
-//                   .clk    (clk_main_a0),
-//                   .probe_in0  (vi_tick),
-//                   .probe_in1  (vi_cnt_ge_watermark),
-//                   .probe_in2  (vi_tick_cnt),
-//                   .probe_in3  (vi_cnt),
-//                   .probe_out0 (vo_cnt_enable),
-//                   .probe_out1 (vo_cnt_load),
-//                   .probe_out2 (vo_cnt_clear),
-//                   .probe_out3 (vo_cnt_oneshot),
-//                   .probe_out4 (vo_tick_value),
-//                   .probe_out5 (vo_cnt_load_value),
-//                   .probe_out6 (vo_cnt_watermark)
-//                   );
+vio_0 CL_VIO_0 (
+                  .clk    (clk_main_a0),
+                  .probe_in0  (vi_tick),
+                  .probe_in1  (vi_cnt_ge_watermark),
+                  .probe_in2  (vi_tick_cnt),
+                  .probe_in3  (vi_cnt),
+                  .probe_out0 (vo_cnt_enable),
+                  .probe_out1 (vo_cnt_load),
+                  .probe_out2 (vo_cnt_clear),
+                  .probe_out3 (vo_cnt_oneshot),
+                  .probe_out4 (vo_tick_value),
+                  .probe_out5 (vo_cnt_load_value),
+                  .probe_out6 (vo_cnt_watermark)
+                  );
 
-// ila_vio_counter CL_VIO_ILA (
-//                   .clk     (clk_main_a0),
-//                   .probe0  (vi_tick),
-//                   .probe1  (vi_cnt_ge_watermark),
-//                   .probe2  (vi_tick_cnt),
-//                   .probe3  (vi_cnt),
-//                   .probe4  (vo_cnt_enable_q),
-//                   .probe5  (vo_cnt_load_q),
-//                   .probe6  (vo_cnt_clear_q),
-//                   .probe7  (vo_cnt_oneshot_q),
-//                   .probe8  (vo_tick_value_q),
-//                   .probe9  (vo_cnt_load_value_q),
-//                   .probe10 (vo_cnt_watermark_q)
-//                   );
+ila_vio_counter CL_VIO_ILA (
+                  .clk     (clk_main_a0),
+                  .probe0  (vi_tick),
+                  .probe1  (vi_cnt_ge_watermark),
+                  .probe2  (vi_tick_cnt),
+                  .probe3  (vi_cnt),
+                  .probe4  (vo_cnt_enable_q),
+                  .probe5  (vo_cnt_load_q),
+                  .probe6  (vo_cnt_clear_q),
+                  .probe7  (vo_cnt_oneshot_q),
+                  .probe8  (vo_tick_value_q),
+                  .probe9  (vo_cnt_load_value_q),
+                  .probe10 (vo_cnt_watermark_q)
+                  );
 
-// `endif //  `ifndef DISABLE_VJTAG_DEBUG
+`endif //  `ifndef DISABLE_VJTAG_DEBUG
 
 endmodule
