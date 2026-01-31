@@ -18,6 +18,9 @@ TOPINC_PATH = $(TOP)/include
 FPGAHALINC_PATH = $(TOPINC_PATH)/hal
 LIB_PATH = $(TOP)/lib
 
+# Build output directory
+BUILD_DIR = build
+
 INCLUDES = -I$(FPGAHALINC_PATH) -I$(TOPINC_PATH) -I../. -I.
 
 OPT=-DFPGA_ALLOW_NON_ROOT -DCONFIG_LOGLEVEL=1
@@ -38,13 +41,16 @@ OBJ = $(SRC:.c=.o)
 BINS = clear_single_fpga clear_multiple_fpga load_single_fpga load_multiple_fpga prefetch_multiple_afi
 STATIC_BINS = clear_single_fpga clear_multiple_fpga load_single_fpga load_multiple_fpga prefetch_multiple_afi
 
-all: $(BINS) $(addprefix static_,$(STATIC_BINS))
+all: $(BUILD_DIR) $(addprefix $(BUILD_DIR)/,$(BINS)) $(addprefix $(BUILD_DIR)/static_,$(STATIC_BINS))
 
-%:: %.c
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/%: %.c | $(BUILD_DIR)
 	$(CC) -o $@ $^ $(LDFLAGS) $(LDLIBS) $(CFLAGS)
 
-static_%:: %.c
+$(BUILD_DIR)/static_%: %.c | $(BUILD_DIR)
 	$(CC) -o $@ $^ $(LDFLAGS_STATIC) $(LDLIBS_STATIC) $(CFLAGS)
 
 clean:
-	rm -f *.o *.a $(BINS) $(addprefix static_,$(STATIC_BINS))
+	rm -rf $(BUILD_DIR) *.o *.a

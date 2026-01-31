@@ -50,11 +50,11 @@ Ensure you have sourced the AWS FPGA SDK before running:
 
 Run an example:
 
-* `sudo ./clear_single_fpga`
-* `sudo ./clear_multiple_fpga`
-* `sudo ./load_single_fpga`
-* `sudo ./load_multiple_fpga`
-* `sudo ./prefetch_multiple_afi`
+* `sudo ./build/clear_single_fpga`
+* `sudo ./build/clear_multiple_fpga`
+* `sudo ./build/load_single_fpga`
+* `sudo ./build/load_multiple_fpga`
+* `sudo ./build/prefetch_multiple_afi`
 
 
 ## Important Notes
