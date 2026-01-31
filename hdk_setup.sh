@@ -214,6 +214,7 @@ if [ $skip_downloads -eq 0 ]; then
     git submodule sync --recursive
     # To ensure that users don't have to manually input git credentials
     GIT_LFS_SKIP_SMUDGE=1 git submodule update --init $cl_ip_path
+    git -C $cl_ip_path lfs install #rh: test
     GIT_LFS_USERNAME="" GIT_LFS_PASSWORD="" git -C $cl_ip_path lfs pull
     git -C $cl_ip_path checkout $cl_ip_branch
     git -C $cl_ip_path pull origin $cl_ip_branch
@@ -267,6 +268,7 @@ if [ $skip_downloads -eq 0 ]; then
     git submodule sync --recursive
     # To ensure that users don't have to manually input git credentials
     GIT_LFS_SKIP_SMUDGE=1 git submodule update --init $hlx_path
+    git -C $hlx_path lfs install #rh: test
     GIT_LFS_USERNAME="" GIT_LFS_PASSWORD="" git -C $hlx_path lfs pull
     git -C $hlx_path checkout $hlx_branch
     git -C $hlx_path pull origin $hlx_branch
