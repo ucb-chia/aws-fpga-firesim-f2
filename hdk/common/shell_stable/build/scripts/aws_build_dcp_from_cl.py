@@ -271,7 +271,7 @@ def main():
     print("==================================================")
 
     # Check selected build flow
-    if options.flow not in ["SynthCL", "ImplCL", "BuildAll"]:
+    if options.flow not in ["SynthCL", "ImplCL", "BuildAll", "PRBase", "PRSynthRM", "PRImplRM"]:
         print_error(f"Unsupported build flow value: {options.flow}. Build terminated")
 
     # Check selected shell mode
@@ -345,7 +345,7 @@ def main():
     sys.stdout.flush()
     os.system(cmd)
 
-    if options.flow == "BuildAll":
+    if options.flow in ["BuildAll", "PRBase", "PRImplRM"]:
         generate_dcp_tarball(
             cl_name,
             build_tag,
