@@ -134,15 +134,16 @@ print "Start routing customer design ${CL}"
 ###############################################################################
 route_design -directive $ROUTE_DIRECT -tns_cleanup -timing_summary
 
-###############################################################################
-print "Adjusting host clock frequency based on post-route timing"
-###############################################################################
-source $HDK_SHELL_DIR/build/scripts/adjust_host_frequency.tcl
-set adjusted_freq [adjust_host_frequency $desired_host_frequency]
-if {$adjusted_freq eq ""} {
-    print "ERROR: Frequency adjustment failed — design cannot meet minimum frequency."
-}
-
+#JUNHA, UNCOMMENT THIS :)
+################################################################################
+#print "Adjusting host clock frequency based on post-route timing"
+################################################################################
+#source $HDK_SHELL_DIR/build/scripts/adjust_host_frequency.tcl
+#set adjusted_freq [adjust_host_frequency $desired_host_frequency]
+#if {$adjusted_freq eq ""} {
+#    print "ERROR: Frequency adjustment failed — design cannot meet minimum frequency."
+#}
+#
 print "Writing post-route design checkpoint and report"
 
 set failPath [check_timing_path]
@@ -161,6 +162,8 @@ report_timing -delay_type max \
               -sort_by group \
               -significant_digits 3 \
               -file ${reports_dir}/${CL}.${TAG}.post_route_timing.rpt
+
+report_utilization -hierarchical -hierarchical_percentages -file ${reports_dir}/${CL}.${TAG}.post_route_utilization.rpt
 
 write_debug_probes -no_partial_ltxfile -force ${checkpoints_dir}/${TAG}.debug_probes.ltx
 
